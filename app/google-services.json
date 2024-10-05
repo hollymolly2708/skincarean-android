@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "671324987024",
+    "project_id": "skincarean-d7808",
+    "storage_bucket": "skincarean-d7808.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671324987024:android:a4c14b14d1d8a8dd6f4215",
+        "android_client_info": {
+          "package_name": "com.skincarean.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmlDXoLOrSMstfma5RacwNVh1CcHHX75A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
