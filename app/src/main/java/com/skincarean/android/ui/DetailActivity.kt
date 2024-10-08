@@ -1,4 +1,4 @@
-package com.skincarean.android
+package com.skincarean.android.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,9 +7,9 @@ import android.widget.Button
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.skincarean.android.R
+import com.skincarean.android.ui.main.MainActivity
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var btnLogout: Button
@@ -32,10 +32,11 @@ class DetailActivity : AppCompatActivity() {
 
         btnLogout.setOnClickListener {
             googleSignInClient.revokeAccess().addOnCompleteListener(this) {
-                mAuth.signOut()
                 val intent = Intent(this@DetailActivity, MainActivity::class.java)
                 startActivity(intent)
             }
+
+
 
         }
     }

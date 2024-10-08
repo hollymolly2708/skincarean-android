@@ -1,21 +1,18 @@
-package com.skincarean.android
+package com.skincarean.android.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.skincarean.android.R
+import com.skincarean.android.ui.DetailActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
@@ -35,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
+            .requestProfile()
             .build()
         mGoogleApiClient = GoogleApiClient.Builder(this@MainActivity).enableAutoManage(
             this@MainActivity,
@@ -50,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         btnLoginWithGoogle.setOnClickListener {
             loginGoogleAccount()
+           startActivity( Intent(this, DetailActivity::class.java))
         }
 
     }
@@ -66,32 +65,20 @@ class MainActivity : AppCompatActivity() {
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
             if (result!!.isSuccess) {
                 val account = result.signInAccount
-                if(account != null){
-                    firebaseAuthWithGoogle(account)
-
+                if (account != null) {
+                    sendTokenToBackend(account.idToken)
+                    Log.d("idToken",account.idToken.toString())
                 }
 
             }
 
 
         }
+
     }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this, object : OnCompleteListener<AuthResult> {
-                override fun onComplete(task: Task<AuthResult>) {
-                    if (task.isSuccessful) {
-                        val user = mAuth.currentUser
-                        val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                        startActivity(intent)
-                        Toast.makeText(this@MainActivity, "Selamat datang ${user?.displayName}",Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(this@MainActivity, "Authentication gagal",Toast.LENGTH_SHORT).show()
-                    }
-                }
+    private fun sendTokenToBackend(idToken: String?) {
 
-            })
+
     }
 }
