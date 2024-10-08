@@ -1,19 +1,18 @@
 package com.skincarean.android.core.data.repository
 
-import com.skincarean.android.core.data.source.remote.RemoteDataSource
+import com.skincarean.android.core.data.source.remote.UserRemoteDataSource
+import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
 
 
-class UserRepository private constructor(private val remoteDataSource: RemoteDataSource) {
+class UserRepository private constructor(private val userRemoteDataSource: UserRemoteDataSource) {
     companion object {
         @Volatile
         private var instance: UserRepository? = null
-        fun getInstance(remoteDataSource: RemoteDataSource): UserRepository {
+        fun getInstance(userRemoteDataSource: UserRemoteDataSource): UserRepository {
             if (instance == null) {
                 synchronized(this) {
-                    instance = UserRepository(remoteDataSource)
+                    instance = UserRepository(userRemoteDataSource)
                 }
             }
             return instance!!
@@ -22,10 +21,14 @@ class UserRepository private constructor(private val remoteDataSource: RemoteDat
 
 
     fun registerUser(
-        createRegisterUserRequest: RegisterUserRequest,
+        registerUserRequest: RegisterUserRequest,
         callback: (Any) -> Unit,
     ) {
-        remoteDataSource.register(createRegisterUserRequest, callback)
+        userRemoteDataSource.register(registerUserRequest, callback)
+    }
+
+    fun login(loginUserRequest: LoginUserRequest, callback: (Any) -> Unit) {
+        userRemoteDataSource.login(loginUserRequest, callback)
     }
 
 }

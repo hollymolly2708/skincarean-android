@@ -3,6 +3,7 @@ package com.skincarean.android.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.core.data.repository.UserRepository
+import com.skincarean.android.ui.login.LoginViewModel
 import com.skincarean.android.ui.register.RegisterViewModel
 
 
@@ -26,6 +27,10 @@ class ViewModelFactory(private val userRepository: UserRepository) :
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 return RegisterViewModel(userRepository) as T
             }
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                return LoginViewModel(userRepository) as T
+            }
+
 
             else -> {
                 throw Throwable("Unknown Viewmodel class : " + modelClass.name)

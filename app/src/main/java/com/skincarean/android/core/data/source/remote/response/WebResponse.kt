@@ -2,10 +2,10 @@ package com.skincarean.android.core.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class WebResponse(
+data class WebResponse<T>(
 
 	@field:SerializedName("data")
-	val data: Any? = null,
+	val data: T? = null,
 
 	@field:SerializedName("paging")
 	val paging: Any? = null,

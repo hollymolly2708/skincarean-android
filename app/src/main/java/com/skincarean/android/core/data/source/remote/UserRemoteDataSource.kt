@@ -2,25 +2,26 @@ package com.skincarean.android.core.data.source.remote
 
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
+import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
 import com.skincarean.android.core.data.source.remote.response.ErrorResponse
+import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
 import com.skincarean.android.core.data.source.remote.response.VerificationResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RemoteDataSource private constructor(private val apiService: ApiService) {
+class UserRemoteDataSource private constructor(private val apiService: ApiService) {
     companion object {
         @Volatile
-        private var instance: RemoteDataSource? = null
-        fun getInstance(apiService: ApiService): RemoteDataSource {
+        private var instance: UserRemoteDataSource? = null
+        fun getInstance(apiService: ApiService): UserRemoteDataSource {
             if (instance == null) {
                 synchronized(this) {
-                    instance = RemoteDataSource(apiService)
+                    instance = UserRemoteDataSource(apiService)
                 }
             }
             return instance!!
@@ -54,10 +55,10 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
         registerUserRequest: RegisterUserRequest,
         callback: (Any) -> Unit,
     ) {
-        apiService.register(registerUserRequest).enqueue(object : Callback<WebResponse> {
+        apiService.register(registerUserRequest).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
-                call: Call<WebResponse>,
-                response: Response<WebResponse>,
+                call: Call<WebResponse<String>>,
+                response: Response<WebResponse<String>>,
             ) {
                 if (response.isSuccessful) {
                     val webResponse = response.body()
@@ -82,17 +83,62 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
                     Log.d("errorResponseFromServer", errorResponseFromServer.toString())
                     callback(errorResponseFromServer)
 
-                    
+
                 }
 
             }
 
-            override fun onFailure(call: Call<WebResponse>, t: Throwable) {
+            override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
 
             }
 
         })
 
+    }
+
+    fun login(loginUserRequest: LoginUserRequest, callback: (Any) -> Unit) {
+        apiService.login(loginUserRequest)
+            .enqueue(object : Callback<WebResponse<LoginUserResponse>> {
+                override fun onResponse(
+                    call: Call<WebResponse<LoginUserResponse>>,
+                    response: Response<WebResponse<LoginUserResponse>>,
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            callback(body)
+                        } else {
+                            Log.e("loginResponse", "Body is null")
+                            callback(
+                                WebResponse(
+                                    data = null,
+                                    paging = null,
+                                    errors = "Response body is null",
+                                    isSuccess = false
+                                )
+                            )
+                        }
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("loginResponse", errorBody.toString())
+                        val gson = Gson()
+                        val responseBodyWebResponse =
+                            gson.fromJson(errorBody, WebResponse::class.java)
+                        Log.d("loginResponse", responseBodyWebResponse.toString())
+                        val responseBodyErrorResponse =
+                            gson.fromJson(errorBody, ErrorResponse::class.java)
+                        Log.d("loginResponse", responseBodyErrorResponse.toString())
+                        callback(responseBodyErrorResponse)
+                        callback(responseBodyWebResponse)
+                    }
+                }
+
+                override fun onFailure(call: Call<WebResponse<LoginUserResponse>>, t: Throwable) {
+                    t.printStackTrace()
+                    callback(WebResponse(null, null, t.message, isSuccess = false))
+                }
+
+            })
     }
 
 

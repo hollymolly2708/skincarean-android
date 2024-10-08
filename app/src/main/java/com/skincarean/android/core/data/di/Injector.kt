@@ -1,7 +1,7 @@
 package com.skincarean.android.core.data.di
 
 import com.skincarean.android.core.data.repository.UserRepository
-import com.skincarean.android.core.data.source.remote.RemoteDataSource
+import com.skincarean.android.core.data.source.remote.UserRemoteDataSource
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.ui.ViewModelFactory
 import okhttp3.OkHttpClient
@@ -30,8 +30,8 @@ object Injector {
     }
 
 
-    private fun provideRemoteDataSource(): RemoteDataSource {
-        return RemoteDataSource.getInstance(provideApiService())
+    private fun provideRemoteDataSource(): UserRemoteDataSource {
+        return UserRemoteDataSource.getInstance(provideApiService())
     }
 
     private fun provideUserRepository(): UserRepository {

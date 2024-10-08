@@ -1,7 +1,9 @@
 package com.skincarean.android.core.data.source.remote.network
 
 import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
+import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
+import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
 import com.skincarean.android.core.data.source.remote.response.VerificationResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import retrofit2.Call
@@ -13,6 +15,8 @@ interface ApiService {
     fun verifyToken(@Body token: GoogleTokenRequest): Call<VerificationResponse>
 
     @POST("api/users/auth/register")
-    fun register(@Body registerUserRequest : RegisterUserRequest) : Call<WebResponse>
+    fun register(@Body registerUserRequest : RegisterUserRequest) : Call<WebResponse<String>>
 
+    @POST("api/users/auth/login")
+    fun login(@Body loginUserRequest: LoginUserRequest) : Call<WebResponse<LoginUserResponse>>
 }

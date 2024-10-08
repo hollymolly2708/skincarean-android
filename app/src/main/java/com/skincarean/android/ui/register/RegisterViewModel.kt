@@ -24,7 +24,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
 
 
             // Cek jika response merupakan WebResponse
-            if (response is WebResponse) {
+            if (response is WebResponse<*>) {
                 // Jika ada data, set nilai registerResult
                 response.data?.let {
                     _registerResult.value = Event(it.toString())
