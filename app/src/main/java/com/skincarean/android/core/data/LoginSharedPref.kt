@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
 import com.skincarean.android.ui.login.LoginActivity
+import com.skincarean.android.ui.main.MainActivity
 
 object LoginSharedPref {
 
@@ -42,4 +43,25 @@ object LoginSharedPref {
         val intent = Intent(activity, LoginActivity::class.java)
         activity.startActivity(intent)
     }
+
+    fun checkSession(activity: Activity) {
+        when (activity) {
+            is LoginActivity -> {
+                if (getToken(activity) != null && getTokenExpiredAt(activity) > System.currentTimeMillis()) {
+                    val intent = Intent(activity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    activity.startActivity(intent)
+                }
+            }
+
+            else -> {
+                if (getToken(activity) == null || getTokenExpiredAt(activity) < System.currentTimeMillis()) {
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    activity.finishAffinity()
+                    activity.startActivity(intent)
+                }
+            }
+        }
+    }
+
 }

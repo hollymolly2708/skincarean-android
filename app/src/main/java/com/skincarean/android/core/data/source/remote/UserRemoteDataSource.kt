@@ -28,30 +28,54 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
         }
     }
 
-    fun loginViaGoogle(idToken: String?) {
+    fun loginViaGoogle(idToken: String?, callback: (Any) -> Unit) {
         apiService.verifyToken(GoogleTokenRequest(idToken!!)).enqueue(object :
-            Callback<VerificationResponse> {
+            Callback<WebResponse<LoginUserResponse>> {
             override fun onResponse(
-                call: Call<VerificationResponse>,
-                response: Response<VerificationResponse>,
+                call: Call<WebResponse<LoginUserResponse>>,
+                response: Response<WebResponse<LoginUserResponse>>,
             ) {
                 if (response.isSuccessful) {
-                    // Token valid, lanjutkan dengan login
 
+                    val body = response.body()
+                    if (body != null) {
+                        callback(body)
+                    } else {
+                        callback(
+                            WebResponse(
+                                null,
+                                null,
+                                "Response body is null",
+                                isSuccess = false
+                            )
+                        )
+                    }
 
                 } else {
-                    // Token tidak valid
-                    Log.d("responseFailure", "${response.body()}")
+                    val errorBody = response.errorBody()?.string()
+                    if (errorBody != null) {
+                        val gson = Gson()
+                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
+                        val errorResponseFromServer =
+                            gson.fromJson(errorBody, ErrorResponse::class.java)
+
+                        callback(errorResponse)
+                        callback(errorResponseFromServer)
+
+                    } else {
+                        callback(WebResponse(null, null, "Response error body is null", false))
+                    }
                 }
             }
 
-            override fun onFailure(call: Call<VerificationResponse>, t: Throwable) {
-                Log.d("onFailure", t.message.toString())
+            override fun onFailure(call: Call<WebResponse<LoginUserResponse>>, t: Throwable) {
+                t.printStackTrace()
+                callback(WebResponse(null, null, t.message, false))
             }
         })
     }
 
-    fun register(
+    fun register (
         registerUserRequest: RegisterUserRequest,
         callback: (Any) -> Unit,
     ) {

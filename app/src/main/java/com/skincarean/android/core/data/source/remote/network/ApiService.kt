@@ -12,11 +12,11 @@ import retrofit2.http.POST
 
 interface ApiService {
     @POST("api/users/auth/login/google/verify")
-    fun verifyToken(@Body token: GoogleTokenRequest): Call<VerificationResponse>
+    fun verifyToken(@Body token: GoogleTokenRequest): Call<WebResponse<LoginUserResponse>>
 
     @POST("api/users/auth/register")
-    fun register(@Body registerUserRequest : RegisterUserRequest) : Call<WebResponse<String>>
+    fun register(@Body registerUserRequest: RegisterUserRequest): Call<WebResponse<String>>
 
     @POST("api/users/auth/login")
-    fun login(@Body loginUserRequest: LoginUserRequest) : Call<WebResponse<LoginUserResponse>>
+    fun login(@Body loginUserRequest: LoginUserRequest): Call<WebResponse<LoginUserResponse>>
 }

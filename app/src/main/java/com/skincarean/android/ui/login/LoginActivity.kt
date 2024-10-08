@@ -8,11 +8,14 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener
 import com.skincarean.android.R
+import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
@@ -26,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
     private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     companion object {
         const val RC_SIGN_IN = 123;
@@ -41,13 +45,23 @@ class LoginActivity : AppCompatActivity() {
 
         setupObservers()
 
+        //pengecekan session
+        LoginSharedPref.checkSession(this)
+//        //delete soon
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.default_web_client_id)) // client_id dari Firebase
+//            .requestEmail()
+//            .requestProfile()
+//            .build()
+//
+//        googleSignInClient = GoogleSignIn.getClient(this, gso)
+//        googleSignInClient.revokeAccess()
 
-        if (LoginSharedPref.getToken(this) == null && LoginSharedPref.getTokenExpiredAt(this) > System.currentTimeMillis()) {
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        connectToGoogleSignIn()
+
+        binding.btnLoginViaGmail.setOnClickListener {
+            intentToGoogleAccounts()
         }
-
 
     }
 
@@ -80,19 +94,22 @@ class LoginActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.loginResult.observe(this, Observer { response ->
             if (response != null) {
-                Toast.makeText(this, response.token, Toast.LENGTH_SHORT).show()
-                LoginSharedPref.saveData(activity = this, response)
+                LoginSharedPref.saveData(this, response)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-
-
         })
+
+        viewModel.errorMessage.observe(this) { errorMessage ->
+            if (errorMessage != null) {
+                Utilities.customDialog(errorMessage, this)
+            }
+        }
     }
 
 
-    private fun loginViaGoogle() {
+    private fun connectToGoogleSignIn() {
 
         // 1  Membuat konfigurasi Google sign-in apa yang pengen diminta dari google akun
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -143,6 +160,6 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun sendTokenToBackend(idToken: String?) {
-
+        viewModel.loginViaGoogle(idToken)
     }
 }

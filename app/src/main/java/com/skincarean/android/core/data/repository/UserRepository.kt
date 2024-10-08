@@ -31,4 +31,8 @@ class UserRepository private constructor(private val userRemoteDataSource: UserR
         userRemoteDataSource.login(loginUserRequest, callback)
     }
 
+    fun loginViaGoogle(idToken: String?, callback: (Any) -> Unit) {
+        userRemoteDataSource.loginViaGoogle(idToken, callback)
+    }
+
 }

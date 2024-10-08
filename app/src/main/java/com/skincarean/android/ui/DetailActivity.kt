@@ -22,14 +22,6 @@ class DetailActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         btnLogout = findViewById(R.id.btn_logout)
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // client_id dari Firebase
-            .requestEmail()
-            .requestProfile()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
         btnLogout.setOnClickListener {
             googleSignInClient.revokeAccess().addOnCompleteListener(this) {
                 val intent = Intent(this@DetailActivity, MainActivity::class.java)

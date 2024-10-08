@@ -1,5 +1,6 @@
 package com.skincarean.android.ui.login
 
+import android.media.metrics.Event
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,6 +35,28 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                     }
                 }
 
+            }
+        }
+    }
+
+    fun loginViaGoogle(idToken: String?) {
+        userRepository.loginViaGoogle(idToken = idToken) { response ->
+            when (response) {
+                is WebResponse<*> -> {
+
+                    response.data?.let {
+                        _loginResult.value = it as LoginUserResponse
+                    }
+                    response.errors?.let {
+                        _errorMessage.value = it
+                    }
+                }
+
+                is ErrorResponse -> {
+                    response.error?.let {
+                        _errorMessage.value = it
+                    }
+                }
             }
         }
     }
