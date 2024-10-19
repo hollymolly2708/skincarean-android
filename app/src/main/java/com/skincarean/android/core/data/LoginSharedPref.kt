@@ -1,64 +1,65 @@
 package com.skincarean.android.core.data
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
+import com.skincarean.android.core.data.source.remote.response.login.LoginUserResponse
 import com.skincarean.android.ui.login.LoginActivity
 import com.skincarean.android.ui.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object LoginSharedPref {
 
-    private fun sharedPreferences(activity: Activity): SharedPreferences {
-        return activity.getSharedPreferences("login", Context.MODE_PRIVATE)
+    private fun sharedPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences("login", Context.MODE_PRIVATE)
     }
 
-    fun getToken(activity: Activity) =
-        sharedPreferences(activity = activity).getString("token", null)
+    fun getToken(context: Context) =
+        sharedPreferences(context.applicationContext).getString("token", null)
 
-    fun getTokenCreatedAt(activity: Activity) =
-        sharedPreferences(activity).getLong("token_created_at", 0)
+    fun getTokenCreatedAt(context: Context) =
+        sharedPreferences(context).getLong("token_created_at", 0)
 
-    fun getTokenExpiredAt(activity: Activity) =
-        sharedPreferences(activity).getLong("token_expired_at", 0)
+    fun getTokenExpiredAt(context: Context) =
+        sharedPreferences(context).getLong("token_expired_at", 0)
 
-    fun saveData(activity: Activity, loginUserResponse: LoginUserResponse) {
+    fun saveData(context: Context, loginUserResponse: LoginUserResponse) {
         val token = loginUserResponse.token
         val tokenCreatedAt = loginUserResponse.tokenCreatedAt
         val tokenExpiredAt = loginUserResponse.tokenExpiredAt
-        sharedPreferences(activity)
-            .edit()
-            .putString("token", token)
-            .putLong("token_created_at", tokenCreatedAt)
-            .putLong("token_expired_at", tokenExpiredAt)
+        sharedPreferences(context).edit().putString("token", token)
+            .putLong("token_created_at", tokenCreatedAt).putLong("token_expired_at", tokenExpiredAt)
             .apply()
     }
 
-    fun logout(activity: Activity) {
-        sharedPreferences(activity)
-            .edit()
-            .clear()
-            .apply()
-        val intent = Intent(activity, LoginActivity::class.java)
-        activity.startActivity(intent)
+    fun clear(context: Context) {
+        sharedPreferences(context).edit().clear().apply()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            context.startActivity(intent)
+        }
+
     }
 
-    fun checkSession(activity: Activity) {
-        when (activity) {
+    fun checkSession(context: Context) {
+        when (context) {
             is LoginActivity -> {
-                if (getToken(activity) != null && getTokenExpiredAt(activity) > System.currentTimeMillis()) {
-                    val intent = Intent(activity, MainActivity::class.java)
+                if (getToken(context) != null && getTokenExpiredAt(context) > System.currentTimeMillis()) {
+                    val intent = Intent(context, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    activity.startActivity(intent)
+                    context.startActivity(intent)
                 }
             }
 
             else -> {
-                if (getToken(activity) == null || getTokenExpiredAt(activity) < System.currentTimeMillis()) {
-                    val intent = Intent(activity, LoginActivity::class.java)
-                    activity.finishAffinity()
-                    activity.startActivity(intent)
+                if (getToken(context) == null || getTokenExpiredAt(context) < System.currentTimeMillis()) {
+                    val intent = Intent(context, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    context.startActivity(intent)
                 }
             }
         }

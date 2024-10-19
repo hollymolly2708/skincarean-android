@@ -1,22 +1,47 @@
 package com.skincarean.android.ui.order
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.skincarean.android.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayoutMediator
+import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.databinding.FragmentOrderBinding
+import com.skincarean.android.ui.product.detail.DetailProductTabLayoutAdapter
 
 
 class OrderFragment : Fragment() {
+    private var _binding: FragmentOrderBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order, container, false)
+        _binding = FragmentOrderBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val orderTabLayoutAdapter = OrderTabLayoutAdapter(requireActivity())
+        val viewPager = binding.vpOrder
+        val tabs = binding.tabsOrder
+        val tabNames = arrayOf("Pending", "Completed")
+        viewPager.adapter = orderTabLayoutAdapter
+
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = tabNames[position]
+        }.attach()
+
+
+    }
 
 }

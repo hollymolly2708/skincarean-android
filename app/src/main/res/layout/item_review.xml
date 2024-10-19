@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:id="@+id/iv_user_review"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Muhammad Fiqri Turham"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user_review"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_review"
+            app:layout_constraintTop_toTopOf="@+id/iv_user_review">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_is_recommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_recommended_review"
+            android:drawableStart="@drawable/ic_profile"
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:text="Budi doesnt recommended this product"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_user_review">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_review_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="12 Juni 2020"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_is_recommended">
+
+        </TextView>
+
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="start"
+
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="4"
+            android:stepSize="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_is_recommended">
+
+
+        </RatingBar>
+
+
+        <TextView
+            android:id="@+id/tv_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Produk ini benar-benar mengubah kulitku! Aku punya kulit sensitif yang sering iritasi, tapi setelah pakai Skintific 5X Ceramide ini, kulitku jauh lebih tenang dan jarang kemerahan. Teksturnya ringan, nggak bikin lengket, dan cepat meresap. Sangat rekomendasi!"
+            android:textAlignment="textStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/iv_usage_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_review">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_usage_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Usage Period : "
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_usage_period"
+            app:layout_constraintStart_toEndOf="@+id/iv_usage_period"
+            app:layout_constraintTop_toTopOf="@+id/iv_usage_period">
+
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_input_usage_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="20 bulan"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_usage_period"
+            app:layout_constraintStart_toEndOf="@+id/tv_usage_period"
+            app:layout_constraintTop_toTopOf="@+id/tv_usage_period">
+
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_full_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/5"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_text"
+            app:layout_constraintStart_toEndOf="@+id/rating_text"
+            app:layout_constraintTop_toTopOf="@+id/rating_text">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="4"
+            android:textColor="@color/mint_green"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
+            app:layout_constraintStart_toEndOf="@+id/rating_bar"
+            app:layout_constraintTop_toTopOf="@+id/rating_bar">
+
+        </TextView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

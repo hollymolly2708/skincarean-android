@@ -1,4 +1,4 @@
-package com.skincarean.android.core.data.source.remote.response
+package com.skincarean.android.core.data.source.remote.response.login
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serial

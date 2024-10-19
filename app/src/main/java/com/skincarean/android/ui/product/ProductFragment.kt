@@ -10,8 +10,6 @@ import com.skincarean.android.R
 
 class ProductFragment : Fragment() {
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

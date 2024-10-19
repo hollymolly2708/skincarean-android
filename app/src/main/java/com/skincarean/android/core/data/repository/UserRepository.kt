@@ -19,7 +19,6 @@ class UserRepository private constructor(private val userRemoteDataSource: UserR
         }
     }
 
-
     fun registerUser(
         registerUserRequest: RegisterUserRequest,
         callback: (Any) -> Unit,
@@ -34,5 +33,4 @@ class UserRepository private constructor(private val userRemoteDataSource: UserR
     fun loginViaGoogle(idToken: String?, callback: (Any) -> Unit) {
         userRemoteDataSource.loginViaGoogle(idToken, callback)
     }
-
 }

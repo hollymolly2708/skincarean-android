@@ -1,93 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+
     tools:context=".ui.home.HomeFragment">
 
-    <ImageView
-        android:id="@+id/iv_user"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray">
 
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/ic_person"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/iv_cart"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_cart"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_user">
-
-    </ImageView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-    <TextView
-        android:id="@+id/tv_selamat_pagi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Selamat Pagi"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toTopOf="@+id/iv_user" />
+            <ImageView
+                android:id="@+id/iv_user"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
 
-    <TextView
-        android:id="@+id/tv_full_name_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="sans-serif"
-        android:text="Muhammad Fiqri Turham"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-        app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toBottomOf="@+id/tv_selamat_pagi">
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/ic_person"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    </TextView>
+            </ImageView>
 
-    <TextView
-        android:id="@+id/tv_top_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Top Brands"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/rv_top_brand"
-        tools:layout_editor_absoluteY="82dp">
+            <ImageView
+                android:id="@+id/iv_cart"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
 
-    </TextView>
+                android:src="@drawable/ic_cart"
+                app:layout_constraintBottom_toBottomOf="@+id/searchView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/searchView"
+                app:layout_constraintTop_toTopOf="@+id/searchView">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_top_brand"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_top_brand"
-        app:spanCount="5">
-
-    </androidx.recyclerview.widget.RecyclerView>
+            </ImageView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_selamat_pagi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Selamat Pagi"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/iv_user"
+                app:layout_constraintTop_toTopOf="@+id/iv_user" />
+
+            <TextView
+                android:id="@+id/tv_full_name_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Muhammad Fiqri Turham"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_user"
+                app:layout_constraintStart_toEndOf="@+id/iv_user"
+                app:layout_constraintTop_toBottomOf="@+id/tv_selamat_pagi">
+
+            </TextView>
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="60dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/background_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_user"
+                app:queryHint="Search here">
+
+            </SearchView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_top_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/layout_user">
+
+
+            <TextView
+                android:id="@+id/tv_top_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Top Brands"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_top_brand"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.223"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_top_brand">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_popular_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+
+            app:layout_constraintStart_toStartOf="@+id/layout_top_brand"
+            app:layout_constraintTop_toBottomOf="@+id/layout_top_brand">
+
+
+            <TextView
+                android:id="@+id/tv_popular_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Popular Product"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_popular_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_popular_product"
+                tools:listitem="@layout/item_product" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

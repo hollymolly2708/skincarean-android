@@ -1,13 +1,12 @@
 package com.skincarean.android.ui.login
 
-import android.media.metrics.Event
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skincarean.android.core.data.repository.UserRepository
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
+import com.skincarean.android.core.data.source.remote.response.login.LoginUserResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {

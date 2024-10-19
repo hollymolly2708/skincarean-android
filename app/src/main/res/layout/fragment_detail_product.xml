@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.product.detail.DetailProductFragment">
+
+    <TextView
+        android:id="@+id/tv_input_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:textSize="12sp"
+        android:text="Skintific Moisturizer 125g"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_input_stok"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Size :"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_input_name">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_input_size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="300ml"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_input_stok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_input_stok"
+        app:layout_constraintTop_toTopOf="@+id/tv_input_stok">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_ingredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Ingredients : "
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_input_stok">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_input_ingredients"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Lorem ipsum dolor sit amet"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ingredients"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_ingredients"
+        app:layout_constraintTop_toTopOf="@+id/tv_ingredients">
+
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

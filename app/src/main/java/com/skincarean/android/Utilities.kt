@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Locale
 
 object Utilities {
     fun customDialog(message: String?, context: Context) {
@@ -24,6 +27,12 @@ object Utilities {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+    }
+
+    fun numberFormat(price :BigDecimal?) : String{
+        val localeId  = Locale("in","ID")
+        val formatRupiah = NumberFormat.getCurrencyInstance(localeId)
+        return formatRupiah.format(price)
     }
 
 }

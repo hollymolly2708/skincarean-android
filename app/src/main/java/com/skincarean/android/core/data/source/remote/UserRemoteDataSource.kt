@@ -7,8 +7,7 @@ import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
 import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.LoginUserResponse
-import com.skincarean.android.core.data.source.remote.response.VerificationResponse
+import com.skincarean.android.core.data.source.remote.response.login.LoginUserResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import retrofit2.Call
 import retrofit2.Callback

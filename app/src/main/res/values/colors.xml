@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000</color>
+    <color name="black_30">#4D000000</color>
+    <color name="black_10">#1A000000</color>
     <color name="dusty_rose">#DCAE96</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_20">#338C8080</color>
+    <color name="white_80">#338C8080</color>
+    <color name="gray">#33605C5C</color>
+    <color name="lime_green">#32CD32</color>
+    <color name="lime_green_20">#3332CD32</color>
+    <color name="red">#FF0000</color>
+    <color name="red_50">#CCFF0000</color>
+    <color name="red_20">#4DFF0000</color>
     <color name="cream">#FFDAB9</color>
     <color name="emerald_green">#a3e4d7</color>
     <color name="mint_green">#2ecc71</color>
+    <color name="mint_green_20">#4D2ECC71</color>
+    <color name="mint_green_80">#CC2ECC71</color>
     <color name="light_cream">#FFF5E1</color>
     <color name="pale_cream">#FFF8E1</color>
     <color name="pastel_cream">#FAEBD7</color>
