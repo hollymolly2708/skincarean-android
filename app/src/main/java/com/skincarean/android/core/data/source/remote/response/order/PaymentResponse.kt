@@ -1,6 +1,7 @@
 package com.skincarean.android.core.data.source.remote.response.order
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class PaymentResponse(
 
@@ -11,7 +12,7 @@ data class PaymentResponse(
     val paidDate: Any? = null,
 
     @field:SerializedName("totalPaid")
-    val totalPaid: Any? = null,
+    val totalPaid: BigDecimal,
 
     @field:SerializedName("paymentMethodId")
     val paymentMethodId: Int? = null,

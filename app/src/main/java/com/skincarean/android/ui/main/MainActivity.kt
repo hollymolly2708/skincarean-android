@@ -10,6 +10,7 @@ import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.databinding.ActivityMainBinding
 import com.skincarean.android.ui.home.HomeFragment
 import com.skincarean.android.ui.order.OrderFragment
+import com.skincarean.android.ui.product.ProductFragment
 import com.skincarean.android.ui.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,9 +31,12 @@ class MainActivity : AppCompatActivity() {
         setupBottomBar()
     }
 
+
+
     private fun setupBottomBar() {
         binding.ivOrder.setImageResource(R.drawable.ic_order)
         binding.ivProfile.setImageResource(R.drawable.ic_profile)
+        binding.ivProduct.setImageResource(R.drawable.ic_skincare)
         binding.homeLayout.setOnClickListener {
             if (selectedTab != 1) {
                 supportFragmentManager.beginTransaction().setReorderingAllowed(true)
@@ -41,14 +45,15 @@ class MainActivity : AppCompatActivity() {
 
                 binding.tvOrder.visibility = View.GONE
                 binding.tvProfile.visibility = View.GONE
+                binding.tvProduct.visibility = View.GONE
 
                 binding.layoutOrder.setBackgroundColor(resources.getColor(android.R.color.transparent))
                 binding.layoutProfile.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutProduct.setBackgroundColor(resources.getColor(android.R.color.transparent))
 
 
                 binding.tvHome.visibility = View.VISIBLE
                 binding.ivHome.setImageResource(R.drawable.ic_selected_home)
-
                 binding.homeLayout.setBackgroundResource(R.drawable.round_back_100)
 
                 scaleAnimation(binding.homeLayout)
@@ -64,13 +69,16 @@ class MainActivity : AppCompatActivity() {
             if (selectedTab != 2) {
                 binding.tvHome.visibility = View.GONE
                 binding.tvProfile.visibility = View.GONE
+                binding.tvProduct.visibility = View.GONE
 
 
                 binding.ivHome.setImageResource(R.drawable.ic_home)
                 binding.ivProfile.setImageResource(R.drawable.ic_profile)
+                binding.ivProduct.setImageResource(R.drawable.ic_skincare)
 
                 binding.homeLayout.setBackgroundColor(resources.getColor(android.R.color.transparent))
                 binding.layoutProfile.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutProduct.setBackgroundColor(resources.getColor(android.R.color.transparent))
 
 
                 binding.tvOrder.visibility = View.VISIBLE
@@ -82,17 +90,49 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.layoutProduct.setOnClickListener {
+            supportFragmentManager.beginTransaction().setReorderingAllowed(true)
+                .replace(R.id.fragment_container, ProductFragment(), null).commit()
+
+            if (selectedTab != 3) {
+                binding.tvHome.visibility = View.GONE
+                binding.tvProfile.visibility = View.GONE
+                binding.tvOrder.visibility = View.GONE
+
+
+                binding.ivHome.setImageResource(R.drawable.ic_home)
+                binding.ivProfile.setImageResource(R.drawable.ic_profile)
+                binding.ivOrder.setImageResource(R.drawable.ic_order)
+
+                binding.homeLayout.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutProfile.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutOrder.setBackgroundColor(resources.getColor(android.R.color.transparent))
+
+
+                binding.tvProduct.visibility = View.VISIBLE
+                binding.ivProduct.setImageResource(R.drawable.ic_selected_skincare)
+                binding.layoutProduct.setBackgroundResource(R.drawable.round_back_100)
+
+                scaleAnimation(binding.layoutProduct)
+                selectedTab = 3
+            }
+        }
+
+
         binding.layoutProfile.setOnClickListener {
             supportFragmentManager.beginTransaction().setReorderingAllowed(true)
                 .replace(R.id.fragment_container, ProfileFragment(), null).commit()
-            if (selectedTab != 3) {
+            if (selectedTab != 4) {
                 binding.tvOrder.visibility = View.GONE
                 binding.tvHome.visibility = View.GONE
+                binding.tvProduct.visibility = View.GONE
+
+                binding.ivProduct.setImageResource(R.drawable.ic_skincare)
                 binding.ivOrder.setImageResource(R.drawable.ic_order)
                 binding.ivHome.setImageResource(R.drawable.ic_home)
 
 
-
+                binding.layoutProduct.setBackgroundColor(resources.getColor(android.R.color.transparent))
                 binding.layoutOrder.setBackgroundColor(resources.getColor(android.R.color.transparent))
                 binding.homeLayout.setBackgroundColor(resources.getColor(android.R.color.transparent))
 
@@ -101,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                 binding.tvProfile.visibility = View.VISIBLE
 
                 scaleAnimation(binding.layoutProfile)
-                selectedTab = 3
+                selectedTab = 4
             }
         }
 

@@ -16,7 +16,7 @@ data class DetailProductResponse(
     val originalPrice: BigDecimal? = null,
 
     @field:SerializedName("discount")
-    val discount: BigDecimal? = null,
+    val discount: Long? = null,
 
     @field:SerializedName("stok")
     val stok: Int? = null,

@@ -1,6 +1,7 @@
 package com.skincarean.android.core.data.source.remote.response.product
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class ProductResponse(
 
@@ -11,7 +12,7 @@ data class ProductResponse(
 	val productId: String? = null,
 
     @field:SerializedName("originalPrice")
-	val originalPrice: Any? = null,
+	val originalPrice: BigDecimal? = null,
 
     @field:SerializedName("discount")
 	val discount: Any? = null,
@@ -35,7 +36,7 @@ data class ProductResponse(
 	val size: String? = null,
 
     @field:SerializedName("price")
-	val price: Any? = null,
+	val price: BigDecimal? = null,
 
     @field:SerializedName("isPopularProduct")
 	val isPopularProduct: Any? = null,

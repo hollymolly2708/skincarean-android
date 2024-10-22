@@ -30,7 +30,7 @@ class OrderProductAdapter(private val listOrderProductResponse: List<OrderItemRe
             holder.binding.tvInputTitleOrderProduct.text =
                 orderProductResponse?.product?.productName
             holder.binding.tvInputQuantityOrderProduct.text =
-                "x${orderProductResponse?.quantity.toString()}"
+                "${orderProductResponse?.quantity.toString()}"
             holder.binding.tvInputCategoryName.text = orderProductResponse?.product?.categoryName
             holder.binding.tvInputSize.text = orderProductResponse?.product?.size
             val uri = Uri.parse(orderProductResponse?.product?.thumbnailImage)

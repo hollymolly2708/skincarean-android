@@ -1,10 +1,14 @@
 package com.skincarean.android.ui.cart
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ItemProductCartBinding
 
@@ -25,6 +29,7 @@ class CartAdapter(private val list: List<CartItemResponse?>?) :
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CartAdapter.CartViewHolder, position: Int) {
         if (list != null) {
             val data = list[position]
@@ -32,10 +37,10 @@ class CartAdapter(private val list: List<CartItemResponse?>?) :
                 if (data.product != null) {
                     holder.binding.tvInputTitleProduct.text = data.product.productName
                     holder.binding.tvInputBrandName.text = data.product.brandName
-                    holder.binding.tvInputPrice.text = data.total.toString()
+                    holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
                     holder.binding.tvInputCategory.text = data.product.categoryName
                 }
-                holder.binding.tvInputQuantity.text = data.quantity.toString()
+                holder.binding.tvInputQuantity.text = "x${data.quantity.toString()}"
             }
 
 
@@ -71,9 +76,5 @@ class CartAdapter(private val list: List<CartItemResponse?>?) :
 
     inner class CartViewHolder(var binding: ItemProductCartBinding) : ViewHolder(binding.root)
 
-    interface OnItemClickCallback {
-        fun onPlusClicked(cartId: Long)
-        fun onMinusClicked(cartId: Long)
-        fun onTrashCartItemClicked(cartId: Long)
-    }
+
 }

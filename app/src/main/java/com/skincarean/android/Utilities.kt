@@ -32,7 +32,11 @@ object Utilities {
     fun numberFormat(price :BigDecimal?) : String{
         val localeId  = Locale("in","ID")
         val formatRupiah = NumberFormat.getCurrencyInstance(localeId)
-        return formatRupiah.format(price)
+        return if(price != null) {
+            formatRupiah.format(price)
+        }else{
+            "Rp 0"
+        }
     }
 
 }

@@ -2,29 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="130dp"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
     android:layout_margin="3dp"
-    android:background="@drawable/background_item_product"
-    android:orientation="vertical">
+    android:background="@drawable/background_square_corners">
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_product"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="110dp"
+        app:shapeAppearanceOverlay="@style/CustomImageViewCorner"
         android:scaleType="centerCrop"
         android:src="@drawable/skintific"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_discount_text"
-        android:padding="3dp"
+
+        android:background="@drawable/background_discount_green"
+        android:padding="5dp"
         android:text="-62%"
         android:textColor="@color/white"
         android:textSize="10sp"
@@ -33,6 +34,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
+
     <TextView
         android:id="@+id/text_product_name"
         android:layout_width="0dp"
@@ -50,10 +52,11 @@
 
     <TextView
         android:id="@+id/tv_total_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:drawablePadding="2dp"
         android:fontFamily="sans-serif-condensed-light"
         android:padding="1dp"
@@ -61,7 +64,7 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tv_original_price"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_product_name">
 
@@ -69,15 +72,18 @@
 
     <TextView
         android:id="@+id/tv_original_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Rp. 100000"
-
         android:textSize="8sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_price">
 
     </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

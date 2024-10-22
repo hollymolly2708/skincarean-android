@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.skincarean.android.core.data.repository.OrderRepository
 import com.skincarean.android.core.data.repository.PaymentMethodRepository
 import com.skincarean.android.core.data.repository.ProductRepository
+import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
 import com.skincarean.android.core.data.source.remote.response.product.DetailProductResponse
 import com.skincarean.android.core.data.source.remote.response.ErrorResponse
@@ -22,11 +23,14 @@ class CheckoutViewModel(
     private val _detailProduct: MutableLiveData<DetailProductResponse> = MutableLiveData()
     private val _errorMessage: MutableLiveData<String> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
+    private val _orderId: MutableLiveData<Map<String, Any>> = MutableLiveData()
     var _selectedPaymentMethodId: Int? = null
     var _selectedDescription: String? = null
 
 
     val errorMessage: LiveData<String> = _errorMessage
+
+    val orderId: LiveData<Map<String, Any>> = _orderId
     val message: LiveData<String> = _message
     val detailProduct: LiveData<DetailProductResponse> = _detailProduct
     val allPaymentMethods: LiveData<List<PaymentMethodResponse>> = _allPaymentMethods
@@ -76,13 +80,13 @@ class CheckoutViewModel(
         }
     }
 
-    fun directlyOrderRequest(directlyOrderRequest: DirectlyOrderRequest) {
+    fun directlyOrder(directlyOrderRequest: DirectlyOrderRequest) {
         orderRepository.directlyOrder(directlyOrderRequest) { response ->
             when (response) {
                 is WebResponse<*> -> {
                     if (response.data != null) {
                         response.data.let {
-                            _message.value = it as String
+                            _orderId.value = it as Map<String, Any>
                         }
                     } else {
                         response.errors.let {
@@ -90,6 +94,27 @@ class CheckoutViewModel(
                         }
                     }
 
+                }
+            }
+        }
+    }
+
+    fun cartOrder(cartOrderRequest: CartOrderRequest) {
+        orderRepository.cartOrder(cartOrderRequest) { response ->
+            when (response) {
+                is WebResponse<*> -> {
+                    response.data?.let {
+                        _orderId.value = it as Map<String, Any>
+                    }
+                    response.errors?.let {
+                        _message.value = it
+                    }
+                }
+
+                is ErrorResponse -> {
+                    response.error?.let {
+                        _message.value = it
+                    }
                 }
             }
         }

@@ -1,9 +1,7 @@
 package com.skincarean.android.core.data.source.remote.request
 
-data class DirectlyOrderRequest(
-    val productId: String?,
-    val quantity: Int,
+data class CartOrderRequest(
     val paymentMethodId: Int,
     val description: String,
-    val shippingAddress: String
+    val shippingAddress: String,
 )

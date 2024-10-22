@@ -73,7 +73,7 @@ object Injector {
 
     private fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.142.184:8080/")
+            .baseUrl("http://192.168.1.16:8080/")
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

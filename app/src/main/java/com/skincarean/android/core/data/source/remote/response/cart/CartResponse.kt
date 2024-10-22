@@ -1,6 +1,7 @@
 package com.skincarean.android.core.data.source.remote.response.cart
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 
 data class CartResponse(
@@ -9,7 +10,7 @@ data class CartResponse(
 	val quantity: Int? = null,
 
 	@field:SerializedName("totalPrice")
-	val totalPrice: Any? = null,
+	val totalPrice: BigDecimal? = null,
 
 	@field:SerializedName("id")
 	val id: Long? = null,

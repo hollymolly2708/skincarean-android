@@ -1,16 +1,16 @@
 package com.skincarean.android.ui.cart
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.skincarean.android.R
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 import com.skincarean.android.databinding.ActivityCartBinding
-import com.skincarean.android.ui.ViewModelFactory
+import com.skincarean.android.ui.checkout.CartCheckoutActivity
+import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity
 
 class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
@@ -25,7 +25,12 @@ class CartActivity : AppCompatActivity() {
 
         setupObservers()
         getAllCarts()
-//        deleteAllCartItem()
+        deleteAllCartItem()
+
+        binding.btnCheckout.setOnClickListener {
+            val intent = Intent(this, CartCheckoutActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
@@ -38,10 +43,10 @@ class CartActivity : AppCompatActivity() {
                 binding.rvCart.adapter = adapter
                 binding.rvCart.layoutManager = LinearLayoutManager(this)
                 binding.rvCart.setHasFixedSize(true)
-                binding.tvInputTotalAmount.text = cartResponse.totalPrice.toString()
+                binding.tvInputTotalAmount.text = Utilities.numberFormat(cartResponse.totalPrice)
 
 
-                adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback {
+                adapter.setOnItemClickCallback(object : OnItemClickCallback {
                     override fun onPlusClicked(cartId: Long) {
                         viewModel.plusQuantity(cartId)
 
@@ -78,9 +83,5 @@ class CartActivity : AppCompatActivity() {
 
     }
 
-
-//    private fun plusQuantity(){
-//        viewModel.plusQuantity()
-//    }
 
 }

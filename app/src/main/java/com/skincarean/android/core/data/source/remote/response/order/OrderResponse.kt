@@ -8,7 +8,7 @@ import java.math.BigDecimal
 data class OrderResponse(
 
     @field:SerializedName("shippingCost")
-    val shippingCost: Any? = null,
+    val shippingCost: BigDecimal? = null,
 
     @field:SerializedName("orderId")
     val orderId: String? = null,
@@ -26,7 +26,7 @@ data class OrderResponse(
     val shippingAddress: String? = null,
 
     @field:SerializedName("tax")
-    val tax: Any? = null,
+    val tax: BigDecimal? = null,
 
     @field:SerializedName("payment")
     val payment: PaymentResponse? = null,

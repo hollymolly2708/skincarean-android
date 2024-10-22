@@ -11,6 +11,7 @@
     <color name="lime_green">#32CD32</color>
     <color name="lime_green_20">#3332CD32</color>
     <color name="red">#FF0000</color>
+    <color name="red_80">#CCFF0000</color>
     <color name="red_50">#CCFF0000</color>
     <color name="red_20">#4DFF0000</color>
     <color name="cream">#FFDAB9</color>
@@ -24,4 +25,11 @@
     <color name="soft_cream">#FFE4B5</color>
     <color name="gray_blue">#292C5B</color>
     <color name="yellow">#F4C91D</color>
+    <color name="navy_blue">#000080</color>
+    <color name="royal_blue">#4169E1</color>
+    <color name="sky_blue">#87CEEB</color>
+    <color name="blue"> #0000FF</color>
+    <color name="cyan">#00FFFF </color>
+    <color name="dodger_blue">#1E90FF</color>
+
 </resources>

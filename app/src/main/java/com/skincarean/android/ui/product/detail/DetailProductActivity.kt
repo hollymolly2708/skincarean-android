@@ -1,15 +1,16 @@
 package com.skincarean.android.ui.product.detail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
@@ -19,7 +20,7 @@ import com.skincarean.android.databinding.ActivityDetailProductBinding
 import com.skincarean.android.ui.cart.CartActivity
 import com.skincarean.android.ui.cart.CartViewModel
 import com.skincarean.android.ui.home.ProductAdapter
-import com.skincarean.android.ui.checkout.CheckoutActivity
+import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity
 
 class DetailProductActivity : AppCompatActivity() {
 
@@ -37,11 +38,17 @@ class DetailProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val detailProductTabLayoutAdapter = DetailProductTabLayoutAdapter(this)
+
         val viewpager = binding.viewpagerDetailProduct
+
         viewpager.adapter = detailProductTabLayoutAdapter
+
         val tabs = binding.tabLayoutDetailProduct
+
         LoginSharedPref.checkSession(this)
+
         val tabNames = arrayOf("Description", "Details")
         TabLayoutMediator(tabs, viewpager) { tab, position ->
             tab.text = tabNames[position]
@@ -58,7 +65,7 @@ class DetailProductActivity : AppCompatActivity() {
             getProductById(productId)
             sendOrder(productId)
             binding.btnCart.setOnClickListener {
-                val cartRequest = CartRequest(productId,1)
+                val cartRequest = CartRequest(productId, 1)
                 cartViewModel.addProductToCart(cartRequest)
                 val intent = Intent(this, CartActivity::class.java)
                 startActivity(intent)
@@ -70,9 +77,6 @@ class DetailProductActivity : AppCompatActivity() {
         quantityCount()
 
 
-
-
-
     }
 
     private fun getProductById(productId: String) {
@@ -80,6 +84,7 @@ class DetailProductActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         viewModel.errorMessage.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -88,15 +93,19 @@ class DetailProductActivity : AppCompatActivity() {
             val uri = Uri.parse(data.thumbnailImage)
 
             Glide.with(this).load(uri).into(binding.ivDetailProduct)
-            binding.tvNameProduct.text = data.productName
+            binding.tvInputNameProduct.text = data.productName
             binding.tvInputStok.text = data.stok.toString()
-            binding.tvCategory.text = data.categoryName
+            binding.tvInputCategory.text = data.categoryName
+            binding.tvInputOriginalPriceInDiscount.text = Utilities.numberFormat(data.originalPrice)
+            binding.tvInputCategory.text = data.categoryName
+            binding.tvInputDiscount.text = "${data.discount.toString()}%"
+            binding.tvInputTotalPriceInDiscount.text = Utilities.numberFormat(data.price)
         }
 
         viewModel.allProducts.observe(this) { data ->
             val adapter = ProductAdapter(data.shuffled())
-            adapter.setOnItemClickCallback(object : ProductAdapter.OnItemClickCallback {
-                override fun onClicked(data: ProductResponse) {
+            adapter.setOnItemClickCallback(object : OnItemClickCallback {
+                override fun onProductClickCallback(data: ProductResponse) {
                     val intent =
                         Intent(this@DetailProductActivity, DetailProductActivity::class.java)
                     intent.putExtra(EXTRA_PRODUCT_ID, data.productId)
@@ -152,9 +161,9 @@ class DetailProductActivity : AppCompatActivity() {
             }
 
             if (!isFailed) {
-                val intent = Intent(this, CheckoutActivity::class.java)
-                intent.putExtra(CheckoutActivity.EXTRA_QUANTITY, quantity)
-                intent.putExtra(CheckoutActivity.EXTRA_PRODUCT_ID, productId)
+                val intent = Intent(this, DirectlyCheckoutActivity::class.java)
+                intent.putExtra(DirectlyCheckoutActivity.EXTRA_QUANTITY, quantity)
+                intent.putExtra(DirectlyCheckoutActivity.EXTRA_PRODUCT_ID, productId)
                 startActivity(intent)
             }
 

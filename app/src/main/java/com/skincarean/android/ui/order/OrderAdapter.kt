@@ -6,13 +6,20 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.ItemOrderBinding
+import com.skincarean.android.ui.checkout.PaymentMethodAdapter
 
-class OrderAdapter(private val listOrderResponse: List<OrderResponse>) :
+class OrderAdapter(private val listOrderResponse: List<OrderResponse?>?) :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
+    private var onItemClickCallback: OnItemClickCallback? = null
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -23,19 +30,39 @@ class OrderAdapter(private val listOrderResponse: List<OrderResponse>) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: OrderAdapter.OrderViewHolder, position: Int) {
-        val orderResponse = listOrderResponse[position]
+        if (listOrderResponse != null) {
+            val orderResponse = listOrderResponse[position]
+            if (orderResponse != null) {
+                holder.binding.apply {
+                    tvInputOrderStatus.text = orderResponse.orderStatus
+                    tvTotalPrice.text = Utilities.numberFormat(orderResponse.finalPrice)
+                    rvOrderProduct.adapter =
+                        OrderProductAdapter(orderResponse.orderItems)
+                    rvOrderProduct.layoutManager =
+                        LinearLayoutManager(holder.itemView.context)
 
-        holder.binding.tvInputOrderStatus.text = orderResponse.orderStatus
-        holder.binding.tvTotalPrice.text = Utilities.numberFormat(orderResponse.finalPrice)
-        holder.binding.rvOrderProduct.adapter = OrderProductAdapter(orderResponse.orderItems)
-        holder.binding.rvOrderProduct.layoutManager = LinearLayoutManager(holder.itemView.context)
+                    customBindView(holder, orderResponse)
 
-        customBindView(holder, orderResponse)
+
+
+                    rvOrderProduct.isClickable = false
+                    rvOrderProduct.isNestedScrollingEnabled = false
+
+
+
+                }
+                holder.binding.layoutItemOrder.setOnClickListener {
+                    onItemClickCallback?.onOrderClickCallback(orderResponse)
+                }
+            }
+
+        }
+
 
     }
 
     override fun getItemCount(): Int {
-        return listOrderResponse.size
+        return listOrderResponse!!.size
     }
 
     inner class OrderViewHolder(var binding: ItemOrderBinding) :
@@ -45,8 +72,7 @@ class OrderAdapter(private val listOrderResponse: List<OrderResponse>) :
         if (data.orderStatus == "Menunggu pembayaran") {
             holder.binding.tvInputOrderStatus.setTextColor(
                 ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.red
+                    holder.itemView.context, R.color.red
                 )
             )
 
@@ -55,8 +81,7 @@ class OrderAdapter(private val listOrderResponse: List<OrderResponse>) :
         if (data.orderStatus == "Selesai") {
             holder.binding.tvInputOrderStatus.setTextColor(
                 ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.lime_green
+                    holder.itemView.context, R.color.lime_green
                 )
             )
         }

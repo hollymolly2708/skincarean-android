@@ -1,5 +1,6 @@
 package com.skincarean.android.core.data.source.remote.network
 
+import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.request.CartRequest
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
 import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
@@ -51,15 +52,22 @@ interface ApiService {
     fun getPaymentMethods(): Call<WebResponse<List<PaymentMethodResponse>>>
 
     @POST("api/orders/checkout/product")
-    fun directlyOrder(@Body directlyOrderRequest: DirectlyOrderRequest): Call<WebResponse<String>>
+    fun directlyOrder(@Body directlyOrderRequest: DirectlyOrderRequest): Call<WebResponse<Map<String, Any>>>
+
+    @POST("api/orders/checkout/cart")
+    fun cartOrder(@Body cartOrderRequest: CartOrderRequest): Call<WebResponse<Map<String, Any>>>
 
     @GET("api/orders")
-    fun getAllOrders() : Call<WebResponse<List<OrderResponse>>>
+    fun getAllOrders(): Call<WebResponse<List<OrderResponse>>>
+
+    @GET("api/orders/{orderId}")
+    fun getDetailOrder(@Path("orderId") orderId: String): Call<WebResponse<OrderResponse>>
+
     @GET("api/orders/complete-order")
-    fun getAllCompleteOrders() : Call<WebResponse<List<OrderResponse>>>
+    fun getAllCompleteOrders(): Call<WebResponse<List<OrderResponse>>>
 
     @GET("api/orders/pending-order")
-    fun getAllPendingOrders() : Call<WebResponse<List<OrderResponse>>>
+    fun getAllPendingOrders(): Call<WebResponse<List<OrderResponse>>>
 
     @POST("api/carts")
     fun addProductToCart(@Body addCartRequest: CartRequest): Call<WebResponse<String>>

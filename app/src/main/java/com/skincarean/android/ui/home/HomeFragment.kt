@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.ui.product.detail.DetailProductActivity
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.databinding.FragmentHomeBinding
+import com.skincarean.android.ui.cart.CartActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -38,8 +40,15 @@ class HomeFragment : Fragment() {
         setupTopBrand()
         setupView()
         setupPopularProduct()
+        bindingView()
     }
 
+    private fun bindingView() {
+        binding.ivCart.setOnClickListener {
+            val intent = Intent(requireContext(), CartActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     private fun setupTopBrand() {
         viewModel.getAllBrandByTopBrand()
@@ -67,8 +76,8 @@ class HomeFragment : Fragment() {
 
         viewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
             val adapter = ProductAdapter(data.shuffled())
-            adapter.setOnItemClickCallback(object : ProductAdapter.OnItemClickCallback {
-                override fun onClicked(data: ProductResponse) {
+            adapter.setOnItemClickCallback(object : OnItemClickCallback {
+                override fun onProductClickCallback(data: ProductResponse) {
                     val intent = Intent(requireActivity(), DetailProductActivity::class.java)
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
                     startActivity(intent)

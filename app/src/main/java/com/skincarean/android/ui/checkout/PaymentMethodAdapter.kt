@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.source.remote.response.payment_method.PaymentMethodResponse
 import com.skincarean.android.databinding.ItemPaymentMethodBinding
 
@@ -38,7 +39,7 @@ class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethodResp
         holder.binding.layoutItemPaymentMethod.setOnClickListener {
             selectedPosition = holder.adapterPosition
             notifyDataSetChanged()
-            onItemClickCallback?.onClicked(data)
+            onItemClickCallback?.onPaymentMethodClickCallback(data)
             Log.e("adapter", data.id.toString())
 
         }
@@ -57,8 +58,4 @@ class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethodResp
     inner class PaymentMethodViewHolder(var binding: ItemPaymentMethodBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    interface OnItemClickCallback {
-        fun onClicked(data: PaymentMethodResponse)
-
-    }
 }

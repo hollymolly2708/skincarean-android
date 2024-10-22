@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.databinding.ItemProductBinding
 
@@ -14,7 +15,7 @@ class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
 
-    private lateinit var onItemClickCallback: OnItemClickCallback
+    private  var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
@@ -37,7 +38,7 @@ class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
 
         Glide.with(holder.binding.root).load(uri).into(holder.binding.imageProduct)
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onClicked(data)
+            onItemClickCallback?.onProductClickCallback(data)
         }
 
         setupItemView(holder, data)
@@ -74,13 +75,13 @@ class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
             layoutParams.setMargins(
                 (marginInDp * scale).toInt(), (marginInDp * scale).toInt(), 0, 0
             )
-            originalPrice.setTextSize(10f)
+            originalPrice.textSize = 10f
             originalPrice.layoutParams = layoutParams
         } else {
             layoutParams.setMargins(
                 (0), 0, 0, 0
             )
-            originalPrice.setTextSize(14f)
+            originalPrice.textSize = 14f
             priceAfterDiscount.visibility = View.GONE
             originalPrice.visibility = View.VISIBLE
 
@@ -89,7 +90,5 @@ class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
 
     }
 
-    interface OnItemClickCallback {
-        fun onClicked(data: ProductResponse)
-    }
+
 }
