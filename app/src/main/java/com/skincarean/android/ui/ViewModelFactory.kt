@@ -106,7 +106,7 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(OrderViewModel::class.java) -> {
-                return OrderViewModel(orderRepository) as T
+                return OrderViewModel(orderRepository,orderUseCase) as T
             }
 
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
