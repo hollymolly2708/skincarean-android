@@ -20,18 +20,29 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val factory = Injector.provideViewModelFactory()
-        viewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
 
+        setupViewModel()
         setupObservers()
         getAllCarts()
         deleteAllCartItem()
+        bindingView()
 
+
+    }
+
+    private fun setupViewModel() {
+        val factory = Injector.provideViewModelFactory()
+        viewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
+    }
+
+    private fun bindingView() {
         binding.btnCheckout.setOnClickListener {
             val intent = Intent(this, CartCheckoutActivity::class.java)
             startActivity(intent)
         }
-
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupObservers() {

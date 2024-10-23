@@ -32,4 +32,8 @@ class ProductRepository private constructor(private val productRemoteDataSource:
     fun getAllProducts(callback: (Any) -> Unit) {
         productRemoteDataSource.getAllProducts(callback)
     }
+
+    fun searchProducts(nameProduct: String, page: Int, size: Int, callback: (Any) -> Unit) {
+        productRemoteDataSource.searchProduct(nameProduct, page, size, callback)
+    }
 }

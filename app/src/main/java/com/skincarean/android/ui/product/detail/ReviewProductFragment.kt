@@ -18,7 +18,7 @@ class ReviewProductFragment : Fragment() {
 
     private var _binding: FragmentProductReviewBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: DetailProductViewModel
+    private lateinit var viewModel: ProductViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -33,7 +33,7 @@ class ReviewProductFragment : Fragment() {
 
         val factory = Injector.provideViewModelFactory()
         viewModel =
-            ViewModelProvider(requireActivity(), factory)[DetailProductViewModel::class.java]
+            ViewModelProvider(requireActivity(), factory)[ProductViewModel::class.java]
         setupObservers()
         val stringExtra =
             requireActivity().intent.getStringExtra(DetailProductActivity.EXTRA_PRODUCT_ID)

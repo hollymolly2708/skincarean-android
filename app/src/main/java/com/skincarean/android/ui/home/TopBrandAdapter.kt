@@ -5,11 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.source.remote.response.brand.BrandResponse
 import com.skincarean.android.databinding.ItemTopBrandBinding
 
 class TopBrandAdapter(private val listTopBrand: List<BrandResponse>) :
     RecyclerView.Adapter<TopBrandAdapter.TopBrandViewHolder>() {
+
+    private var onItemClickCallback: OnItemClickCallback? = null
+     fun setUpOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -32,6 +39,9 @@ class TopBrandAdapter(private val listTopBrand: List<BrandResponse>) :
             .load(brandLogoUri)
             .centerCrop()
             .into(holder.binding.ivBrand)
+        holder.binding.layoutTopBrand?.setOnClickListener {
+            onItemClickCallback?.onTopBrandClickCallback(data)
+        }
     }
 
     override fun getItemCount(): Int {

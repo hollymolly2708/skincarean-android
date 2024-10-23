@@ -13,12 +13,12 @@ import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.ActivityDetailOrderBinding
 import com.skincarean.android.ui.home.ProductAdapter
-import com.skincarean.android.ui.product.detail.DetailProductViewModel
+import com.skincarean.android.ui.product.detail.ProductViewModel
 
 class DetailOrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailOrderBinding
     private lateinit var orderViewModel: OrderViewModel
-    private lateinit var productViewModel: DetailProductViewModel
+    private lateinit var productViewModel: ProductViewModel
 
     companion object {
         const val EXTRA_ORDER_ID = "extra_order_id"
@@ -31,7 +31,7 @@ class DetailOrderActivity : AppCompatActivity() {
 
         val factory = Injector.provideViewModelFactory()
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]
-        productViewModel = ViewModelProvider(this, factory)[DetailProductViewModel::class.java]
+        productViewModel = ViewModelProvider(this, factory)[ProductViewModel::class.java]
 
         val orderId = intent.getStringExtra(EXTRA_ORDER_ID)
         Log.e("DetailOrderActivity", orderId.toString())

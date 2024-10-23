@@ -26,7 +26,7 @@ class DetailProductActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityDetailProductBinding
-    private lateinit var viewModel: DetailProductViewModel
+    private lateinit var viewModel: ProductViewModel
     private lateinit var cartViewModel: CartViewModel
     private var quantity: Int = 0
 
@@ -56,7 +56,7 @@ class DetailProductActivity : AppCompatActivity() {
 
 
         val factory = Injector.provideViewModelFactory()
-        viewModel = ViewModelProvider(this, factory = factory)[DetailProductViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory = factory)[ProductViewModel::class.java]
         cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
         val productId = intent.getStringExtra(EXTRA_PRODUCT_ID)
 

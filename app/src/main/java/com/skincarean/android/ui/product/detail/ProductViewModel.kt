@@ -10,7 +10,7 @@ import com.skincarean.android.core.data.source.remote.response.product.ProductRe
 import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 
-class DetailProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
+class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
 
     private val _allReviews: MutableLiveData<List<ReviewResponse>> = MutableLiveData()
     private val _errorMessage: MutableLiveData<String> = MutableLiveData()
@@ -85,6 +85,27 @@ class DetailProductViewModel(private val productRepository: ProductRepository) :
                     }
                 }
 
+            }
+        }
+    }
+
+    fun searchProduct(nameProduct: String, page: Int, size: Int) {
+        productRepository.searchProducts(nameProduct, page, size) { response ->
+            when (response) {
+                is WebResponse<*> -> {
+                    response.data?.let {
+                        _allProducts.value = it as List<ProductResponse>
+                    }
+                    response.errors?.let {
+                        _errorMessage.value = it
+                    }
+                }
+
+                is ErrorResponse -> {
+                    response.error?.let {
+                        _errorMessage.value = it
+                    }
+                }
             }
         }
     }

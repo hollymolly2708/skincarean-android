@@ -17,7 +17,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     val errorMessage: LiveData<String> = _errorMessage
 
     fun login(loginUserRequest: LoginUserRequest) {
-        userRepository.login(loginUserRequest) { response ->
+        userRepository.loginUser(loginUserRequest) { response ->
             when (response) {
                 is WebResponse<*> -> {
                     response.data?.let {

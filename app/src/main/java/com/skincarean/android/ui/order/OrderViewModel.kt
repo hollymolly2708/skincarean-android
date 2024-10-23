@@ -18,10 +18,7 @@ class OrderViewModel(
     private val _allPendingOrders: MutableLiveData<List<OrderResponse>> = MutableLiveData()
     private val _detailOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
-    private val _allProducts: MutableLiveData<List<ProductResponse>> = MutableLiveData()
 
-
-    val allProducts: LiveData<List<ProductResponse>> = _allProducts
     val allOrders: LiveData<List<OrderResponse>> = _allOrders
     val detailOrder: LiveData<OrderResponse> = _detailOrder
     val allCompleteOrders: LiveData<List<OrderResponse>> = _allCompleteOrders

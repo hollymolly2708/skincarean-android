@@ -190,4 +190,45 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
 
         })
     }
+
+    fun searchProduct(nameProduct: String, page: Int, size: Int, callback: (Any) -> Unit) {
+        apiService.searchProducts(nameProduct, page, size)
+            .enqueue(object : Callback<WebResponse<List<ProductResponse>>> {
+                override fun onResponse(
+                    call: Call<WebResponse<List<ProductResponse>>>,
+                    response: Response<WebResponse<List<ProductResponse>>>,
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+
+                            callback(body)
+                        } else {
+                            callback(WebResponse(null, null, "Response body is null", false))
+                        }
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody != null) {
+                            val gson = Gson()
+                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
+                            val errorResponseFromServer =
+                                gson.fromJson(errorBody, ErrorResponse::class.java)
+                            callback(errorResponse)
+                            callback(errorResponseFromServer)
+                        } else {
+                            callback(WebResponse(null, null, "Response error body is null", false))
+                        }
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<WebResponse<List<ProductResponse>>>,
+                    t: Throwable,
+                ) {
+                    t.printStackTrace()
+                    callback(WebResponse(null, null, t.message, false))
+                }
+
+            })
+    }
 }

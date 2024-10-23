@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.update_profile.UpdateProfileActivity">
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="0dp"
+        android:hint="Name"
+        android:layout_height="50dp"
+        android:padding="16dp"
+        android:background="@drawable/background_square"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/edt_address"
+        android:hint="address"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/background_square"
+        android:padding="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_name">
+
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/edt_phone"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/background_square"
+        android:padding="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:hint="Phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_address">
+
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="0dp"
+        android:hint="Email"
+        android:layout_height="50dp"
+        android:background="@drawable/background_square"
+        android:padding="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_phone">
+
+
+    </EditText>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/background_button"
+        android:text="Simpan"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

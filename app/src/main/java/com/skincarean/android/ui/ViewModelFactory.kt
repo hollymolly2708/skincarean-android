@@ -13,7 +13,8 @@ import com.skincarean.android.ui.checkout.CheckoutViewModel
 import com.skincarean.android.ui.home.HomeViewModel
 import com.skincarean.android.ui.login.LoginViewModel
 import com.skincarean.android.ui.order.OrderViewModel
-import com.skincarean.android.ui.product.detail.DetailProductViewModel
+import com.skincarean.android.ui.product.detail.ProductViewModel
+import com.skincarean.android.ui.profile.ProfileViewModel
 import com.skincarean.android.ui.register.RegisterViewModel
 
 
@@ -67,8 +68,8 @@ class ViewModelFactory(
                 return HomeViewModel(brandRepository, productRepository) as T
             }
 
-            modelClass.isAssignableFrom(DetailProductViewModel::class.java) -> {
-                return DetailProductViewModel(productRepository) as T
+            modelClass.isAssignableFrom(ProductViewModel::class.java) -> {
+                return ProductViewModel(productRepository) as T
             }
 
             modelClass.isAssignableFrom(CheckoutViewModel::class.java) -> {
@@ -85,6 +86,10 @@ class ViewModelFactory(
 
             modelClass.isAssignableFrom(OrderViewModel::class.java) -> {
                 return OrderViewModel(orderRepository) as T
+            }
+
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                return ProfileViewModel(userRepository) as T
             }
 
 

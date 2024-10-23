@@ -14,6 +14,7 @@ import com.skincarean.android.ui.product.detail.DetailProductActivity
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.source.remote.response.brand.BrandResponse
 import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.databinding.FragmentHomeBinding
 import com.skincarean.android.ui.cart.CartActivity
@@ -65,11 +66,18 @@ class HomeFragment : Fragment() {
 
         viewModel.allBrandByTopBrand.observe(viewLifecycleOwner) { data ->
 
-            val adapter = TopBrandAdapter(data.shuffled())
+            val adapter = TopBrandAdapter(data)
             binding.rvTopBrand.layoutManager =
                 GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
             binding.rvTopBrand.setHasFixedSize(true)
             binding.rvTopBrand.adapter = adapter
+
+            adapter.setUpOnItemClickCallback(object : OnItemClickCallback {
+                override fun onTopBrandClickCallback(data: BrandResponse) {
+                    val intent = Intent(requireContext(), DetailTopBrandActivity::class.java)
+                    startActivity(intent)
+                }
+            })
 
 
         }
