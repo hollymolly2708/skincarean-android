@@ -1,7 +1,9 @@
 package com.skincarean.android.core.data.source.remote
 
 import android.util.Log
+import com.google.android.gms.common.api.Api
 import com.google.gson.Gson
+import com.skincarean.android.core.data.domain.model.LoginUser
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
@@ -30,7 +32,10 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
         }
     }
 
-    fun loginViaGoogle(idToken: String?, callback: (Any) -> Unit) {
+    fun loginViaGoogle(
+        idToken: String?,
+        callback: (ApiResponse<WebResponse<LoginUserResponse>>) -> Unit,
+    ) {
         apiService.verifyToken(GoogleTokenRequest(idToken!!)).enqueue(object :
             Callback<WebResponse<LoginUserResponse>> {
             override fun onResponse(
@@ -41,45 +46,29 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
 
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                     } else {
                         callback(
-                            WebResponse(
-                                null,
-                                null,
-                                "Response body is null",
-                                isSuccess = false
-                            )
+                            ApiResponse.Error("Response body is null")
                         )
                     }
 
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<LoginUserResponse>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
         })
     }
 
     fun register(
         registerUserRequest: RegisterUserRequest,
-        callback: (Any) -> Unit,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
     ) {
         apiService.register(registerUserRequest).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
@@ -89,40 +78,31 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val webResponse = response.body()
                     if (webResponse != null) {
-                        callback(webResponse)
+                        callback(ApiResponse.Success(webResponse))
                     } else {
-                        Log.e("Response Error", "Body is null")
-                        callback(WebResponse(null, "Error: Response body is null", null, false))
+
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
-                    Log.e("Response Error", "Response unsuccessful")
                     val errorBody = response.errorBody()?.string()
-                    Log.d("errorBody", errorBody.toString())
-                    val gson = Gson()
-                    val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                    val errorResponseFromServer =
-                        gson.fromJson(errorBody, ErrorResponse::class.java)
-
-                    Log.d("errorResponse", errorResponse.toString())
-                    callback(errorResponse)
-
-                    Log.d("errorResponseFromServer", errorResponseFromServer.toString())
-                    callback(errorResponseFromServer)
-
-
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
 
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
-
+                t.printStackTrace()
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
 
     }
 
-    fun login(loginUserRequest: LoginUserRequest, callback: (Any) -> Unit) {
+    fun login(
+        loginUserRequest: LoginUserRequest,
+        callback: (ApiResponse<WebResponse<LoginUserResponse>>) -> Unit,
+    ) {
         apiService.login(loginUserRequest)
             .enqueue(object : Callback<WebResponse<LoginUserResponse>> {
                 override fun onResponse(
@@ -132,42 +112,28 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
                             Log.e("loginResponse", "Body is null")
                             callback(
-                                WebResponse(
-                                    data = null,
-                                    paging = null,
-                                    errors = "Response body is null",
-                                    isSuccess = false
-                                )
+                                ApiResponse.Error("Response body is null")
                             )
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        Log.e("loginResponse", errorBody.toString())
-                        val gson = Gson()
-                        val responseBodyWebResponse =
-                            gson.fromJson(errorBody, WebResponse::class.java)
-                        Log.d("loginResponse", responseBodyWebResponse.toString())
-                        val responseBodyErrorResponse =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        Log.d("loginResponse", responseBodyErrorResponse.toString())
-                        callback(responseBodyErrorResponse)
-                        callback(responseBodyWebResponse)
+                        callback(ApiResponse.Error(errorBody ?: "Unknown Error"))
                     }
                 }
 
                 override fun onFailure(call: Call<WebResponse<LoginUserResponse>>, t: Throwable) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, isSuccess = false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })
     }
 
-    fun getUserProfile(callback: (Any) -> Unit) {
+    fun getCurrentUser(callback: (ApiResponse<WebResponse<UserResponse>>) -> Unit) {
         apiService.getCurrentUser().enqueue(object : Callback<WebResponse<UserResponse>> {
             override fun onResponse(
                 call: Call<WebResponse<UserResponse>>,
@@ -176,26 +142,20 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<UserResponse>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
@@ -206,7 +166,7 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
         address: String,
         email: String,
         phone: String,
-        callback: (Any) -> Unit,
+        callback: (ApiResponse<WebResponse<UserResponse>>) -> Unit,
     ) {
         apiService.updateUser(fullName, address, phone, email)
             .enqueue(object : Callback<WebResponse<UserResponse>> {
@@ -217,34 +177,27 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+
                     }
                 }
 
                 override fun onFailure(call: Call<WebResponse<UserResponse>>, t: Throwable) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })
     }
 
-    fun logout(callback: (Any) -> Unit) {
+    fun logout(callback: (ApiResponse<WebResponse<String>>) -> Unit) {
         apiService.logout().enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
                 call: Call<WebResponse<String>>,
@@ -253,28 +206,20 @@ class UserRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response  body is null", false))
-                    }
+
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })

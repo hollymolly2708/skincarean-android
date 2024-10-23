@@ -3,33 +3,39 @@ package com.skincarean.android.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skincarean.android.Resource
+import com.skincarean.android.core.data.domain.model.User
+import com.skincarean.android.core.data.domain.usecase.UserUseCase
 import com.skincarean.android.core.data.repository.UserRepository
-import com.skincarean.android.core.data.source.remote.request.UpdateUserRequest
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
-import com.skincarean.android.core.data.source.remote.response.login.UserResponse
 
-class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
-    private val _currentUserResponse: MutableLiveData<UserResponse> = MutableLiveData()
+class ProfileViewModel(
+    private val userRepository: UserRepository,
+    private val userUseCase: UserUseCase,
+) : ViewModel() {
+    private val _currentUser: MutableLiveData<User> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
 
     val message: LiveData<String> = _message
-    val currentUserResponse: LiveData<UserResponse> = _currentUserResponse
+    val currentUser: LiveData<User> = _currentUser
 
     fun getCurrentUser() {
-        userRepository.getCurrentUser { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _currentUserResponse.value = it as UserResponse
+        userUseCase.getCurrentUser { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data.let {
+                        _currentUser.value = it
                     }
-                    response.errors?.let {
+                    resource.message.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Error -> {
+                    resource.message.let {
                         _message.value = it
                     }
                 }
@@ -38,42 +44,51 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     }
 
     fun updateUser(fullName: String, address: String, phone: String, email: String) {
-        userRepository.updateUser(fullName, address, phone, email) { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _currentUserResponse.value = it as UserResponse
+        userUseCase.updateUser(fullName, address, email, phone) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data.let {
+                        _currentUser.value = it
                     }
-                    response.errors?.let {
+                    resource.message.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
                 }
+
+                is Resource.Loading -> {
+
+                }
             }
+
         }
     }
 
     fun logout() {
-        userRepository.logoutUser { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _message.value = it as String
+        userUseCase.logoutUser { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _message.value = it
                     }
-                    response.errors?.let {
+                    resource.message?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
 

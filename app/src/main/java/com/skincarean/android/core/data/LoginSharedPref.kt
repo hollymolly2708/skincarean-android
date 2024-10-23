@@ -3,6 +3,7 @@ package com.skincarean.android.core.data
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import com.skincarean.android.core.data.domain.model.LoginUser
 import com.skincarean.android.core.data.source.remote.response.login.LoginUserResponse
 import com.skincarean.android.ui.login.LoginActivity
 import com.skincarean.android.ui.main.MainActivity
@@ -25,7 +26,7 @@ object LoginSharedPref {
     fun getTokenExpiredAt(context: Context) =
         sharedPreferences(context).getLong("token_expired_at", 0)
 
-    fun saveData(context: Context, loginUserResponse: LoginUserResponse) {
+    fun saveData(context: Context, loginUserResponse: LoginUser) {
         val token = loginUserResponse.token
         val tokenCreatedAt = loginUserResponse.tokenCreatedAt
         val tokenExpiredAt = loginUserResponse.tokenExpiredAt

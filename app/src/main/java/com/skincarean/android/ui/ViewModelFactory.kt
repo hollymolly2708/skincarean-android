@@ -2,6 +2,8 @@ package com.skincarean.android.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.skincarean.android.core.data.domain.usecase.PaymentMethodUseCase
+import com.skincarean.android.core.data.domain.usecase.UserUseCase
 import com.skincarean.android.core.data.repository.BrandRepository
 import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.repository.OrderRepository
@@ -25,6 +27,8 @@ class ViewModelFactory(
     private val paymentMethodRepository: PaymentMethodRepository,
     private val orderRepository: OrderRepository,
     private val cartRepository: CartRepository,
+    private val userUseCase: UserUseCase,
+    private val paymentMethodUseCase: PaymentMethodUseCase,
 ) :
     ViewModelProvider.NewInstanceFactory() {
     companion object {
@@ -37,6 +41,8 @@ class ViewModelFactory(
             paymentMethodRepository: PaymentMethodRepository,
             orderRepository: OrderRepository,
             cartRepository: CartRepository,
+            userUseCase: UserUseCase,
+            paymentMethodUseCase: PaymentMethodUseCase,
         ): ViewModelFactory {
             synchronized(this) {
                 instance = ViewModelFactory(
@@ -45,7 +51,9 @@ class ViewModelFactory(
                     productRepository,
                     paymentMethodRepository,
                     orderRepository,
-                    cartRepository
+                    cartRepository,
+                    userUseCase,
+                    paymentMethodUseCase
                 )
             }
 
@@ -57,11 +65,11 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                return RegisterViewModel(userRepository) as T
+                return RegisterViewModel(userUseCase) as T
             }
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                return LoginViewModel(userRepository) as T
+                return LoginViewModel(userRepository, userUseCase) as T
             }
 
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
@@ -76,6 +84,7 @@ class ViewModelFactory(
                 return CheckoutViewModel(
                     productRepository,
                     paymentMethodRepository,
+                    paymentMethodUseCase,
                     orderRepository
                 ) as T
             }
@@ -89,7 +98,7 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
-                return ProfileViewModel(userRepository) as T
+                return ProfileViewModel(userRepository, userUseCase) as T
             }
 
 

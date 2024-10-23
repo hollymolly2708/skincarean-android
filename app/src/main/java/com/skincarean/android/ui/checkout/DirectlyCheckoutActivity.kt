@@ -13,6 +13,7 @@ import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
 import com.skincarean.android.core.data.source.remote.response.payment_method.PaymentMethodResponse
 import com.skincarean.android.databinding.ActivityDirectlyCheckoutBinding
@@ -69,7 +70,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
                 binding.rvPaymentMethod.setHasFixedSize(true)
 
                 adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                    override fun onPaymentMethodClickCallback(data: PaymentMethodResponse) {
+                    override fun onPaymentMethodClickCallback(data: PaymentMethod) {
                         checkoutViewModel._selectedPaymentMethodId = data.id
                         checkoutViewModel._selectedDescription = data.description
                         binding.btnCheckout.isEnabled = true

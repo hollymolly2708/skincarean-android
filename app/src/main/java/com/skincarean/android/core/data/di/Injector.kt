@@ -7,6 +7,11 @@ import android.util.Log
 import android.widget.Toast
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
+import com.skincarean.android.core.data.domain.repository.IUserRepository
+import com.skincarean.android.core.data.domain.usecase.PaymentMethodInteractor
+import com.skincarean.android.core.data.domain.usecase.PaymentMethodUseCase
+import com.skincarean.android.core.data.domain.usecase.UserInteractor
+import com.skincarean.android.core.data.domain.usecase.UserUseCase
 import com.skincarean.android.core.data.repository.BrandRepository
 import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.repository.OrderRepository
@@ -80,6 +85,7 @@ object Injector {
         return retrofit.create(ApiService::class.java)
     }
 
+
     private fun provideUserRemoteDataSource(): UserRemoteDataSource {
         return UserRemoteDataSource.getInstance(provideApiService())
     }
@@ -87,6 +93,12 @@ object Injector {
     private fun provideUserRepository(): UserRepository {
         return UserRepository.getInstance(provideUserRemoteDataSource())
     }
+
+
+    private fun provideUserInteractor(): UserUseCase {
+        return UserInteractor(provideUserRepository())
+    }
+
 
     private fun provideBrandRemoteDataSource(): BrandRemoteDataSource {
         return BrandRemoteDataSource.getInstance(provideApiService())
@@ -110,6 +122,10 @@ object Injector {
 
     private fun providePaymentMethodRepository(): PaymentMethodRepository {
         return PaymentMethodRepository.getInstance(providePaymentMethodRemoteDataSource())
+    }
+
+    private fun providePaymentMethodInteractor(): PaymentMethodInteractor {
+        return PaymentMethodInteractor(providePaymentMethodRepository())
     }
 
     private fun provideOrderRemoteDataSource(): OrderRemoteDataSource {
@@ -136,7 +152,9 @@ object Injector {
             provideProductRepository(),
             providePaymentMethodRepository(),
             provideOrderRepository(),
-            provideCartRepository()
+            provideCartRepository(),
+            provideUserInteractor(),
+            providePaymentMethodInteractor()
         )
     }
 }

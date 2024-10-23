@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.skincarean.android.R
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.source.remote.request.UpdateUserRequest
 import com.skincarean.android.databinding.FragmentProfileBinding
 import com.skincarean.android.ui.profile.update_profile.UpdateProfileActivity
 
@@ -44,15 +43,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        profileViewModel.currentUserResponse.observe(viewLifecycleOwner) { userResponse ->
-            if (userResponse != null) {
-                if (userResponse.profilePicture.isNullOrEmpty()) {
+        profileViewModel.currentUser.observe(viewLifecycleOwner) { currentUser ->
+            if (currentUser != null) {
+                if (currentUser.profilePicture.isNullOrEmpty()) {
                     Glide.with(requireContext())
                         .load(resources.getDrawable(R.drawable.skintific))
                         .circleCrop()
                         .into(binding.ivProfile)
                 } else {
-                    val uri = Uri.parse(userResponse.profilePicture)
+                    val uri = Uri.parse(currentUser.profilePicture)
                     Glide.with(requireContext())
                         .load(uri)
                         .circleCrop()
@@ -61,10 +60,10 @@ class ProfileFragment : Fragment() {
 
 
 
-                binding.tvInputName.text = userResponse.fullName
-                binding.tvInputEmail.text = userResponse.email
-                binding.tvInputAddress.text = userResponse.address
-                binding.tvInputPhone.text = userResponse.phone
+                binding.tvInputName.text = currentUser.fullName
+                binding.tvInputEmail.text = currentUser.email
+                binding.tvInputAddress.text = currentUser.address
+                binding.tvInputPhone.text = currentUser.phone
             }
 
         }

@@ -3,6 +3,9 @@ package com.skincarean.android.ui.checkout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skincarean.android.Resource
+import com.skincarean.android.core.data.domain.model.PaymentMethod
+import com.skincarean.android.core.data.domain.usecase.PaymentMethodUseCase
 import com.skincarean.android.core.data.repository.OrderRepository
 import com.skincarean.android.core.data.repository.PaymentMethodRepository
 import com.skincarean.android.core.data.repository.ProductRepository
@@ -16,10 +19,11 @@ import com.skincarean.android.core.data.source.remote.response.WebResponse
 class CheckoutViewModel(
     private val productRepository: ProductRepository,
     private val paymentMethodRepository: PaymentMethodRepository,
+    private val paymentMethodUseCase: PaymentMethodUseCase,
     private val orderRepository: OrderRepository,
 ) :
     ViewModel() {
-    private val _allPaymentMethods: MutableLiveData<List<PaymentMethodResponse>> = MutableLiveData()
+    private val _allPaymentMethods: MutableLiveData<List<PaymentMethod>> = MutableLiveData()
     private val _detailProduct: MutableLiveData<DetailProductResponse> = MutableLiveData()
     private val _errorMessage: MutableLiveData<String> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
@@ -33,23 +37,27 @@ class CheckoutViewModel(
     val orderId: LiveData<Map<String, Any>> = _orderId
     val message: LiveData<String> = _message
     val detailProduct: LiveData<DetailProductResponse> = _detailProduct
-    val allPaymentMethods: LiveData<List<PaymentMethodResponse>> = _allPaymentMethods
+    val allPaymentMethods: LiveData<List<PaymentMethod>> = _allPaymentMethods
 
     fun getAllPaymentMethods() {
-        paymentMethodRepository.getAllPaymentMethods { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _allPaymentMethods.value = it as List<PaymentMethodResponse>
+        paymentMethodUseCase.getAllPaymentMethods { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _allPaymentMethods.value = it
                     }
-                    response.errors?.let {
-                        _errorMessage.value = it
+                    resource.message?.let {
+                        _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
-                        _errorMessage.value = it
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Error -> {
+                    resource.message?.let {
+                        _message.value = it
                     }
                 }
             }

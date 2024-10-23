@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.core.data.source.remote.response.payment_method.PaymentMethodResponse
@@ -57,7 +58,7 @@ class CartCheckoutActivity : AppCompatActivity() {
 
     }
 
-    private fun setupPaymentMethodAdapter(paymentMethods: List<PaymentMethodResponse>) {
+    private fun setupPaymentMethodAdapter(paymentMethods: List<PaymentMethod>) {
 
         val paymentMethodAdapter = PaymentMethodAdapter(paymentMethods)
 
@@ -68,7 +69,7 @@ class CartCheckoutActivity : AppCompatActivity() {
         }
 
         paymentMethodAdapter.setOnItemClickCallback(object : OnItemClickCallback {
-            override fun onPaymentMethodClickCallback(data: PaymentMethodResponse) {
+            override fun onPaymentMethodClickCallback(data: PaymentMethod) {
                 checkoutViewModel._selectedPaymentMethodId = data.id
             }
 

@@ -26,7 +26,7 @@ class PaymentMethodRemoteDataSource private constructor(private val apiService: 
         }
     }
 
-    fun getAllPaymentMethods(callback: (Any) -> Unit) {
+    fun getAllPaymentMethods(callback: (ApiResponse<WebResponse<List<PaymentMethodResponse>>>) -> Unit) {
         apiService.getPaymentMethods()
             .enqueue(object : Callback<WebResponse<List<PaymentMethodResponse>>> {
                 override fun onResponse(
@@ -36,23 +36,14 @@ class PaymentMethodRemoteDataSource private constructor(private val apiService: 
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val responseErrorBody =
-                                gson.fromJson(errorBody, WebResponse::class.java)
-                            callback(responseErrorBody)
-                            val responseErrorBodyFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(responseErrorBodyFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+
                     }
                 }
 
@@ -61,7 +52,7 @@ class PaymentMethodRemoteDataSource private constructor(private val apiService: 
                     t: Throwable,
                 ) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
 
