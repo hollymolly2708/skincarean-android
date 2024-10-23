@@ -14,8 +14,8 @@ import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.source.remote.request.CartRequest
-import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.databinding.ActivityDetailProductBinding
 import com.skincarean.android.ui.cart.CartActivity
 import com.skincarean.android.ui.cart.CartViewModel
@@ -86,10 +86,10 @@ class DetailProductActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
-        viewModel.errorMessage.observe(this) {
+        viewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
-        viewModel.productByProductId.observe(this) { data ->
+        viewModel.product.observe(this) { data ->
             val uri = Uri.parse(data.thumbnailImage)
 
             Glide.with(this).load(uri).into(binding.ivDetailProduct)
@@ -102,10 +102,10 @@ class DetailProductActivity : AppCompatActivity() {
             binding.tvInputTotalPriceInDiscount.text = Utilities.numberFormat(data.price)
         }
 
-        viewModel.allProducts.observe(this) { data ->
+        viewModel.listProduct.observe(this) { data ->
             val adapter = ProductAdapter(data.shuffled())
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onProductClickCallback(data: ProductResponse) {
+                override fun onProductClickCallback(data: Product) {
                     val intent =
                         Intent(this@DetailProductActivity, DetailProductActivity::class.java)
                     intent.putExtra(EXTRA_PRODUCT_ID, data.productId)

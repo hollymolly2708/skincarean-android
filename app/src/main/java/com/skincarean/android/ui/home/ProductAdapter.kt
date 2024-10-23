@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
+import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ItemProductBinding
 
-class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
+class ProductAdapter(private val listPopularProduct: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
 
@@ -53,7 +53,7 @@ class ProductAdapter(private val listPopularProduct: List<ProductResponse>) :
     inner class ProductViewHolder(var binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private fun setupItemView(holder: ProductViewHolder, data: ProductResponse) {
+    private fun setupItemView(holder: ProductViewHolder, data: Product) {
         val priceAfterDiscount = holder.binding.tvTotalPrice
         val originalPrice = holder.binding.tvOriginalPrice
 //

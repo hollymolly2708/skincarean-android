@@ -1,17 +1,16 @@
 package com.skincarean.android.core.data.di
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
-import com.skincarean.android.core.data.domain.repository.IUserRepository
-import com.skincarean.android.core.data.domain.usecase.PaymentMethodInteractor
-import com.skincarean.android.core.data.domain.usecase.PaymentMethodUseCase
-import com.skincarean.android.core.data.domain.usecase.UserInteractor
-import com.skincarean.android.core.data.domain.usecase.UserUseCase
+import com.skincarean.android.core.data.domain.usecase.brand.BrandInteractor
+import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
+import com.skincarean.android.core.data.domain.usecase.order.OrderInteractor
+import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
+import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodInteractor
+import com.skincarean.android.core.data.domain.usecase.product.ProductInteractor
+import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
+import com.skincarean.android.core.data.domain.usecase.user.UserInteractor
+import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
 import com.skincarean.android.core.data.repository.BrandRepository
 import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.repository.OrderRepository
@@ -26,9 +25,6 @@ import com.skincarean.android.core.data.source.remote.ProductRemoteDataSource
 import com.skincarean.android.core.data.source.remote.UserRemoteDataSource
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.ui.ViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -108,12 +104,20 @@ object Injector {
         return BrandRepository.getInstance(provideBrandRemoteDataSource())
     }
 
+    private fun provideBrandInteractor(): BrandUseCase {
+        return BrandInteractor(provideBrandRepository())
+    }
+
     private fun provideProductRemoteDataSource(): ProductRemoteDataSource {
         return ProductRemoteDataSource.getInstance(provideApiService())
     }
 
     private fun provideProductRepository(): ProductRepository {
         return ProductRepository.getInstance(provideProductRemoteDataSource())
+    }
+
+    private fun provideProductInteractor(): ProductUseCase {
+        return ProductInteractor(provideProductRepository())
     }
 
     private fun providePaymentMethodRemoteDataSource(): PaymentMethodRemoteDataSource {
@@ -136,6 +140,10 @@ object Injector {
         return OrderRepository.getInstance(provideOrderRemoteDataSource())
     }
 
+    private fun provideOrderInteractor(): OrderUseCase {
+        return OrderInteractor(provideOrderRepository())
+    }
+
     private fun provideCartRemoteDataSource(): CartRemoteDataSource {
         return CartRemoteDataSource.getInstance(provideApiService())
     }
@@ -154,7 +162,10 @@ object Injector {
             provideOrderRepository(),
             provideCartRepository(),
             provideUserInteractor(),
-            providePaymentMethodInteractor()
+            providePaymentMethodInteractor(),
+            provideBrandInteractor(),
+            provideProductInteractor(),
+            provideOrderInteractor()
         )
     }
 }

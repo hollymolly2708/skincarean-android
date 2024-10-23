@@ -69,7 +69,7 @@ class DetailOrderActivity : AppCompatActivity() {
 
             }
         }
-        productViewModel.allProducts.observe(this) { listProductResponses ->
+        productViewModel.listProduct.observe(this) { listProductResponses ->
             val adapter = ProductAdapter(listProductResponses.shuffled())
             binding.rvMaybeULike.adapter = adapter
             binding.rvMaybeULike.layoutManager =

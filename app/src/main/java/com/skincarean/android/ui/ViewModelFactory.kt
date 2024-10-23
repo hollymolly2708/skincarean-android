@@ -2,8 +2,11 @@ package com.skincarean.android.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.core.data.domain.usecase.PaymentMethodUseCase
-import com.skincarean.android.core.data.domain.usecase.UserUseCase
+import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
+import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
+import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodUseCase
+import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
+import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
 import com.skincarean.android.core.data.repository.BrandRepository
 import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.repository.OrderRepository
@@ -29,6 +32,9 @@ class ViewModelFactory(
     private val cartRepository: CartRepository,
     private val userUseCase: UserUseCase,
     private val paymentMethodUseCase: PaymentMethodUseCase,
+    private val brandUseCase: BrandUseCase,
+    private val productUseCase: ProductUseCase,
+    private val orderUseCase: OrderUseCase,
 ) :
     ViewModelProvider.NewInstanceFactory() {
     companion object {
@@ -43,6 +49,9 @@ class ViewModelFactory(
             cartRepository: CartRepository,
             userUseCase: UserUseCase,
             paymentMethodUseCase: PaymentMethodUseCase,
+            brandUseCase: BrandUseCase,
+            productUseCase: ProductUseCase,
+            orderUseCase: OrderUseCase,
         ): ViewModelFactory {
             synchronized(this) {
                 instance = ViewModelFactory(
@@ -53,7 +62,10 @@ class ViewModelFactory(
                     orderRepository,
                     cartRepository,
                     userUseCase,
-                    paymentMethodUseCase
+                    paymentMethodUseCase,
+                    brandUseCase,
+                    productUseCase,
+                    orderUseCase
                 )
             }
 
@@ -73,19 +85,19 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                return HomeViewModel(brandRepository, productRepository) as T
+                return HomeViewModel(brandRepository, productRepository, brandUseCase) as T
             }
 
             modelClass.isAssignableFrom(ProductViewModel::class.java) -> {
-                return ProductViewModel(productRepository) as T
+                return ProductViewModel(productRepository, productUseCase) as T
             }
 
             modelClass.isAssignableFrom(CheckoutViewModel::class.java) -> {
                 return CheckoutViewModel(
-                    productRepository,
-                    paymentMethodRepository,
+                    productUseCase,
                     paymentMethodUseCase,
-                    orderRepository
+                    orderRepository,
+                    orderUseCase
                 ) as T
             }
 

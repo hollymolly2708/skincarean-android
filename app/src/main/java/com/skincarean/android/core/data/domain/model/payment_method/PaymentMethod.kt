@@ -1,4 +1,4 @@
-package com.skincarean.android.core.data.domain.model
+package com.skincarean.android.core.data.domain.model.payment_method
 
 data class PaymentMethod(
     val image: String? = null,

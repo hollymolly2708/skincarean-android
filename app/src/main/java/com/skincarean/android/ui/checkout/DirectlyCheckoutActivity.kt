@@ -3,7 +3,6 @@ package com.skincarean.android.ui.checkout
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +12,8 @@ import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.domain.model.PaymentMethod
+import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
-import com.skincarean.android.core.data.source.remote.response.payment_method.PaymentMethodResponse
 import com.skincarean.android.databinding.ActivityDirectlyCheckoutBinding
 import com.skincarean.android.ui.LoadingActivity
 import com.skincarean.android.ui.order.DetailOrderActivity
@@ -62,7 +60,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupObservers(productId: String?, quantity: Int) {
-        checkoutViewModel.allPaymentMethods.observe(this) { paymentMethods ->
+        checkoutViewModel.listPaymentMethods.observe(this) { paymentMethods ->
             if (paymentMethods != null && paymentMethods.isNotEmpty()) {
                 val adapter = PaymentMethodAdapter(paymentMethods)
                 binding.rvPaymentMethod.adapter = adapter

@@ -1,19 +1,13 @@
 package com.skincarean.android.core.data.source.remote
 
 import android.util.Log
-import com.google.android.gms.common.api.Api
-import com.google.gson.Gson
-import com.skincarean.android.core.data.domain.model.LoginUser
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.core.data.source.remote.request.GoogleTokenRequest
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
-import com.skincarean.android.core.data.source.remote.request.UpdateUserRequest
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
 import com.skincarean.android.core.data.source.remote.response.login.LoginUserResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import com.skincarean.android.core.data.source.remote.response.login.UserResponse
-import okhttp3.internal.http.hasBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

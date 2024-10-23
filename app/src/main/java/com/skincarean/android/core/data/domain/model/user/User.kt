@@ -1,4 +1,4 @@
-package com.skincarean.android.core.data.domain.model
+package com.skincarean.android.core.data.domain.model.user
 
 data class User(
     val profilePicture: String? = null,

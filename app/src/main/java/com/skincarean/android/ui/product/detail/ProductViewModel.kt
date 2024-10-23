@@ -3,25 +3,30 @@ package com.skincarean.android.ui.product.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skincarean.android.Resource
+import com.skincarean.android.core.data.domain.model.product.DetailProduct
+import com.skincarean.android.core.data.domain.model.product.Product
+import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
 import com.skincarean.android.core.data.repository.ProductRepository
-import com.skincarean.android.core.data.source.remote.response.product.DetailProductResponse
 import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 
-class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
+class ProductViewModel(
+    private val productRepository: ProductRepository,
+    private val productUseCase: ProductUseCase,
+) : ViewModel() {
 
     private val _allReviews: MutableLiveData<List<ReviewResponse>> = MutableLiveData()
-    private val _errorMessage: MutableLiveData<String> = MutableLiveData()
-    private val _productByProductId: MutableLiveData<DetailProductResponse> = MutableLiveData()
-    private val _allProducts: MutableLiveData<List<ProductResponse>> = MutableLiveData()
+    private val _message: MutableLiveData<String> = MutableLiveData()
+    private val _product: MutableLiveData<DetailProduct> = MutableLiveData()
+    private val _listProduct: MutableLiveData<List<Product>> = MutableLiveData()
 
 
     val allReviews: LiveData<List<ReviewResponse>> = _allReviews
-    val productByProductId: LiveData<DetailProductResponse> = _productByProductId
-    val errorMessage: LiveData<String> = _errorMessage
-    val allProducts: LiveData<List<ProductResponse>> = _allProducts
+    val product: LiveData<DetailProduct> = _product
+    val message: LiveData<String> = _message
+    val listProduct: LiveData<List<Product>> = _listProduct
 
     fun getAllReviews(productId: String) {
         productRepository.getAllReviewsByProductId(productId) { response ->
@@ -31,13 +36,13 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
                         _allReviews.value = it as List<ReviewResponse>
                     }
                     response.errors?.let {
-                        _errorMessage.value = it
+                        _message.value = it
                     }
                 }
 
                 is ErrorResponse -> {
                     response.error?.let {
-                        _errorMessage.value = it
+                        _message.value = it
                     }
                 }
 
@@ -47,66 +52,51 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
 
     fun getProductByProductId(productId: String) {
-        productRepository.getProductByProductId(productId = productId) { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _productByProductId.value = it as DetailProductResponse
-                    }
-                    response.errors?.let {
-                        _errorMessage.value = it
+
+        productUseCase.getDetailProductById(productId) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _product.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error.let {
-                        _errorMessage.value = it
+                is Resource.Error -> {
+                    resource.message.let {
+                        _message.value = it
                     }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         }
     }
 
     fun getAllProduct() {
-        productRepository.getAllProducts { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _allProducts.value = it as List<ProductResponse>
-                    }
-                    response.errors?.let {
-                        _errorMessage.value = it
+        productUseCase.getAllProducts { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _listProduct.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
-                        _errorMessage.value = it
+                is Resource.Error -> {
+                    resource.message?.let {
+                        _message.value = it
                     }
                 }
 
+                is Resource.Loading -> {
+
+                }
             }
         }
     }
 
     fun searchProduct(nameProduct: String, page: Int, size: Int) {
-        productRepository.searchProducts(nameProduct, page, size) { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _allProducts.value = it as List<ProductResponse>
-                    }
-                    response.errors?.let {
-                        _errorMessage.value = it
-                    }
-                }
 
-                is ErrorResponse -> {
-                    response.error?.let {
-                        _errorMessage.value = it
-                    }
-                }
-            }
-        }
     }
 }

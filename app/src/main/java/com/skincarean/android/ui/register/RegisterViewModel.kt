@@ -1,17 +1,12 @@
 package com.skincarean.android.ui.register
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skincarean.android.Resource
-import com.skincarean.android.core.data.domain.usecase.UserUseCase
-import com.skincarean.android.core.data.repository.UserRepository
+import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
 import com.skincarean.android.event.Event
-import kotlin.math.E
 
 class RegisterViewModel(private val userUseCase: UserUseCase) : ViewModel() {
 

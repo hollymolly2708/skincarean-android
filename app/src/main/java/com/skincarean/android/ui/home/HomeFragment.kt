@@ -14,8 +14,8 @@ import com.skincarean.android.ui.product.detail.DetailProductActivity
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.source.remote.response.brand.BrandResponse
-import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
+import com.skincarean.android.core.data.domain.model.brand.Brand
+import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentHomeBinding
 import com.skincarean.android.ui.cart.CartActivity
 
@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
             binding.rvTopBrand.adapter = adapter
 
             adapter.setUpOnItemClickCallback(object : OnItemClickCallback {
-                override fun onTopBrandClickCallback(data: BrandResponse) {
+                override fun onTopBrandClickCallback(data: Brand) {
                     val intent = Intent(requireContext(), DetailTopBrandActivity::class.java)
                     startActivity(intent)
                 }
@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
         viewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
             val adapter = ProductAdapter(data.shuffled())
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onProductClickCallback(data: ProductResponse) {
+                override fun onProductClickCallback(data: Product) {
                     val intent = Intent(requireActivity(), DetailProductActivity::class.java)
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
                     startActivity(intent)

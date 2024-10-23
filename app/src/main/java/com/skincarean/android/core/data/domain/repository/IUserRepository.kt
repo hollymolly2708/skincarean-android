@@ -1,8 +1,8 @@
 package com.skincarean.android.core.data.domain.repository
 
 import com.skincarean.android.Resource
-import com.skincarean.android.core.data.domain.model.LoginUser
-import com.skincarean.android.core.data.domain.model.User
+import com.skincarean.android.core.data.domain.model.user.LoginUser
+import com.skincarean.android.core.data.domain.model.user.User
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
 

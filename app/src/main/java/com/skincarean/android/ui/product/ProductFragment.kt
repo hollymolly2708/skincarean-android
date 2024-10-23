@@ -6,13 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
+import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentProductBinding
 import com.skincarean.android.ui.cart.CartActivity
 import com.skincarean.android.ui.home.ProductAdapter
@@ -47,7 +45,7 @@ class ProductFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        productViewModel.allProducts.observe(viewLifecycleOwner) { productResponses ->
+        productViewModel.listProduct.observe(viewLifecycleOwner) { productResponses ->
             val adapter = ProductAdapter(productResponses)
             binding.rvProduct.adapter = adapter
             binding.rvProduct.layoutManager =
@@ -58,7 +56,7 @@ class ProductFragment : Fragment() {
 
 
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onProductClickCallback(data: ProductResponse) {
+                override fun onProductClickCallback(data: Product) {
                     val intent = Intent(requireActivity(), DetailProductActivity::class.java)
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
                     startActivity(intent)

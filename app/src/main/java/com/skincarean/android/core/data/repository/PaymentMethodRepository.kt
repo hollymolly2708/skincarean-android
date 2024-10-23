@@ -2,7 +2,7 @@ package com.skincarean.android.core.data.repository
 
 
 import com.skincarean.android.Resource
-import com.skincarean.android.core.data.domain.model.PaymentMethod
+import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.domain.repository.IPaymentMethodRepository
 import com.skincarean.android.core.data.source.remote.ApiResponse
 import com.skincarean.android.core.data.source.remote.PaymentMethodRemoteDataSource

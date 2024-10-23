@@ -25,7 +25,10 @@ class OrderRemoteDataSource private constructor(private val apiService: ApiServi
         }
     }
 
-    fun directlyOrder(directlyOrderRequest: DirectlyOrderRequest, callback: (Any) -> Unit) {
+    fun directlyOrder(
+        directlyOrderRequest: DirectlyOrderRequest,
+        callback: (ApiResponse<WebResponse<Map<String, Any>>>) -> Unit,
+    ) {
         apiService.directlyOrder(directlyOrderRequest)
             .enqueue(object : Callback<WebResponse<Map<String, Any>>> {
                 override fun onResponse(
@@ -35,36 +38,30 @@ class OrderRemoteDataSource private constructor(private val apiService: ApiServi
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
 
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                     }
                 }
 
                 override fun onFailure(call: Call<WebResponse<Map<String, Any>>>, t: Throwable) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })
     }
 
 
-    fun orderFromCart(cartOrderRequest: CartOrderRequest, callback: (Any) -> Unit) {
+    fun orderFromCart(
+        cartOrderRequest: CartOrderRequest,
+        callback: (ApiResponse<WebResponse<Map<String, Any>>>) -> Unit,
+    ) {
         apiService.cartOrder(cartOrderRequest)
             .enqueue(object : Callback<WebResponse<Map<String, Any>>> {
                 override fun onResponse(
@@ -74,28 +71,19 @@ class OrderRemoteDataSource private constructor(private val apiService: ApiServi
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                     }
                 }
 
                 override fun onFailure(call: Call<WebResponse<Map<String, Any>>>, t: Throwable) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })

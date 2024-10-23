@@ -24,7 +24,7 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
         }
     }
 
-    fun getAllPopularProducts(callback: (Any) -> Unit) {
+    fun getAllPopularProducts(callback: (ApiResponse<WebResponse<List<ProductResponse>>>) -> Unit) {
         apiService.getAllTopProducts()
             .enqueue(object : Callback<WebResponse<List<ProductResponse>>> {
                 override fun onResponse(
@@ -34,29 +34,13 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(
-                                WebResponse(
-                                    body.data,
-                                    body.paging,
-                                    body.errors,
-                                    body.isSuccess
-                                )
-                            )
+                            callback(ApiResponse.Success(body))
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response Error Body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown Error"))
 
                     }
                 }
@@ -66,13 +50,16 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     t: Throwable,
                 ) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })
     }
 
-    fun getProductByProductId(productId: String, callback: (Any) -> Unit) {
+    fun getDetailProductById(
+        productId: String,
+        callback: (ApiResponse<WebResponse<DetailProductResponse>>) -> Unit,
+    ) {
         apiService.getProductByProductId(productId)
             .enqueue(object : Callback<WebResponse<DetailProductResponse>> {
                 override fun onResponse(
@@ -82,23 +69,14 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            WebResponse(null, null, "Response body is null", false)
+                            callback(ApiResponse.Error("Response body is null"))
                         }
 
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                     }
                 }
 
@@ -107,7 +85,7 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     t: Throwable,
                 ) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })
@@ -154,7 +132,7 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
     }
 
 
-    fun getAllProducts(callback: (Any) -> Unit) {
+    fun getAllProducts(callback: (ApiResponse<WebResponse<List<ProductResponse>>>) -> Unit) {
         apiService.getAllProducts().enqueue(object : Callback<WebResponse<List<ProductResponse>>> {
             override fun onResponse(
                 call: Call<WebResponse<List<ProductResponse>>>,
@@ -163,35 +141,31 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<List<ProductResponse>>>, t: Throwable) {
                 t.printStackTrace()
 
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun searchProduct(nameProduct: String, page: Int, size: Int, callback: (Any) -> Unit) {
+    fun searchProduct(
+        nameProduct: String,
+        page: Int,
+        size: Int,
+        callback: (ApiResponse<WebResponse<List<ProductResponse>>>) -> Unit,
+    ) {
         apiService.searchProducts(nameProduct, page, size)
             .enqueue(object : Callback<WebResponse<List<ProductResponse>>> {
                 override fun onResponse(
@@ -202,22 +176,13 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                         val body = response.body()
                         if (body != null) {
 
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            callback(WebResponse(null, null, "Response body is null", false))
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                     }
                 }
 
@@ -226,7 +191,7 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     t: Throwable,
                 ) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })

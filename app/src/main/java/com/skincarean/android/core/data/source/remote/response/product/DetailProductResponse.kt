@@ -16,7 +16,7 @@ data class DetailProductResponse(
     val originalPrice: BigDecimal? = null,
 
     @field:SerializedName("discount")
-    val discount: Long? = null,
+    val discount: BigDecimal? = null,
 
     @field:SerializedName("stok")
     val stok: Int? = null,
@@ -34,7 +34,7 @@ data class DetailProductResponse(
     val bpomCode: String? = null,
 
     @field:SerializedName("productImage")
-    val productImage: List<ProductImageItem?>? = null,
+    val productImage: List<ProductImageItemResponse?>? = null,
 
     @field:SerializedName("size")
     val size: String? = null,

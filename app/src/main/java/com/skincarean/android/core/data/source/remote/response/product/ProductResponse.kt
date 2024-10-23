@@ -15,7 +15,7 @@ data class ProductResponse(
 	val originalPrice: BigDecimal? = null,
 
     @field:SerializedName("discount")
-	val discount: Any? = null,
+	val discount: BigDecimal? = null,
 
     @field:SerializedName("stok")
 	val stok: Int? = null,
@@ -39,13 +39,13 @@ data class ProductResponse(
 	val price: BigDecimal? = null,
 
     @field:SerializedName("isPopularProduct")
-	val isPopularProduct: Any? = null,
+	val isPopularProduct: Boolean? = null,
 
     @field:SerializedName("thumbnailImage")
 	val thumbnailImage: String? = null,
 
     @field:SerializedName("productImage")
-    val productImage: List<ProductImageItem?>? = null,
+    val productImage: List<ProductImageItemResponse?>? = null,
 
     @field:SerializedName("productDescription")
 	val productDescription: String? = null
