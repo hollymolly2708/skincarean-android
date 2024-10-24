@@ -1,6 +1,7 @@
 package com.skincarean.android.core.data.domain.usecase.order
 
 import com.skincarean.android.Resource
+import com.skincarean.android.core.data.domain.model.order.DetailOrder
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.core.data.repository.OrderRepository
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
@@ -23,5 +24,17 @@ class OrderInteractor(private val orderRepository: OrderRepository) : OrderUseCa
 
     override fun getAllOrders(callback: (Resource<List<Order>>) -> Unit) {
         orderRepository.getAllOrders(callback)
+    }
+
+    override fun getDetailOrder(orderId: String, callback: (Resource<DetailOrder>) -> Unit) {
+        orderRepository.getDetailOrder(orderId, callback)
+    }
+
+    override fun getAllCompleteOrder(callback: (Resource<List<Order>>) -> Unit) {
+        orderRepository.getAllCompleteOrder(callback)
+    }
+
+    override fun getAllPendingOrder(callback: (Resource<List<Order>>) -> Unit) {
+        orderRepository.getAllPendingOrder(callback)
     }
 }

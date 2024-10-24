@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.FragmentOrderCompletedBinding
 import com.skincarean.android.ui.product.detail.DetailProductTabLayoutAdapter
@@ -45,7 +46,7 @@ class OrderCompletedFragment : Fragment() {
             }
             val adapter = OrderAdapter(listOrderResponse)
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onOrderClickCallback(data: OrderResponse) {
+                override fun onOrderClickCallback(data: Order) {
 
                     val intent = Intent(requireContext(), DetailOrderActivity::class.java)
                     intent.putExtra(DetailOrderActivity.EXTRA_ORDER_ID, data.orderId)

@@ -4,6 +4,8 @@ import android.content.Context
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.domain.usecase.brand.BrandInteractor
 import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
+import com.skincarean.android.core.data.domain.usecase.cart.CartInteractor
+import com.skincarean.android.core.data.domain.usecase.cart.CartUseCase
 import com.skincarean.android.core.data.domain.usecase.order.OrderInteractor
 import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
 import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodInteractor
@@ -152,20 +154,19 @@ object Injector {
         return CartRepository.getInstance(provideCartRemoteDataSource())
     }
 
+    private fun provideCartInteractor(): CartUseCase {
+        return CartInteractor(provideCartRepository())
+    }
+
 
     fun provideViewModelFactory(): ViewModelFactory {
         return ViewModelFactory.getInstance(
-            provideUserRepository(),
-            provideBrandRepository(),
-            provideProductRepository(),
-            providePaymentMethodRepository(),
-            provideOrderRepository(),
-            provideCartRepository(),
             provideUserInteractor(),
             providePaymentMethodInteractor(),
             provideBrandInteractor(),
             provideProductInteractor(),
-            provideOrderInteractor()
+            provideOrderInteractor(),
+            provideCartInteractor()
         )
     }
 }

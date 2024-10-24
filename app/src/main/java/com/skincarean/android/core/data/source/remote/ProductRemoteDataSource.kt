@@ -91,7 +91,10 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
             })
     }
 
-    fun getallReviewByProductId(productId: String, callback: (Any) -> Unit) {
+    fun getallReviewByProductId(
+        productId: String,
+        callback: (ApiResponse<WebResponse<List<ReviewResponse>>>) -> Unit,
+    ) {
         apiService.getAllReviewByProductId(productId)
             .enqueue(object : Callback<WebResponse<List<ReviewResponse>>> {
                 override fun onResponse(
@@ -101,22 +104,13 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            callback(body)
+                            callback(ApiResponse.Success(body))
                         } else {
-                            WebResponse(null, null, "Response body is null", false)
+                            callback(ApiResponse.Error("Response body is null"))
                         }
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        if (errorBody != null) {
-                            val gson = Gson()
-                            val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                            val errorResponseFromServer =
-                                gson.fromJson(errorBody, ErrorResponse::class.java)
-                            callback(errorResponse)
-                            callback(errorResponseFromServer)
-                        } else {
-                            callback(WebResponse(null, null, "Response Error body is null", false))
-                        }
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                     }
                 }
 
@@ -125,7 +119,7 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
                     t: Throwable,
                 ) {
                     t.printStackTrace()
-                    callback(WebResponse(null, null, t.message, false))
+                    callback(ApiResponse.Error(t.message.toString()))
                 }
 
             })

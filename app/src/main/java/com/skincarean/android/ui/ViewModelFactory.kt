@@ -3,6 +3,7 @@ package com.skincarean.android.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
+import com.skincarean.android.core.data.domain.usecase.cart.CartUseCase
 import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
 import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodUseCase
 import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
@@ -24,48 +25,34 @@ import com.skincarean.android.ui.register.RegisterViewModel
 
 
 class ViewModelFactory(
-    private val userRepository: UserRepository,
-    private val brandRepository: BrandRepository,
-    private val productRepository: ProductRepository,
-    private val paymentMethodRepository: PaymentMethodRepository,
-    private val orderRepository: OrderRepository,
-    private val cartRepository: CartRepository,
+
     private val userUseCase: UserUseCase,
     private val paymentMethodUseCase: PaymentMethodUseCase,
     private val brandUseCase: BrandUseCase,
     private val productUseCase: ProductUseCase,
     private val orderUseCase: OrderUseCase,
+    private val cartUseCase: CartUseCase,
 ) :
     ViewModelProvider.NewInstanceFactory() {
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
         fun getInstance(
-            userRepository: UserRepository,
-            brandRepository: BrandRepository,
-            productRepository: ProductRepository,
-            paymentMethodRepository: PaymentMethodRepository,
-            orderRepository: OrderRepository,
-            cartRepository: CartRepository,
             userUseCase: UserUseCase,
             paymentMethodUseCase: PaymentMethodUseCase,
             brandUseCase: BrandUseCase,
             productUseCase: ProductUseCase,
             orderUseCase: OrderUseCase,
+            cartUseCase: CartUseCase,
         ): ViewModelFactory {
             synchronized(this) {
                 instance = ViewModelFactory(
-                    userRepository,
-                    brandRepository,
-                    productRepository,
-                    paymentMethodRepository,
-                    orderRepository,
-                    cartRepository,
                     userUseCase,
                     paymentMethodUseCase,
                     brandUseCase,
                     productUseCase,
-                    orderUseCase
+                    orderUseCase,
+                    cartUseCase
                 )
             }
 
@@ -81,36 +68,35 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                return LoginViewModel(userRepository, userUseCase) as T
+                return LoginViewModel(userUseCase) as T
             }
 
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                return HomeViewModel(brandRepository, productRepository, brandUseCase) as T
+                return HomeViewModel(productUseCase, brandUseCase) as T
             }
 
             modelClass.isAssignableFrom(ProductViewModel::class.java) -> {
-                return ProductViewModel(productRepository, productUseCase) as T
+                return ProductViewModel(productUseCase) as T
             }
 
             modelClass.isAssignableFrom(CheckoutViewModel::class.java) -> {
                 return CheckoutViewModel(
                     productUseCase,
                     paymentMethodUseCase,
-                    orderRepository,
                     orderUseCase
                 ) as T
             }
 
             modelClass.isAssignableFrom(CartViewModel::class.java) -> {
-                return CartViewModel(cartRepository) as T
+                return CartViewModel(cartUseCase) as T
             }
 
             modelClass.isAssignableFrom(OrderViewModel::class.java) -> {
-                return OrderViewModel(orderRepository,orderUseCase) as T
+                return OrderViewModel(orderUseCase) as T
             }
 
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
-                return ProfileViewModel(userRepository, userUseCase) as T
+                return ProfileViewModel(userUseCase) as T
             }
 
 

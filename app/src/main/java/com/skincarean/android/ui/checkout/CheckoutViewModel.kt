@@ -18,7 +18,6 @@ import com.skincarean.android.core.data.source.remote.response.WebResponse
 class CheckoutViewModel(
     private val productUseCase: ProductUseCase,
     private val paymentMethodUseCase: PaymentMethodUseCase,
-    private val orderRepository: OrderRepository,
     private val orderUseCase: OrderUseCase,
 ) :
     ViewModel() {

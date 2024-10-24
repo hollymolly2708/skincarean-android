@@ -3,6 +3,7 @@ package com.skincarean.android.ui.order
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.order.DetailOrder
+import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.ActivityDetailOrderBinding
 import com.skincarean.android.ui.home.ProductAdapter
@@ -40,31 +43,48 @@ class DetailOrderActivity : AppCompatActivity() {
         getAllProducts()
         setupObservers()
 
+        supportActionBar?.title = "Detail Order Activity"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun setupObservers() {
-        orderViewModel.detailOrder.observe(this) { orderResponse ->
-            if (orderResponse != null) {
+        orderViewModel.detailOrder.observe(this) { order ->
+            if (order != null) {
 
-                val adapter = OrderProductAdapter(orderResponse.orderItems)
+                val adapter = OrderProductAdapter(order.orderItems)
                 binding.rvOrder.adapter = adapter
                 binding.rvOrder.layoutManager = LinearLayoutManager(this)
                 binding.rvOrder.setHasFixedSize(true)
 
-                binding.tvInputOrderStatus.text = orderResponse.orderStatus
-                binding.tvInputOrderId.text = orderResponse.orderId
-                updateUiByOrderStatus(orderResponse)
+                binding.tvInputOrderStatus.text = order.orderStatus
+                binding.tvInputOrderId.text = order.orderId
+                updateUiByOrderStatus(order)
 
-                binding.tvInputPaymentCode.text = orderResponse.payment?.paymentCode
-                binding.tvInputPaymentStatus.text = orderResponse.payment?.paymentStatus
-                binding.tvInputPaidDate.text = orderResponse.payment?.paidDate.toString()
-                binding.tvInputShippingAddress.text = orderResponse.shippingAddress
+                binding.tvInputPaymentCode.text = order.payment?.paymentCode
+                binding.tvInputPaymentStatus.text = order.payment?.paymentStatus
+                binding.tvInputPaidDate.text = order.payment?.paidDate.toString()
+                binding.tvInputShippingAddress.text = order.shippingAddress
                 binding.tvInputShippingPrice.text =
-                    Utilities.numberFormat(orderResponse.shippingCost)
-                binding.tvInputTax.text = Utilities.numberFormat(orderResponse.tax)
+                    Utilities.numberFormat(order.shippingCost)
+                binding.tvInputTax.text = Utilities.numberFormat(order.tax)
+                binding.tvInputPaymentMethodName.text = order.payment?.paymentMethodName
                 binding.tvInputTotalPaid.text =
-                    Utilities.numberFormat(orderResponse.payment?.totalPaid)
-                binding.tvInputTotalPesanan.text = Utilities.numberFormat(orderResponse.finalPrice)
+                    Utilities.numberFormat(order.payment?.totalPaid)
+                binding.tvInputTotalPesanan.text = Utilities.numberFormat(order.finalPrice)
 
 
             }
@@ -91,8 +111,8 @@ class DetailOrderActivity : AppCompatActivity() {
         productViewModel.getAllProduct()
     }
 
-    private fun updateUiByOrderStatus(orderResponse: OrderResponse) {
-        if (orderResponse.orderStatus == "Selesai") {
+    private fun updateUiByOrderStatus(detailOrder: DetailOrder) {
+        if (detailOrder.orderStatus == "Selesai") {
             binding.layoutPaymentCode.visibility = View.GONE
             binding.tvInputOrderStatus.setBackgroundColor(resources.getColor(R.color.mint_green_80))
 

@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
+import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.ItemOrderBinding
 import com.skincarean.android.ui.checkout.PaymentMethodAdapter
 
-class OrderAdapter(private val listOrderResponse: List<OrderResponse?>?) :
+class OrderAdapter(private val listOrderResponse: List<Order?>?) :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -68,7 +69,7 @@ class OrderAdapter(private val listOrderResponse: List<OrderResponse?>?) :
     inner class OrderViewHolder(var binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun customBindView(holder: OrderAdapter.OrderViewHolder, data: OrderResponse) {
+    fun customBindView(holder: OrderAdapter.OrderViewHolder, data: Order) {
         if (data.orderStatus == "Menunggu pembayaran") {
             holder.binding.tvInputOrderStatus.setTextColor(
                 ContextCompat.getColor(

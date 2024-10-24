@@ -17,6 +17,9 @@ data class PaymentResponse(
     @field:SerializedName("paymentMethodId")
     val paymentMethodId: Int? = null,
 
+    @field:SerializedName("paymentMethodName")
+    val paymentMethodName : String? = null,
+
     @field:SerializedName("paymentStatus")
     val paymentStatus: String? = null
 )

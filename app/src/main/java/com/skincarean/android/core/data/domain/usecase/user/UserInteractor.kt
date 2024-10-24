@@ -16,7 +16,7 @@ class UserInteractor(private val userRepository: IUserRepository) : UserUseCase 
     }
 
     override fun loginViaGoogle(
-        idToken: String,
+        idToken: String?,
         callback: (Resource<LoginUser>) -> Unit,
     ) {
         userRepository.loginViaGoogle(idToken, callback)

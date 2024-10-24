@@ -46,7 +46,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.allCart.observe(this) { cartResponse ->
+        viewModel.cart.observe(this) { cartResponse ->
             if (cartResponse != null) {
 
 

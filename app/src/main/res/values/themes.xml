@@ -25,5 +25,13 @@
         <item name="cornerSizeBottomLeft">30dp</item>
         <item name="cornerSizeBottomRight">30dp</item>
     </style>
+    <style name="CustomImageViewCircle_10" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">5dp</item>
+        <item name="cornerSizeTopRight">5dp</item>
+        <item name="cornerSizeBottomLeft">5dp</item>
+        <item name="cornerSizeBottomRight">5dp</item>
+    </style>
+
 
 </resources>

@@ -9,7 +9,6 @@ import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
 import com.skincarean.android.core.data.repository.UserRepository
 
 class ProfileViewModel(
-    private val userRepository: UserRepository,
     private val userUseCase: UserUseCase,
 ) : ViewModel() {
     private val _currentUser: MutableLiveData<User> = MutableLiveData()

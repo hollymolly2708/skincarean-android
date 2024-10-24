@@ -8,4 +8,5 @@ data class Payment(
     val totalPaid: BigDecimal? = null,
     val paymentMethodId: Int? = null,
     val paymentStatus: String? = null,
+    val paymentMethodName : String? = null
 )

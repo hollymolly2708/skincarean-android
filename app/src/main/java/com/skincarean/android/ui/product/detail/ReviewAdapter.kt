@@ -6,10 +6,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skincarean.android.R
+import com.skincarean.android.core.data.domain.model.product.Review
 import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
 import com.skincarean.android.databinding.ItemReviewBinding
 
-class ReviewAdapter(private val listReviewResponse: List<ReviewResponse>) :
+class ReviewAdapter(private val listReviewResponse: List<Review>) :
     RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,7 +33,7 @@ class ReviewAdapter(private val listReviewResponse: List<ReviewResponse>) :
     inner class ReviewViewHolder(var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun setupItemView(holder: ReviewViewHolder, data: ReviewResponse) {
+    fun setupItemView(holder: ReviewViewHolder, data: Review) {
 
         if (data.isRecommended == true) {
             holder.binding.tvIsRecommended.text =

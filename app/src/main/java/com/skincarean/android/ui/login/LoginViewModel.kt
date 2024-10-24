@@ -10,7 +10,6 @@ import com.skincarean.android.core.data.repository.UserRepository
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 
 class LoginViewModel(
-    private val userRepository: UserRepository,
     private val userUseCase: UserUseCase,
 ) : ViewModel() {
     private val _loginResult: MutableLiveData<LoginUser> = MutableLiveData()
@@ -45,7 +44,7 @@ class LoginViewModel(
     }
 
     fun loginViaGoogle(idToken: String?) {
-        userRepository.loginViaGoogle(idToken = idToken) { resource ->
+        userUseCase.loginViaGoogle(idToken = idToken) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data.let {

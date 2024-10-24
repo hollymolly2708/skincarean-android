@@ -1,11 +1,9 @@
 package com.skincarean.android.core.data.source.remote
 
-import com.google.gson.Gson
 import com.skincarean.android.core.data.source.remote.network.ApiService
 import com.skincarean.android.core.data.source.remote.request.CartRequest
-import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
+import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,8 +24,8 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
 
     fun addProductToCart(
         cartRequest: CartRequest,
-        callback: (Any) -> Unit,
-        callbackCartResponse: (Any) -> Unit,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
     ) {
         apiService.addProductToCart(cartRequest).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
@@ -37,35 +35,26 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                         getAllCarts { cartResponse -> callbackCartResponse(cartResponse) }
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun getAllCarts(callback: (Any) -> Unit) {
+    fun getAllCarts(callback: (ApiResponse<WebResponse<CartResponse>>) -> Unit) {
         apiService.getAllCart().enqueue(object : Callback<WebResponse<CartResponse>> {
             override fun onResponse(
                 call: Call<WebResponse<CartResponse>>,
@@ -74,34 +63,29 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<CartResponse>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun plusQuantity(cartId: Long, callback: (Any) -> Unit, callbackCartResponse: (Any) -> Unit) {
+    fun plusQuantity(
+        cartId: Long,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
+    ) {
 
         apiService.plusQuantity(cartId).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
@@ -111,35 +95,30 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                         getAllCarts { cartResponse -> callbackCartResponse(cartResponse) }
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun minusQuantity(cartId: Long, callback: (Any) -> Unit, callbackCartResponse: (Any) -> Unit) {
+    fun minusQuantity(
+        cartId: Long,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
+    ) {
         apiService.minusQuantity(cartId).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
                 call: Call<WebResponse<String>>,
@@ -148,36 +127,30 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                         getAllCarts { cartResponse -> callbackCartResponse(cartResponse) }
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun deleteCartItem(cartId: Long, callback: (Any) -> Unit, callbackCartResponse: (Any) -> Unit) {
+    fun deleteCartItem(
+        cartId: Long,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
+    ) {
         apiService.deleteCartItem(cartId).enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
                 call: Call<WebResponse<String>>,
@@ -186,35 +159,29 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                         getAllCarts { cartResponse -> callbackCartResponse(cartResponse) }
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })
     }
 
-    fun deleteAllCartItem(callback: (Any) -> Unit, callbackCartResponse: (Any) -> Unit) {
+    fun deleteAllCartItem(
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
+    ) {
         apiService.deleteAllCartItem().enqueue(object : Callback<WebResponse<String>> {
             override fun onResponse(
                 call: Call<WebResponse<String>>,
@@ -223,29 +190,20 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        callback(body)
+                        callback(ApiResponse.Success(body))
                         getAllCarts { cartResponse -> callbackCartResponse(cartResponse) }
                     } else {
-                        callback(WebResponse(null, null, "Response body is null", false))
+                        callback(ApiResponse.Error("Response body is null"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val gson = Gson()
-                        val errorResponse = gson.fromJson(errorBody, WebResponse::class.java)
-                        val errorResponseFromServer =
-                            gson.fromJson(errorBody, ErrorResponse::class.java)
-                        callback(errorResponse)
-                        callback(errorResponseFromServer)
-                    } else {
-                        callback(WebResponse(null, null, "Response error body is null", false))
-                    }
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
                 }
             }
 
             override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
                 t.printStackTrace()
-                callback(WebResponse(null, null, t.message, false))
+                callback(ApiResponse.Error(t.message.toString()))
             }
 
         })

@@ -3,6 +3,9 @@ package com.skincarean.android.ui.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skincarean.android.Resource
+import com.skincarean.android.core.data.domain.model.cart.Cart
+import com.skincarean.android.core.data.domain.usecase.cart.CartUseCase
 import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.source.remote.request.CartRequest
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
@@ -10,180 +13,234 @@ import com.skincarean.android.core.data.source.remote.response.ErrorResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 
-class CartViewModel(private val cartRepository: CartRepository) : ViewModel() {
-    private val _allCart: MutableLiveData<CartResponse> = MutableLiveData()
+class CartViewModel(
+    private val cartUseCase: CartUseCase,
+) : ViewModel() {
+    private val _cart: MutableLiveData<Cart> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
 
 
     val message: LiveData<String> = _message
-    val allCart: LiveData<CartResponse> = _allCart
+    val cart: LiveData<Cart> = _cart
 
 
     fun addProductToCart(cartRequest: CartRequest) {
-        cartRepository.addProductToCart(cartRequest, { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _message.value = it as String
-                    }
-                    response.errors?.let {
+        cartUseCase.addProductToCart(cartRequest, { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
-
-        }, { cartResponse ->
-            when (cartResponse) {
-                is WebResponse<*> -> {
-                    cartResponse.data?.let {
-                        _allCart.value = it as CartResponse
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
                     }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         })
     }
 
     fun getAllCarts() {
-        cartRepository.getAllCarts { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _allCart.value = it as CartResponse
+        cartUseCase.getAllCarts { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _cart.value = it
                     }
-                    response.errors?.let {
+                }
+
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
-                        _message.value = it
-                    }
+                is Resource.Loading -> {
+
                 }
             }
         }
     }
 
     fun plusQuantity(cartId: Long) {
-        cartRepository.plusQuantity(cartId, { response ->
-            when (response) {
-                is WebResponse<*> -> {
-
-                    response.data?.let {
-                        _message.value = it as String
-                    }
-
-                    response.errors?.let {
+        cartUseCase.plusQuantity(cartId, { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
-        }, { cartResponse ->
-            when (cartResponse) {
-                is WebResponse<*> -> {
-                    cartResponse.data?.let {
-                        _allCart.value = it as CartResponse
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
                     }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         })
     }
 
     fun minusQuantity(cartId: Long) {
-        cartRepository.minusQuantity(cartId, { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _message.value = it as String
-                    }
-                    response.errors?.let {
+        cartUseCase.minusQuantity(cartId, { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
                 }
+
+                is Resource.Loading -> {
+
+                }
             }
-        }, { cartResponse ->
-            when (cartResponse) {
-                is WebResponse<*> -> {
-                    cartResponse.data?.let {
-                        _allCart.value = it as CartResponse
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
                     }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         })
+
     }
 
     fun deleteCartItem(cartId: Long) {
-        cartRepository.deleteCartItem(cartId, { response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _message.value = it as String
-                    }
-                    response.errors?.let {
+        cartUseCase.plusQuantity(cartId, { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
                 }
+
+                is Resource.Loading -> {
+
+                }
             }
-        }, { cartResponse ->
-            when (cartResponse) {
-                is WebResponse<*> -> {
-                    cartResponse.data?.let {
-                        _allCart.value = it as CartResponse
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
                     }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         })
     }
 
     fun deleteAllCartItem() {
-        cartRepository.deleteAllCartItem({ response ->
-            when (response) {
-                is WebResponse<*> -> {
-                    response.data?.let {
-                        _message.value = it as String
-                    }
-                    response.errors?.let {
+        cartUseCase.deleteAllCartItem({ resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
                         _message.value = it
                     }
                 }
 
-                is ErrorResponse -> {
-                    response.error?.let {
+                is Resource.Error -> {
+                    resource.message?.let {
                         _message.value = it
                     }
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
-
-        }, { cartResponse ->
-            when (cartResponse) {
-                is WebResponse<*> -> {
-                    cartResponse.data?.let {
-                        _allCart.value = it as CartResponse
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
                     }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
 
                 }
             }

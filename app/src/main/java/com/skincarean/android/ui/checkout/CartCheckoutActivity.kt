@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.core.data.domain.model.cart.Cart
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
@@ -44,7 +45,7 @@ class CartCheckoutActivity : AppCompatActivity() {
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]
     }
 
-    private fun setupCartItemAdapter(carts: CartResponse) {
+    private fun setupCartItemAdapter(carts: Cart) {
 
         val cartCheckoutAdapter = CartCheckoutAdapter(carts.cartItems)
         binding.rvCart.apply {
@@ -80,7 +81,7 @@ class CartCheckoutActivity : AppCompatActivity() {
             setupPaymentMethodAdapter(it)
         }
 
-        cartViewModel.allCart.observe(this) {
+        cartViewModel.cart.observe(this) {
             setupCartItemAdapter(it)
         }
 

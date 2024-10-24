@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
+import com.skincarean.android.core.data.domain.model.cart.CartItem
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ItemProductCartBinding
 
-class CartAdapter(private val list: List<CartItemResponse?>?) :
+class CartAdapter(private val list: List<CartItem?>?) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {

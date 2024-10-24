@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.skincarean.android.Utilities
+import com.skincarean.android.core.data.domain.model.cart.CartItem
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ItemCartCheckoutBinding
 import com.skincarean.android.ui.cart.CartAdapter
 
-class CartCheckoutAdapter(private val listCartItemResponse: List<CartItemResponse?>?) :
+class CartCheckoutAdapter(private val listCartItemResponse: List<CartItem?>?) :
     RecyclerView.Adapter<CartCheckoutAdapter.CartCheckoutViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,

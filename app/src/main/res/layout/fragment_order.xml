@@ -11,6 +11,9 @@
         android:id="@+id/tabs_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabTextColor="@color/black"
+        app:tabIndicatorColor="@color/black"
+        app:tabRippleColor="@color/black_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

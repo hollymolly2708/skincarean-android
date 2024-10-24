@@ -8,13 +8,14 @@ import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
 
 import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
+import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
 import com.skincarean.android.core.data.repository.BrandRepository
 import com.skincarean.android.core.data.repository.ProductRepository
 import com.skincarean.android.core.data.source.remote.response.product.DetailProductResponse
 
 class HomeViewModel(
-    private val brandRepository: BrandRepository,
-    private val productRepository: ProductRepository,
+
+    private val productUseCase: ProductUseCase,
     private val brandUseCase: BrandUseCase,
 ) : ViewModel() {
     private val _allBrandByTopBrand: MutableLiveData<List<Brand>> = MutableLiveData()
@@ -51,7 +52,7 @@ class HomeViewModel(
     }
 
     fun getAllPopularProduct() {
-        productRepository.getAllPopularProduct { resource ->
+        productUseCase.getAllPopularProduct { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data.let {

@@ -8,7 +8,7 @@ import com.skincarean.android.core.data.source.remote.request.RegisterUserReques
 
 interface UserUseCase {
     fun loginUser(loginUserRequest: LoginUserRequest, callback: (Resource<LoginUser>) -> Unit)
-    fun loginViaGoogle(idToken: String, callback: (Resource<LoginUser>) -> Unit)
+    fun loginViaGoogle(idToken: String?, callback: (Resource<LoginUser>) -> Unit)
     fun registerUser(registerUserRequest: RegisterUserRequest, callback: (Resource<String>) -> Unit)
     fun getCurrentUser(callback: (Resource<User>) -> Unit)
     fun updateUser(

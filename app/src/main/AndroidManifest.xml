@@ -27,7 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.order.DetailOrderActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".ui.checkout.CartCheckoutActivity"
             android:exported="false" />

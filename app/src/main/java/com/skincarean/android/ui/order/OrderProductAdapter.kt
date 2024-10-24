@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.source.remote.response.order.OrderItemResponse
+import com.skincarean.android.core.data.domain.model.order.OrderItem
 import com.skincarean.android.databinding.ItemOrderProductBinding
 
-class OrderProductAdapter(private val listOrderProductResponse: List<OrderItemResponse?>?) :
+class OrderProductAdapter(private val listOrderItems: List<OrderItem?>?) :
     RecyclerView.Adapter<OrderProductAdapter.OrderProductViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -25,24 +25,24 @@ class OrderProductAdapter(private val listOrderProductResponse: List<OrderItemRe
         holder: OrderProductAdapter.OrderProductViewHolder,
         position: Int,
     ) {
-        if (listOrderProductResponse != null) {
-            val orderProductResponse = listOrderProductResponse[position]
+        if (listOrderItems != null) {
+            val orderProductItem = listOrderItems[position]
             holder.binding.tvInputTitleOrderProduct.text =
-                orderProductResponse?.product?.productName
+                orderProductItem?.product?.productName
             holder.binding.tvInputQuantityOrderProduct.text =
-                "${orderProductResponse?.quantity.toString()}"
-            holder.binding.tvInputCategoryName.text = orderProductResponse?.product?.categoryName
-            holder.binding.tvInputSize.text = orderProductResponse?.product?.size
-            val uri = Uri.parse(orderProductResponse?.product?.thumbnailImage)
+                "${orderProductItem?.quantity.toString()}"
+            holder.binding.tvInputCategoryName.text = orderProductItem?.product?.categoryName
+            holder.binding.tvInputSize.text = orderProductItem?.product?.size
+            val uri = Uri.parse(orderProductItem?.product?.thumbnailImage)
             Glide.with(holder.binding.root)
                 .load(uri)
                 .into(holder.binding.ivOrderProduct)
-            holder.binding.tvInputPrice.text = Utilities.numberFormat(orderProductResponse?.price)
+            holder.binding.tvInputPrice.text = Utilities.numberFormat(orderProductItem?.price)
         }
     }
 
     override fun getItemCount(): Int {
-        return listOrderProductResponse!!.size
+        return listOrderItems!!.size
     }
 
     inner class OrderProductViewHolder(var binding: ItemOrderProductBinding) :

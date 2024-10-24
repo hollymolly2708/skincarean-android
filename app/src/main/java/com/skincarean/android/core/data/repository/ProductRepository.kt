@@ -1,11 +1,14 @@
 package com.skincarean.android.core.data.repository
 
 
+import com.google.android.gms.auth.api.signin.RevocationBoundService
 import com.skincarean.android.Resource
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.product.ProductImageItem
+import com.skincarean.android.core.data.domain.model.product.Review
 import com.skincarean.android.core.data.domain.repository.IProductRepository
+import com.skincarean.android.core.data.mapper.ProductMapper
 import com.skincarean.android.core.data.source.remote.ApiResponse
 import com.skincarean.android.core.data.source.remote.ProductRemoteDataSource
 import java.util.stream.Collectors
@@ -30,33 +33,8 @@ class ProductRepository private constructor(private val productRemoteDataSource:
             when (apiResponse) {
                 is ApiResponse.Success -> {
                     apiResponse.data.data?.let { productResponses ->
-                        val products = productResponses.stream().map {
-
-                            val productImageItemResponse = it.productImage
-                            val productImageItems =
-                                productImageItemResponse?.stream()?.map { imageItem ->
-                                    ProductImageItem(imageItem?.imageUrl, imageItem?.id)
-                                }?.collect(Collectors.toList())
-
-                            Product(
-                                it.brandName,
-                                it.productId,
-                                it.originalPrice,
-                                it.discount,
-                                it.productName,
-                                it.stok,
-                                it.isPromo,
-                                it.categoryName,
-                                it.bpomCode,
-                                it.size,
-                                it.price,
-                                it.isPopularProduct,
-                                it.thumbnailImage,
-                                productImageItems,
-                                it.productDescription
-                            )
-
-                        }.collect(Collectors.toList())
+                        val products =
+                            ProductMapper.listProductResponseToListProduct(productResponses)
 
                         callback(Resource.Success(products))
 
@@ -76,36 +54,17 @@ class ProductRepository private constructor(private val productRemoteDataSource:
         }
     }
 
-    override fun getDetailProductById(productId: String, callback: (Resource<DetailProduct>) -> Unit) {
+    override fun getDetailProductById(
+        productId: String,
+        callback: (Resource<DetailProduct>) -> Unit,
+    ) {
         productRemoteDataSource.getDetailProductById(productId) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Success -> {
-                    apiResponse.data.data?.let {
-                        val productImageResponse = it.productImage
-                        val productImageItems = productImageResponse?.stream()?.map { imageItem ->
-                            ProductImageItem(imageItem?.imageUrl, imageItem?.id)
-                        }?.collect(Collectors.toList())
-                        callback(
-                            Resource.Success(
-                                DetailProduct(
-                                    it.brandName,
-                                    it.productId,
-                                    it.originalPrice,
-                                    it.discount,
-                                    it.productName,
-                                    it.stok,
-                                    it.isPromo,
-                                    it.categoryName,
-                                    it.bpomCode,
-                                    it.size,
-                                    it.price,
-                                    it.isPopularProduct,
-                                    it.thumbnailImage,
-                                    productImageItems,
-                                    it.productDescription
-                                )
-                            )
-                        )
+                    apiResponse.data.data?.let { detailProductResponse ->
+                        val detailProduct =
+                            ProductMapper.detailProductResponseToDetailProduct(detailProductResponse)
+                        callback(Resource.Success(detailProduct))
                     }
                 }
 
@@ -122,9 +81,73 @@ class ProductRepository private constructor(private val productRemoteDataSource:
         }
     }
 
-    fun getAllReviewsByProductId(productId: String, callback: (Any) -> Unit) {
-        productRemoteDataSource.getallReviewByProductId(productId, callback)
+    override fun searchProducts(
+        nameProduct: String,
+        page: Int,
+        size: Int,
+        callback: (Resource<List<Product>>) -> Unit,
+    ) {
+        productRemoteDataSource.searchProduct(nameProduct, page, size) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { productResponses ->
+                        val products =
+                            ProductMapper.listProductResponseToListProduct(productResponses)
+                        callback(Resource.Success(products))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage?.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("No data available"))
+                }
+            }
+        }
     }
+
+    override fun getAllReviewsByProductId(
+        productId: String,
+        callback: (Resource<List<Review>>) -> Unit,
+    ) {
+        productRemoteDataSource.getallReviewByProductId(productId) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { reviewResponses ->
+
+                        val reviews = reviewResponses.stream().map { reviewResponse ->
+                            Review(
+                                reviewResponse.createdAt,
+                                reviewResponse.review,
+                                reviewResponse.photoProfileUser,
+                                reviewResponse.isRecommended,
+                                reviewResponse.rating,
+                                reviewResponse.usagePeriod,
+                                reviewResponse.fullNameUser,
+                                reviewResponse.reviewId
+                            )
+                        }.collect(Collectors.toList())
+                        callback(Resource.Success(reviews))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage?.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("No data available"))
+                }
+            }
+        }
+    }
+
 
     override fun getAllProducts(callback: (Resource<List<Product>>) -> Unit) {
         productRemoteDataSource.getAllProducts { apiResponse ->
@@ -132,29 +155,8 @@ class ProductRepository private constructor(private val productRemoteDataSource:
                 is ApiResponse.Success -> {
                     apiResponse.data.data?.let { listProductResponses ->
 
-                        val products = listProductResponses.stream().map {
-                            val productImageItem = it.productImage
-                            val productImageItems = productImageItem?.stream()?.map { itemImage ->
-                                ProductImageItem(itemImage?.imageUrl, itemImage?.id)
-                            }?.collect(Collectors.toList())
-                            Product(
-                                it.brandName,
-                                it.productId,
-                                it.originalPrice,
-                                it.discount,
-                                it.productName,
-                                it.stok,
-                                it.isPromo,
-                                it.categoryName,
-                                it.bpomCode,
-                                it.size,
-                                it.price,
-                                it.isPopularProduct,
-                                it.thumbnailImage,
-                                productImageItems,
-                                it.productDescription
-                            )
-                        }.collect(Collectors.toList())
+                        val products =
+                            ProductMapper.listProductResponseToListProduct(listProductResponses)
                         callback(Resource.Success(products))
                     }
                 }
@@ -172,7 +174,5 @@ class ProductRepository private constructor(private val productRemoteDataSource:
         }
     }
 
-    fun searchProducts(nameProduct: String, page: Int, size: Int, callback: (Any) -> Unit) {
-        productRemoteDataSource.searchProduct(nameProduct, page, size, callback)
-    }
+
 }
