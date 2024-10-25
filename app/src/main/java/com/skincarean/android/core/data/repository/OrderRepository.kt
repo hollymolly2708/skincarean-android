@@ -97,6 +97,28 @@ class OrderRepository private constructor(private val orderRemoteDataSource: Ord
         }
     }
 
+    override fun getAllCancelOrder(callback: (Resource<List<Order>>) -> Unit) {
+        orderRemoteDataSource.getAllCancelOrders { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { orderResponses ->
+                        val orders = OrderMapper.listOrderResponseToListOrder(orderResponses)
+                        callback(Resource.Success(orders))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage?.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("No data available"))
+                }
+            }
+        }
+    }
 
 
     override fun directlyOrder(

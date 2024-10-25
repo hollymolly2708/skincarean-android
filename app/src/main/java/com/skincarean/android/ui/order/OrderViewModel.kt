@@ -18,11 +18,13 @@ class OrderViewModel(
     private val _allOrders: MutableLiveData<List<Order>> = MutableLiveData()
     private val _allCompleteOrders: MutableLiveData<List<Order>> = MutableLiveData()
     private val _allPendingOrders: MutableLiveData<List<Order>> = MutableLiveData()
+    private val _allCancelOrders: MutableLiveData<List<Order>> = MutableLiveData()
     private val _detailOrder: MutableLiveData<DetailOrder> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
 
     val allOrders: LiveData<List<Order>> = _allOrders
     val detailOrder: LiveData<DetailOrder> = _detailOrder
+    val allCancelOrders: LiveData<List<Order>> = _allCancelOrders
     val allCompleteOrders: LiveData<List<Order>> = _allCompleteOrders
     val allPendingOrders: LiveData<List<Order>> = _allPendingOrders
     val message: LiveData<String> = _message
@@ -115,5 +117,27 @@ class OrderViewModel(
             }
         }
 
+    }
+
+    fun getAllCancelOrders() {
+        orderUseCase.getAllCancelOrder { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        _allCancelOrders.value = it
+                    }
+                }
+
+                is Resource.Error -> {
+                    resource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        }
     }
 }

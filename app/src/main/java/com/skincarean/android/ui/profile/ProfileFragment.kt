@@ -49,21 +49,24 @@ class ProfileFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(resources.getDrawable(R.drawable.skintific))
                         .circleCrop()
+                        .timeout(60000)
                         .into(binding.ivProfile)
-                } else {
+                }else{
                     val uri = Uri.parse(currentUser.profilePicture)
                     Glide.with(requireContext())
                         .load(uri)
+                        .timeout(60000)
                         .circleCrop()
                         .into(binding.ivProfile)
+
+                    binding.tvInputName.text = currentUser.fullName
+                    binding.tvInputEmail.text = currentUser.email
+                    binding.tvInputAddress.text = currentUser.address
+                    binding.tvInputPhone.text = currentUser.phone
                 }
 
 
 
-                binding.tvInputName.text = currentUser.fullName
-                binding.tvInputEmail.text = currentUser.email
-                binding.tvInputAddress.text = currentUser.address
-                binding.tvInputPhone.text = currentUser.phone
             }
 
         }
@@ -128,5 +131,8 @@ class ProfileFragment : Fragment() {
         profileViewModel.getCurrentUser()
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

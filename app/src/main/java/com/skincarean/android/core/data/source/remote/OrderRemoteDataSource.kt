@@ -146,6 +146,34 @@ class OrderRemoteDataSource private constructor(private val apiService: ApiServi
         })
     }
 
+    fun getAllCancelOrders(callback: (ApiResponse<WebResponse<List<OrderResponse>>>) -> Unit) {
+        apiService.getAllCancelOrders()
+            .enqueue(object : Callback<WebResponse<List<OrderResponse>>> {
+                override fun onResponse(
+                    call: Call<WebResponse<List<OrderResponse>>>,
+                    response: Response<WebResponse<List<OrderResponse>>>,
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            callback(ApiResponse.Success(body))
+                        } else {
+                            callback(ApiResponse.Error("Response body is null"))
+                        }
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+                    }
+                }
+
+                override fun onFailure(call: Call<WebResponse<List<OrderResponse>>>, t: Throwable) {
+                    t.printStackTrace()
+                    callback(ApiResponse.Error(t.message.toString()))
+                }
+
+            })
+    }
+
     fun getAllCompleteOrders(callback: (ApiResponse<WebResponse<List<OrderResponse>>>) -> Unit) {
         apiService.getAllCompleteOrders()
             .enqueue(object : Callback<WebResponse<List<OrderResponse>>> {

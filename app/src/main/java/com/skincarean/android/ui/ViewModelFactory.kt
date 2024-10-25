@@ -8,12 +8,7 @@ import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
 import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodUseCase
 import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
 import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
-import com.skincarean.android.core.data.repository.BrandRepository
-import com.skincarean.android.core.data.repository.CartRepository
-import com.skincarean.android.core.data.repository.OrderRepository
-import com.skincarean.android.core.data.repository.PaymentMethodRepository
-import com.skincarean.android.core.data.repository.ProductRepository
-import com.skincarean.android.core.data.repository.UserRepository
+import com.skincarean.android.ui.brand.BrandViewModel
 import com.skincarean.android.ui.cart.CartViewModel
 import com.skincarean.android.ui.checkout.CheckoutViewModel
 import com.skincarean.android.ui.home.HomeViewModel
@@ -98,6 +93,11 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 return ProfileViewModel(userUseCase) as T
             }
+
+            modelClass.isAssignableFrom(BrandViewModel::class.java) -> {
+                return BrandViewModel(brandUseCase) as T
+            }
+
 
 
             else -> {

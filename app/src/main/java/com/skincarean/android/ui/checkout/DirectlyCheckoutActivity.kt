@@ -92,6 +92,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
                 Glide.with(binding.root)
                     .load(uri)
                     .centerCrop()
+                    .timeout(60000)
                     .into(binding.ivInputProduct)
                 val totalPrice = data.price!!.toInt().times(quantity).toBigDecimal()
 

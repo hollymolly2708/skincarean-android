@@ -62,39 +62,13 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        binding.layoutOrder.setOnClickListener {
-            supportFragmentManager.beginTransaction().setReorderingAllowed(true)
-                .replace(R.id.fragment_container, OrderFragment(), null).commit()
 
-            if (selectedTab != 2) {
-                binding.tvHome.visibility = View.GONE
-                binding.tvProfile.visibility = View.GONE
-                binding.tvProduct.visibility = View.GONE
-
-
-                binding.ivHome.setImageResource(R.drawable.ic_home)
-                binding.ivProfile.setImageResource(R.drawable.ic_profile)
-                binding.ivProduct.setImageResource(R.drawable.ic_skincare)
-
-                binding.homeLayout.setBackgroundColor(resources.getColor(android.R.color.transparent))
-                binding.layoutProfile.setBackgroundColor(resources.getColor(android.R.color.transparent))
-                binding.layoutProduct.setBackgroundColor(resources.getColor(android.R.color.transparent))
-
-
-                binding.tvOrder.visibility = View.VISIBLE
-                binding.ivOrder.setImageResource(R.drawable.ic_selected_order)
-                binding.layoutOrder.setBackgroundResource(R.drawable.round_back_100)
-
-                scaleAnimation(binding.layoutOrder)
-                selectedTab = 2
-            }
-        }
 
         binding.layoutProduct.setOnClickListener {
             supportFragmentManager.beginTransaction().setReorderingAllowed(true)
                 .replace(R.id.fragment_container, ProductFragment(), null).commit()
 
-            if (selectedTab != 3) {
+            if (selectedTab != 2) {
                 binding.tvHome.visibility = View.GONE
                 binding.tvProfile.visibility = View.GONE
                 binding.tvOrder.visibility = View.GONE
@@ -114,6 +88,34 @@ class MainActivity : AppCompatActivity() {
                 binding.layoutProduct.setBackgroundResource(R.drawable.round_back_100)
 
                 scaleAnimation(binding.layoutProduct)
+                selectedTab = 2
+            }
+        }
+
+        binding.layoutOrder.setOnClickListener {
+            supportFragmentManager.beginTransaction().setReorderingAllowed(true)
+                .replace(R.id.fragment_container, OrderFragment(), null).commit()
+
+            if (selectedTab != 3) {
+                binding.tvHome.visibility = View.GONE
+                binding.tvProfile.visibility = View.GONE
+                binding.tvProduct.visibility = View.GONE
+
+
+                binding.ivHome.setImageResource(R.drawable.ic_home)
+                binding.ivProfile.setImageResource(R.drawable.ic_profile)
+                binding.ivProduct.setImageResource(R.drawable.ic_skincare)
+
+                binding.homeLayout.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutProfile.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                binding.layoutProduct.setBackgroundColor(resources.getColor(android.R.color.transparent))
+
+
+                binding.tvOrder.visibility = View.VISIBLE
+                binding.ivOrder.setImageResource(R.drawable.ic_selected_order)
+                binding.layoutOrder.setBackgroundResource(R.drawable.round_back_100)
+
+                scaleAnimation(binding.layoutOrder)
                 selectedTab = 3
             }
         }

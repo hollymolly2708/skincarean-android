@@ -22,4 +22,5 @@ interface OrderUseCase {
     fun getDetailOrder(orderId: String, callback: (Resource<DetailOrder>) -> Unit)
     fun getAllCompleteOrder(callback: (Resource<List<Order>>) -> Unit)
     fun getAllPendingOrder(callback: (Resource<List<Order>>) -> Unit)
+    fun getAllCancelOrder(callback: (Resource<List<Order>>) -> Unit)
 }

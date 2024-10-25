@@ -16,5 +16,6 @@ interface ProductUseCase {
         callback: (Resource<List<Product>>) -> Unit,
     )
 
+
     fun getAllReviewsByProductId(productId: String, callback: (Resource<List<Review>>) -> Unit)
 }

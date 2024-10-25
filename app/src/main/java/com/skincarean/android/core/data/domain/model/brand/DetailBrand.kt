@@ -1,6 +1,6 @@
 package com.skincarean.android.core.data.domain.model.brand
 
-data class Brand(
+data class DetailBrand(
     val brandPoster : String? = null,
     val address : String? =null,
     val lastUpdatedAt : String? = null,

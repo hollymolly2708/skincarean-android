@@ -63,5 +63,9 @@ class OrderCompletedFragment : Fragment() {
         orderViewModel.getAllCompleteOrders()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

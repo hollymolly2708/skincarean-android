@@ -36,6 +36,7 @@ class OrderProductAdapter(private val listOrderItems: List<OrderItem?>?) :
             val uri = Uri.parse(orderProductItem?.product?.thumbnailImage)
             Glide.with(holder.binding.root)
                 .load(uri)
+                .timeout(60000)
                 .into(holder.binding.ivOrderProduct)
             holder.binding.tvInputPrice.text = Utilities.numberFormat(orderProductItem?.price)
         }

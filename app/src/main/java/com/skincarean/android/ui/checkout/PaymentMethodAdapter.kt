@@ -46,6 +46,7 @@ class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethod>) :
 
         Glide.with(holder.binding.root)
             .load(data.image)
+            .timeout(60000)
             .into(holder.binding.ivPaymentMethod)
 
 

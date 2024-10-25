@@ -34,7 +34,7 @@ class OrderFragment : Fragment() {
         val orderTabLayoutAdapter = OrderTabLayoutAdapter(requireActivity())
         val viewPager = binding.vpOrder
         val tabs = binding.tabsOrder
-        val tabNames = arrayOf("Pending", "Completed")
+        val tabNames = arrayOf("Menunggu", "Dibatalkan", "Selesai")
         viewPager.adapter = orderTabLayoutAdapter
 
         TabLayoutMediator(tabs, viewPager) { tab, position ->
@@ -42,6 +42,11 @@ class OrderFragment : Fragment() {
         }.attach()
 
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

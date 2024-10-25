@@ -17,12 +17,15 @@ import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentHomeBinding
+import com.skincarean.android.ui.brand.BrandViewModel
+import com.skincarean.android.ui.brand.DetailBrandActivity
 import com.skincarean.android.ui.cart.CartActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -37,6 +40,7 @@ class HomeFragment : Fragment() {
         val factory = Injector.provideViewModelFactory()
         viewModel =
             ViewModelProvider(requireActivity(), factory = factory)[HomeViewModel::class.java]
+
         setupObservers()
         setupTopBrand()
         setupView()
@@ -74,7 +78,9 @@ class HomeFragment : Fragment() {
 
             adapter.setUpOnItemClickCallback(object : OnItemClickCallback {
                 override fun onTopBrandClickCallback(data: Brand) {
-                    val intent = Intent(requireContext(), DetailTopBrandActivity::class.java)
+                    val intent = Intent(requireContext(), DetailBrandActivity::class.java)
+                    intent.putExtra(DetailBrandActivity.EXTRA_BRAND_ID, data.id)
+
                     startActivity(intent)
                 }
             })
@@ -88,6 +94,7 @@ class HomeFragment : Fragment() {
                 override fun onProductClickCallback(data: Product) {
                     val intent = Intent(requireActivity(), DetailProductActivity::class.java)
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
+
                     startActivity(intent)
                 }
 
@@ -103,7 +110,13 @@ class HomeFragment : Fragment() {
         val ivUser = binding.ivUser
         Glide.with(this)
             .load(R.drawable.ic_person)
+            .timeout(60000)
             .into(ivUser)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 

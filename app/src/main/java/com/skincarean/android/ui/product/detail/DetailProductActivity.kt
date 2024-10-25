@@ -92,7 +92,10 @@ class DetailProductActivity : AppCompatActivity() {
         viewModel.product.observe(this) { data ->
             val uri = Uri.parse(data.thumbnailImage)
 
-            Glide.with(this).load(uri).into(binding.ivDetailProduct)
+            Glide.with(this)
+                .load(uri)
+                .timeout(60000)
+                .into(binding.ivDetailProduct)
             binding.tvInputNameProduct.text = data.productName
             binding.tvInputStok.text = data.stok.toString()
             binding.tvInputCategory.text = data.categoryName

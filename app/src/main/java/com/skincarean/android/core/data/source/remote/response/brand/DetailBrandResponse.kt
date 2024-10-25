@@ -2,7 +2,7 @@ package com.skincarean.android.core.data.source.remote.response.brand
 
 import com.google.gson.annotations.SerializedName
 
-data class BrandResponse(
+data class DetailBrandResponse(
 
 	@field:SerializedName("brandPoster")
 	val brandPoster: String? = null,

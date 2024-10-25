@@ -2,7 +2,10 @@ package com.skincarean.android.core.data.repository
 
 import com.skincarean.android.Resource
 import com.skincarean.android.core.data.domain.model.brand.Brand
+import com.skincarean.android.core.data.domain.model.brand.DetailBrand
+import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.repository.IBrandRepository
+import com.skincarean.android.core.data.mapper.ProductMapper
 import com.skincarean.android.core.data.source.remote.ApiResponse
 import com.skincarean.android.core.data.source.remote.BrandRemoteDataSource
 import java.util.stream.Collectors
@@ -50,6 +53,65 @@ class BrandRepository private constructor(private val brandRemoteDataSource: Bra
 
                 }
 
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage?.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("no data available"))
+                }
+            }
+        }
+    }
+
+    override fun detailBrandByBrandId(brandId: Long, callback: (Resource<DetailBrand>) -> Unit) {
+        brandRemoteDataSource.getDetailBrandByBrandId(brandId) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { detailBrandResponse ->
+                        val detailBrand = DetailBrand(
+                            detailBrandResponse.brandPoster,
+                            detailBrandResponse.address,
+                            detailBrandResponse.lastUpdatedAt,
+                            detailBrandResponse.description,
+                            detailBrandResponse.contactEmailUrl,
+                            detailBrandResponse.createdAt,
+                            detailBrandResponse.facebookUrl,
+                            detailBrandResponse.isTopBrand,
+                            detailBrandResponse.name,
+                            detailBrandResponse.instagramUrl,
+                            detailBrandResponse.id,
+                            detailBrandResponse.brandLogo
+                        )
+                        callback(Resource.Success(detailBrand))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("No data available"))
+                }
+            }
+        }
+    }
+
+    override fun getAllProductsByBrand(brandId: Long, callback: (Resource<List<Product>>) -> Unit) {
+        brandRemoteDataSource.getAllProductsByBrand(brandId) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { productResponses ->
+                        val products =
+                            ProductMapper.listProductResponseToListProduct(productResponses)
+                        callback(Resource.Success(products))
+                    }
+                }
                 is ApiResponse.Error -> {
                     apiResponse.errorMessage?.let {
                         callback(Resource.Error(it))

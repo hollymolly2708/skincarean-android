@@ -70,5 +70,10 @@ class OrderPendingFragment : Fragment() {
     private fun getAllPendingOrders() {
         viewModel.getAllPendingOrders()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 

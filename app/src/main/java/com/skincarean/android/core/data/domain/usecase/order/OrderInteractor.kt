@@ -37,4 +37,8 @@ class OrderInteractor(private val orderRepository: OrderRepository) : OrderUseCa
     override fun getAllPendingOrder(callback: (Resource<List<Order>>) -> Unit) {
         orderRepository.getAllPendingOrder(callback)
     }
+
+    override fun getAllCancelOrder(callback: (Resource<List<Order>>) -> Unit) {
+        orderRepository.getAllCancelOrder(callback)
+    }
 }

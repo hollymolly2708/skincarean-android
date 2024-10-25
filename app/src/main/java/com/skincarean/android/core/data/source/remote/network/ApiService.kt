@@ -17,6 +17,7 @@ import com.skincarean.android.core.data.source.remote.response.payment_method.Pa
 import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
+import com.skincarean.android.core.data.source.remote.response.brand.DetailBrandResponse
 import com.skincarean.android.core.data.source.remote.response.login.UserResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -59,6 +60,9 @@ interface ApiService {
     @GET("api/brands/top-brands")
     fun getBrandsByTopBrand(): Call<WebResponse<List<BrandResponse>>>
 
+    @GET("api/brands/{brandId}")
+    fun getDetailBrandByBrandId(@Path("brandId") brandId: Long): Call<WebResponse<DetailBrandResponse>>
+
     @GET("api/products/popular-products")
     fun getAllTopProducts(): Call<WebResponse<List<ProductResponse>>>
 
@@ -71,6 +75,9 @@ interface ApiService {
     @GET("api/products")
     fun getAllProducts(): Call<WebResponse<List<ProductResponse>>>
 
+    @GET("api/brands/{brandId}/products")
+    fun getAllProductsByBrand(@Path("brandId") brandId: Long): Call<WebResponse<List<ProductResponse>>>
+
     @GET("api/products/search")
     fun searchProducts(
         @Query("name") nameProduct: String,
@@ -81,10 +88,10 @@ interface ApiService {
     @GET("api/payment-methods")
     fun getPaymentMethods(): Call<WebResponse<List<PaymentMethodResponse>>>
 
-    @POST("api/orders/checkout/product")
+    @POST("api/orders/checkout/direct")
     fun directlyOrder(@Body directlyOrderRequest: DirectlyOrderRequest): Call<WebResponse<Map<String, Any>>>
 
-    @POST("api/orders/checkout/cart")
+    @POST("api/orders/cart/checkout")
     fun cartOrder(@Body cartOrderRequest: CartOrderRequest): Call<WebResponse<Map<String, Any>>>
 
     @GET("api/orders")
@@ -98,6 +105,9 @@ interface ApiService {
 
     @GET("api/orders/pending-order")
     fun getAllPendingOrders(): Call<WebResponse<List<OrderResponse>>>
+
+    @GET("api/orders/cancel-order")
+    fun getAllCancelOrders(): Call<WebResponse<List<OrderResponse>>>
 
     @POST("api/carts")
     fun addProductToCart(@Body addCartRequest: CartRequest): Call<WebResponse<String>>

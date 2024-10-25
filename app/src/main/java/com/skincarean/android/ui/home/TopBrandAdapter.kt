@@ -38,6 +38,7 @@ class TopBrandAdapter(private val listTopBrand: List<Brand>) :
 
             .load(brandLogoUri)
             .centerCrop()
+            .timeout(60000)
             .into(holder.binding.ivBrand)
         holder.binding.layoutTopBrand?.setOnClickListener {
             onItemClickCallback?.onTopBrandClickCallback(data)

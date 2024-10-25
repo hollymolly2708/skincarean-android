@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.brand.AboutBrandFragment">
+
+    <TextView
+        android:id="@+id/tv_input_brand_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:text="SKINTIFIC"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_input_brand_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="𝗘𝘃𝗲𝗿𝘆𝗼𝗻𝗲 𝗱𝗲𝘀𝗲𝗿𝘃𝗲 𝗵𝗲𝗮𝗹𝘁𝗵𝗶𝗲𝗿 𝘀𝗸𝗶𝗻, 𝗶𝗻𝘀𝗶𝗱𝗲 𝗮𝗻𝗱 𝗼𝘂𝘁𝘀𝗶𝗱𝗲. 𝖭𝗈𝗍 𝗈𝗇𝗅𝗒 𝖺𝖻𝗈𝗎𝗍 𝖿𝖺𝗌𝗍 𝖾𝖿𝖿𝖾𝖼𝗍𝗂𝗏𝖾 𝗋𝖾𝗌𝗎𝗅𝗍𝗌, 𝗐𝖾 𝖺𝗅𝗌𝗈 𝗉𝗋𝗂𝗈𝗋𝗂𝗍𝗂𝗓𝖾 𝗍𝗁𝖾 𝗌𝖺𝖿𝖾𝗍𝗒 𝗈𝖿 𝗒𝗈𝗎𝗋 𝗌𝗄𝗂𝗇 𝗂𝗇 𝗍𝗁𝖾 𝗅𝗈𝗇𝗀 𝗋𝗎𝗇, 𝗇𝗈 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗉𝗋𝗈𝗆𝗂𝗌𝗂𝗇𝗀 𝗍𝗁𝖾 𝗁𝖾𝖺𝗅𝗍𝗁 𝗈𝖿 𝗒𝗈𝗎𝗋 𝗌𝗄𝗂𝗇 𝖻𝖺𝗋𝗋𝗂𝖾𝗋, 𝖲𝗄𝗂𝗇𝗍𝗂𝖿𝗂𝖿𝗂𝖼 𝗐𝗂𝗅𝗅 𝗀𝗂𝗏𝖾𝗌 𝗒𝗈𝗎 𝗍𝗁𝖾 𝖻𝖾𝗌𝗍 𝗌𝗈𝗅𝗎𝗍𝗂𝗈𝗇 𝗈𝖿 𝖺𝗅𝗅. 𝖮𝗎𝗋 𝗋𝖾𝗌𝖾𝖺𝗋𝖼𝗁 𝗍𝖾𝖺𝗆 𝗌𝗉𝖾𝗇𝖽 𝗒𝖾𝖺𝗋𝗌 𝗌𝗍𝗎𝖽𝗒𝗂𝗇𝗀 𝖺𝗇𝖽 𝖽𝖾𝗏𝖾𝗅𝗈𝗉𝗂𝗇𝗀 𝖺 𝗌𝗈𝗅𝗎𝗍𝗂𝗈𝗇 𝗂𝗇 𝖺 𝖻𝗈𝗍𝗍𝗅𝖾. 𝖶𝖾 𝖻𝖺𝗌𝖾𝖽 𝖺𝗅𝗅 𝗈𝗎𝗋 𝖿𝗈𝗋𝗆𝗎𝗅𝖺𝗍𝗂𝗈𝗇 𝗈𝗇 𝖳𝖳𝖤 𝗍𝖾𝖼𝗁𝗇𝗈𝗅𝗈𝗀𝗒 (𝖳𝗋𝗂𝗅𝗈𝗀𝗒 𝖳𝗋𝗂𝖺𝗇𝗀𝗅𝖾 𝖤𝖿𝖿𝖾𝖼𝗍) 𝗍𝗁𝖺𝗍 𝗇𝗈𝗍 𝗈𝗇𝗅𝗒 𝗀𝗂𝗏𝖾 𝗒𝗈𝗎 𝖾𝖿𝖿𝖾𝖼𝗍𝗂𝗏𝖾 𝗉𝗋𝖾𝖼𝗂𝗌𝖾 𝗋𝖾𝗌𝗎𝗅𝗍𝗌, 𝖻𝗎𝗍 𝖺𝗅𝗌𝗈 𝗌𝖺𝖿𝖾 𝖺𝗇𝖽 𝗀𝖾𝗇𝗍𝗅𝖾 𝖾𝗏𝖾𝗇 𝖿𝗈𝗋 𝗉𝖾𝗈𝗉𝗅𝖾 𝗐𝗂𝗍𝗁 𝗌𝖾𝗇𝗌𝗂𝗍𝗂𝗏𝖾 𝗌𝗄𝗂𝗇."
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_input_brand_name">
+
+    </TextView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
