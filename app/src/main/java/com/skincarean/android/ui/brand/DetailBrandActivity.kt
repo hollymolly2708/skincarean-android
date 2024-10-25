@@ -4,12 +4,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skincarean.android.core.data.di.Injector
-import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.brand.DetailBrand
 import com.skincarean.android.databinding.ActivityDetailBrandBinding
 

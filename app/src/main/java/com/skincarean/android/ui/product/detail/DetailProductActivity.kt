@@ -5,12 +5,17 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.setMargins
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
@@ -28,7 +33,14 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailProductBinding
     private lateinit var viewModel: ProductViewModel
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var pageChangeListener: ViewPager2.OnPageChangeCallback
     private var quantity: Int = 0
+
+    private val params = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+    ).apply {
+        setMargins(8, 0, 8, 0)
+    }
 
     companion object {
         const val EXTRA_PRODUCT_ID = "extra_product_id"
@@ -84,26 +96,70 @@ class DetailProductActivity : AppCompatActivity() {
 
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         viewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
         viewModel.product.observe(this) { data ->
-            val uri = Uri.parse(data.thumbnailImage)
+            if (data != null) {
+                val uri = Uri.parse(data.thumbnailImage)
 
-            Glide.with(this)
-                .load(uri)
-                .timeout(60000)
-                .into(binding.ivDetailProduct)
-            binding.tvInputNameProduct.text = data.productName
-            binding.tvInputStok.text = data.stok.toString()
-            binding.tvInputCategory.text = data.categoryName
-            binding.tvInputOriginalPriceInDiscount.text = Utilities.numberFormat(data.originalPrice)
-            binding.tvInputCategory.text = data.categoryName
-            binding.tvInputDiscount.text = "${data.discount.toString()}%"
-            binding.tvInputTotalPriceInDiscount.text = Utilities.numberFormat(data.price)
+//            Glide.with(this)
+//                .load(uri)
+//                .timeout(60000)
+//                .into(binding.ivDetailProduct)
+                binding.tvInputNameProduct.text = data.productName
+                binding.tvInputStok.text = data.stok.toString()
+                binding.tvInputCategory.text = data.categoryName
+                binding.tvInputOriginalPriceInDiscount.text =
+                    Utilities.numberFormat(data.originalPrice)
+                binding.tvInputCategory.text = data.categoryName
+                binding.tvInputDiscount.text = "${data.discount.toString()}%"
+                binding.tvInputTotalPriceInDiscount.text = Utilities.numberFormat(data.price)
+
+
+
+
+                if (data.productImage != null) {
+                    val imageAdapter = ProductItemImageAdapter()
+                    binding.vpProductImage.adapter = imageAdapter
+                    imageAdapter.submitList(data.productImage)
+
+                    val dotsImage = Array(data.productImage.size) {
+                        ImageView(this)
+                    }
+                    dotsImage.forEach {
+                        it.setImageResource(R.drawable.non_active_dot)
+                        binding.slideDotLL.addView(it, params)
+                    }
+
+
+                    //default first dot selected
+                    dotsImage[0].setImageResource(R.drawable.active_dot)
+
+                    pageChangeListener = object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            dotsImage.mapIndexed { index, imageView ->
+
+                                if (position == index) {
+                                    imageView.setImageResource(R.drawable.active_dot)
+                                } else {
+                                   imageView.setImageResource(R.drawable.non_active_dot)
+                                }
+                            }
+                            super.onPageSelected(position)
+                        }
+                    }
+                    binding.vpProductImage.registerOnPageChangeCallback(pageChangeListener)
+                }
+
+            }
+
+
         }
+
 
         viewModel.listProduct.observe(this) { data ->
             val adapter = ProductAdapter(data.shuffled())
@@ -176,4 +232,10 @@ class DetailProductActivity : AppCompatActivity() {
     private fun getAllProducts() {
         viewModel.getAllProduct()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.vpProductImage.unregisterOnPageChangeCallback(pageChangeListener)
+    }
+
 }
