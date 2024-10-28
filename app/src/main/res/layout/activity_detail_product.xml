@@ -31,13 +31,15 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_product_image"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="300dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                 </androidx.viewpager2.widget.ViewPager2>
+
+
 
                 <LinearLayout
                     android:id="@+id/slideDotLL"
@@ -78,7 +80,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:text="Serum"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_input_stok"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_size"
                     app:layout_constraintStart_toStartOf="@+id/tv_input_name_product"
                     app:layout_constraintTop_toBottomOf="@+id/tv_input_name_product">
 
@@ -131,12 +133,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_original_price"
                     app:layout_constraintTop_toBottomOf="@+id/tv_input_category">
 
                     <TextView
-                        android:id="@+id/tv_input_total_price_in_discount"
+                        android:id="@+id/tv_input_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -149,7 +153,7 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/tv_input_original_price_in_discount"
+                        android:id="@+id/tv_input_original_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -175,8 +179,8 @@
                         android:textColor="@color/white"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_input_total_price_in_discount"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_input_total_price_in_discount">
+                        app:layout_constraintStart_toStartOf="@+id/tv_input_total_price"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_input_total_price">
 
                     </TextView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -320,7 +324,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="You might also like"
+                    android:text="Kamu mungkin juga suka"
                     android:textColor="@color/black"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -377,7 +381,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="BUY THIS ONE"
+                android:text="BELI SEKARANG"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -395,7 +399,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_cart"
+            android:src="@drawable/ic_cart_black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">

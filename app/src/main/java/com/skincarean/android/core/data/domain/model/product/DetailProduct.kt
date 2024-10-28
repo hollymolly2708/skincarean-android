@@ -17,5 +17,6 @@ data class DetailProduct(
     val isPopularProduct: Boolean? = null,
     val thumbnailImage: String? = null,
     val productImage: List<ProductImageItem?>? = null,
+    val ingredient : String? = null,
     val productDescription: String? = null,
 )

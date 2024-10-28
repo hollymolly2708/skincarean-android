@@ -1,13 +1,17 @@
 package com.skincarean.android.ui.cart
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.cart.CartItem
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
@@ -40,6 +44,13 @@ class CartAdapter(private val list: List<CartItem?>?) :
                     holder.binding.tvInputBrandName.text = data.product.brandName
                     holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
                     holder.binding.tvInputCategory.text = data.product.categoryName
+                    val uri = Uri.parse(data.product.thumbnailImage)
+                    Glide.with(holder.binding.root)
+                        .load(uri)
+                        .timeout(60000)
+                        .circleCrop()
+                        .placeholder(R.drawable.ic_loading)
+                        .into(holder.binding.ivProductCart)
                 }
                 holder.binding.tvInputQuantity.text = "x${data.quantity.toString()}"
             }

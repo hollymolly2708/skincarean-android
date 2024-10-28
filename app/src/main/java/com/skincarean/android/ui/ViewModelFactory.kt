@@ -67,7 +67,7 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                return HomeViewModel(productUseCase, brandUseCase) as T
+                return HomeViewModel(productUseCase, brandUseCase, userUseCase) as T
             }
 
             modelClass.isAssignableFrom(ProductViewModel::class.java) -> {

@@ -1,5 +1,6 @@
 package com.skincarean.android.ui.product.detail
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -9,55 +10,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.skincarean.android.R
 import com.skincarean.android.core.data.domain.model.product.ProductImageItem
 import com.skincarean.android.databinding.ItemProductImageBinding
+import okhttp3.internal.http.RequestLine
 
-//class ProductItemImageAdapter(private val listProductImage: List<ProductImageItem?>?) :
-//    RecyclerView.Adapter<ProductItemImageAdapter.ProductImageViewHolder>() {
-//    override fun onCreateViewHolder(
-//        parent: ViewGroup,
-//        viewType: Int,
-//    ): ProductItemImageAdapter.ProductImageViewHolder {
-//        val view = ProductImageViewHolder(
-//            ItemProductImageBinding.inflate(
-//                LayoutInflater.from(parent.context),
-//                parent,
-//                false
-//            )
-//        )
-//        return view
-//    }
-//
-//    override fun onBindViewHolder(
-//        holder: ProductItemImageAdapter.ProductImageViewHolder,
-//        position: Int,
-//    ) {
-//        if (listProductImage != null) {
-//            val productImage = listProductImage[position]
-//            val uri = Uri.parse(productImage?.imageUrl)
-//            Glide.with(holder.binding.root)
-//                .load(uri)
-//                .into(holder.binding.ivInputImageItem)
-//        }
-//
-//    }
-//
-//    override fun getItemCount(): Int {
-//        var size = 0
-//        if (listProductImage != null) {
-//            size = listProductImage.size
-//        }
-//        return size
-//    }
-//
-//    inner class ProductImageViewHolder(val binding: ItemProductImageBinding) :
-//        RecyclerView.ViewHolder(binding.root) {
-//
-//    }
-//}
 
-class ProductItemImageAdapter : ListAdapter<ProductImageItem, ProductItemImageAdapter.ViewHolder>(DiffCallback()) {
+class ProductItemImageAdapter :
+    ListAdapter<ProductImageItem, ProductItemImageAdapter.ViewHolder>(DiffCallback()) {
 
     class DiffCallback : DiffUtil.ItemCallback<ProductImageItem>() {
         override fun areItemsTheSame(
@@ -82,6 +47,32 @@ class ProductItemImageAdapter : ListAdapter<ProductImageItem, ProductItemImageAd
         fun bindData(item: ProductImageItem) {
             Glide.with(binding.root)
                 .load(item.imageUrl)
+                .timeout(60000)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+                        binding.tvLoading.text = "Gambar error saat di load"
+                        binding.ivLoading.visibility = View.VISIBLE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+                        binding.tvLoading.visibility = View.GONE
+                        binding.ivLoading.visibility = View.GONE
+                        return false
+                    }
+
+                })
                 .into(binding.ivInputImageItem)
         }
 

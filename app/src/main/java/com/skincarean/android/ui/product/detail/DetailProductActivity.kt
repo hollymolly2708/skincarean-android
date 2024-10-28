@@ -5,9 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -104,60 +107,71 @@ class DetailProductActivity : AppCompatActivity() {
         }
         viewModel.product.observe(this) { data ->
             if (data != null) {
-                val uri = Uri.parse(data.thumbnailImage)
 
-//            Glide.with(this)
-//                .load(uri)
-//                .timeout(60000)
-//                .into(binding.ivDetailProduct)
+                if (data.isPromo == false) {
+                    binding.tvInputDiscount.visibility = View.GONE
+                    binding.tvInputOriginalPrice.visibility = View.GONE
+                    binding.tvInputTotalPrice.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.black
+                        )
+                    )
+                }
                 binding.tvInputNameProduct.text = data.productName
                 binding.tvInputStok.text = data.stok.toString()
                 binding.tvInputCategory.text = data.categoryName
-                binding.tvInputOriginalPriceInDiscount.text =
+                binding.tvInputOriginalPrice.text =
                     Utilities.numberFormat(data.originalPrice)
                 binding.tvInputCategory.text = data.categoryName
                 binding.tvInputDiscount.text = "${data.discount.toString()}%"
-                binding.tvInputTotalPriceInDiscount.text = Utilities.numberFormat(data.price)
-
+                binding.tvInputTotalPrice.text = Utilities.numberFormat(data.price)
 
 
 
                 if (data.productImage != null) {
+                    // Deklarasi adapter untuk product image
                     val imageAdapter = ProductItemImageAdapter()
+
+                    // ViewPager menggunakan imageAdapter
                     binding.vpProductImage.adapter = imageAdapter
+
+                    // Memasukkan productImage ke dalam adapter yang bertipe list
                     imageAdapter.submitList(data.productImage)
 
-                    val dotsImage = Array(data.productImage.size) {
-                        ImageView(this)
-                    }
-                    dotsImage.forEach {
-                        it.setImageResource(R.drawable.non_active_dot)
-                        binding.slideDotLL.addView(it, params)
+                    // Mendeklarasikan dotsImage sebagai array dengan ukuran sesuai jumlah productImage
+                    val dotsImage = Array(data.productImage.size) { ImageView(this) }
+
+                    // Looping untuk set gambar non-active dot dan menambahkannya ke slideDotLL
+                    dotsImage.forEach { dot ->
+                        dot.setImageResource(R.drawable.non_active_dot)
+                        binding.slideDotLL.addView(dot, params)
                     }
 
-
-                    //default first dot selected
+                    // Mengatur dot pertama sebagai active dot
                     dotsImage[0].setImageResource(R.drawable.active_dot)
 
+                    // Callback untuk mendeteksi perubahan halaman pada ViewPager
                     pageChangeListener = object : ViewPager2.OnPageChangeCallback() {
                         override fun onPageSelected(position: Int) {
-                            dotsImage.mapIndexed { index, imageView ->
-
+                            dotsImage.forEachIndexed { index, imageView ->
+                                // Set dot sesuai dengan posisi ViewPager
                                 if (position == index) {
                                     imageView.setImageResource(R.drawable.active_dot)
                                 } else {
-                                   imageView.setImageResource(R.drawable.non_active_dot)
+                                    imageView.setImageResource(R.drawable.non_active_dot)
                                 }
                             }
                             super.onPageSelected(position)
                         }
                     }
+
+                    // Menambahkan pageChangeListener ke ViewPager
                     binding.vpProductImage.registerOnPageChangeCallback(pageChangeListener)
                 }
 
+
             }
-
-
         }
 
 
@@ -235,6 +249,8 @@ class DetailProductActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        //menghapus listener untuk viewpager productImage
         binding.vpProductImage.unregisterOnPageChangeCallback(pageChangeListener)
     }
 

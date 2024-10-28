@@ -46,7 +46,7 @@ class ProductFragment : Fragment() {
 
     private fun setupObservers() {
         productViewModel.listProduct.observe(viewLifecycleOwner) { productResponses ->
-            val adapter = ProductAdapter(productResponses)
+            val adapter = ProductAdapter(productResponses.shuffled())
             binding.rvProduct.adapter = adapter
             binding.rvProduct.layoutManager =
                 GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)

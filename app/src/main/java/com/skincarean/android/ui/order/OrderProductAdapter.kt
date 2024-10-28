@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.order.OrderItem
 import com.skincarean.android.databinding.ItemOrderProductBinding
@@ -38,6 +40,7 @@ class OrderProductAdapter(private val listOrderItems: List<OrderItem?>?) :
                 .load(uri)
                 .timeout(60000)
                 .into(holder.binding.ivOrderProduct)
+
             holder.binding.tvInputPrice.text = Utilities.numberFormat(orderProductItem?.price)
         }
     }

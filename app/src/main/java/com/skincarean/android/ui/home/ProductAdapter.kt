@@ -1,21 +1,28 @@
 package com.skincarean.android.ui.home
 
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
+import com.skincarean.android.Resource
+import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ItemProductBinding
+import java.math.BigDecimal
 
 class ProductAdapter(private val listPopularProduct: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
 
-    private  var onItemClickCallback: OnItemClickCallback? = null
+    private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
@@ -36,7 +43,11 @@ class ProductAdapter(private val listPopularProduct: List<Product>) :
         holder.binding.textProductName.text = data.productName
         val uri = Uri.parse(data.thumbnailImage)
 
-        Glide.with(holder.binding.root).load(uri).into(holder.binding.imageProduct)
+        Glide.with(holder.binding.root)
+            .load(uri)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .timeout(60000)
+            .into(holder.binding.imageProduct)
         holder.itemView.setOnClickListener {
             onItemClickCallback?.onProductClickCallback(data)
         }
@@ -56,39 +67,65 @@ class ProductAdapter(private val listPopularProduct: List<Product>) :
     private fun setupItemView(holder: ProductViewHolder, data: Product) {
         val priceAfterDiscount = holder.binding.tvTotalPrice
         val originalPrice = holder.binding.tvOriginalPrice
-//
-//        if (data.isPopularProduct == true) {
-//            ivPopularProduct.visibility = View.VISIBLE
-//        } else {
-//            ivPopularProduct.visibility = View.GONE
-//        }
+        val discount = holder.binding.tvInputDiscount
+
+        priceAfterDiscount.text = Utilities.numberFormat(data.price)
+        originalPrice.text = Utilities.numberFormat(data.originalPrice)
+        discount.text = "-${data.discount}%"
 
         val layoutParams = originalPrice.layoutParams as ViewGroup.MarginLayoutParams
         val scale = originalPrice.context.resources.displayMetrics.density
 
         if (data.isPromo == true) {
             priceAfterDiscount.visibility = View.VISIBLE
+            discount.visibility = View.VISIBLE
+
+            priceAfterDiscount.setTextColor(
+                ContextCompat.getColor(
+                    originalPrice.context,
+                    R.color.red_50
+                )
+            )
+
             originalPrice.paintFlags = originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            originalPrice.setTypeface(originalPrice.typeface, Typeface.BOLD_ITALIC)
 
+            // Mengatur margin dan ukuran teks khusus saat promo
             val marginInDp = 4
-
             layoutParams.setMargins(
-                (marginInDp * scale).toInt(), (marginInDp * scale).toInt(), 0, 0
+                (marginInDp * scale).toInt(),
+                (marginInDp * scale).toInt(),
+                0,
+                0
             )
-            originalPrice.textSize = 10f
             originalPrice.layoutParams = layoutParams
-        } else {
-            layoutParams.setMargins(
-                (0), 0, 0, 0
+            originalPrice.textSize = 10f
+            originalPrice.setTextColor(
+                ContextCompat.getColor(
+                    originalPrice.context,
+                    R.color.black
+                )
             )
-            originalPrice.textSize = 14f
+        } else {
+            // Reset tampilan ke default jika tidak promo
             priceAfterDiscount.visibility = View.GONE
-            originalPrice.visibility = View.VISIBLE
+            discount.visibility = View.GONE
 
+            originalPrice.paintFlags = originalPrice.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            originalPrice.setTypeface(originalPrice.typeface, Typeface.BOLD)
+
+            layoutParams.setMargins(0, 0, 0, 0)
+            originalPrice.layoutParams = layoutParams
+            originalPrice.textSize = 12f
+            originalPrice.setTextColor(
+                ContextCompat.getColor(
+                    originalPrice.context,
+                    R.color.black
+                )
+            )
         }
-
-
     }
+
 
 
 }

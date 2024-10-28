@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.databinding.ItemTopBrandBinding
 
@@ -13,7 +15,7 @@ class TopBrandAdapter(private val listTopBrand: List<Brand>) :
     RecyclerView.Adapter<TopBrandAdapter.TopBrandViewHolder>() {
 
     private var onItemClickCallback: OnItemClickCallback? = null
-     fun setUpOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+    fun setUpOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 

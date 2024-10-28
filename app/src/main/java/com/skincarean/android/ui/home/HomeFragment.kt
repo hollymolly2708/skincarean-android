@@ -1,6 +1,7 @@
 package com.skincarean.android.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,15 +17,16 @@ import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
+import com.skincarean.android.core.data.domain.model.user.User
 import com.skincarean.android.databinding.FragmentHomeBinding
-import com.skincarean.android.ui.brand.BrandViewModel
 import com.skincarean.android.ui.brand.DetailBrandActivity
 import com.skincarean.android.ui.cart.CartActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +40,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val factory = Injector.provideViewModelFactory()
-        viewModel =
+        homeViewModel =
             ViewModelProvider(requireActivity(), factory = factory)[HomeViewModel::class.java]
 
         setupObservers()
         setupTopBrand()
-        setupView()
         setupPopularProduct()
         bindingView()
+        setupUserProfile()
     }
 
     private fun bindingView() {
@@ -56,19 +58,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupTopBrand() {
-        viewModel.getAllBrandByTopBrand()
+        homeViewModel.getAllBrandByTopBrand()
     }
 
     private fun setupPopularProduct() {
-        viewModel.getAllPopularProduct()
+        homeViewModel.getAllPopularProduct()
+    }
+
+    private fun setupUserProfile() {
+        homeViewModel.getCurrentUser()
     }
 
     private fun setupObservers() {
-        viewModel.errorMessage.observe(requireActivity()) {
+
+        homeViewModel.currentUser.observe(viewLifecycleOwner) {
+            setupUser(it)
+        }
+        homeViewModel.errorMessage.observe(viewLifecycleOwner) {
             Utilities.customDialog(it, requireActivity())
         }
 
-        viewModel.allBrandByTopBrand.observe(viewLifecycleOwner) { data ->
+        homeViewModel.allBrandByTopBrand.observe(viewLifecycleOwner) { data ->
 
             val adapter = TopBrandAdapter(data)
             binding.rvTopBrand.layoutManager =
@@ -88,7 +98,7 @@ class HomeFragment : Fragment() {
 
         }
 
-        viewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
+        homeViewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
             val adapter = ProductAdapter(data.shuffled())
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
                 override fun onProductClickCallback(data: Product) {
@@ -106,12 +116,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupView() {
+    private fun setupUser(data: User) {
         val ivUser = binding.ivUser
-        Glide.with(this)
-            .load(R.drawable.ic_person)
+        val uri = Uri.parse(data.profilePicture)
+        Glide.with(requireActivity())
+            .load(uri)
             .timeout(60000)
+            .circleCrop()
             .into(ivUser)
+        binding.tvFullNameUser.text = data.fullName
+
     }
 
     override fun onDestroyView() {

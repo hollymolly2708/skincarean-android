@@ -168,7 +168,7 @@ class CartViewModel(
     }
 
     fun deleteCartItem(cartId: Long) {
-        cartUseCase.plusQuantity(cartId, { resource ->
+        cartUseCase.deleteCartItem(cartId, { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {

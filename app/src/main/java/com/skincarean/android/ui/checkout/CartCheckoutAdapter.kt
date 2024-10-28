@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.cart.CartItem
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
@@ -40,6 +42,8 @@ class CartCheckoutAdapter(private val listCartItemResponse: List<CartItem?>?) :
                     val uri = Uri.parse(data.product.thumbnailImage)
                     Glide.with(holder.binding.root)
                         .load(uri)
+                        .timeout(60000)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.binding.ivOrderProduct)
                 }
             }

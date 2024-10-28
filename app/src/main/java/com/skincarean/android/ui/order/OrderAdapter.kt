@@ -36,7 +36,7 @@ class OrderAdapter(private val listOrderResponse: List<Order?>?) :
             if (orderResponse != null) {
                 holder.binding.apply {
                     tvInputOrderStatus.text = orderResponse.orderStatus
-                    tvTotalPrice.text = Utilities.numberFormat(orderResponse.finalPrice)
+                    tvInputTotalPrice.text = Utilities.numberFormat(orderResponse.finalPrice)
                     rvOrderProduct.adapter =
                         OrderProductAdapter(orderResponse.orderItems)
                     rvOrderProduct.layoutManager =

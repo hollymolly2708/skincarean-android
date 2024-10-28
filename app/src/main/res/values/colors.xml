@@ -11,6 +11,7 @@
     <color name="lime_green">#32CD32</color>
     <color name="lime_green_20">#3332CD32</color>
     <color name="red">#FF0000</color>
+    <color name="dark_red">#CC0000</color>
     <color name="red_80">#CCFF0000</color>
     <color name="red_50">#CCFF0000</color>
     <color name="red_20">#4DFF0000</color>
@@ -33,5 +34,15 @@
     <color name="blue"> #0000FF</color>
     <color name="cyan">#00FFFF </color>
     <color name="dodger_blue">#1E90FF</color>
+
+
+    <color name="aqua_light">#A7D8E0</color>
+    <color name="aqua_light_80">#CCA7D8E0</color>
+    <color name="aqua_light_20">#33A7D8E0</color>
+
+    <color name="aqua_mid">#8BC4D9</color>
+    <color name="aqua_dark">#7AB8D7</color>
+    <color name="aqua_darker">#6BA3B4</color>
+
 
 </resources>

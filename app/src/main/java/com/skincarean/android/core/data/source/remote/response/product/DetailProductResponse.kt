@@ -47,6 +47,9 @@ data class DetailProductResponse(
 
     @field:SerializedName("thumbnailImage")
     val thumbnailImage: String? = null,
+    
+    @field:SerializedName("ingredient")
+    val ingredient : String? = null,
 
     @field:SerializedName("productDescription")
     val productDescription: String? = null,

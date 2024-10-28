@@ -57,6 +57,7 @@ object ProductMapper {
             input.isPopularProduct,
             input.thumbnailImage,
             productImageItems,
+            input.ingredient,
             input.productDescription
 
 
