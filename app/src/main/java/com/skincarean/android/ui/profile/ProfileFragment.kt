@@ -51,7 +51,7 @@ class ProfileFragment : Fragment() {
                         .circleCrop()
                         .timeout(60000)
                         .into(binding.ivProfile)
-                }else{
+                } else {
                     val uri = Uri.parse(currentUser.profilePicture)
                     Glide.with(requireContext())
                         .load(uri)
@@ -66,9 +66,12 @@ class ProfileFragment : Fragment() {
                 }
 
 
-
             }
 
+        }
+
+        profileViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            loading(isLoading)
         }
     }
 
@@ -124,6 +127,25 @@ class ProfileFragment : Fragment() {
 
     private fun getCurrentUser() {
         profileViewModel.getCurrentUser()
+    }
+
+
+
+
+    private fun loading(loading: Boolean) {
+        if (loading) {
+            binding.layoutProfileName.visibility = View.GONE
+            binding.layoutProfilePhone.visibility = View.GONE
+            binding.layoutProfileEmail.visibility = View.GONE
+            binding.layoutProfileAddress.visibility = View.GONE
+            binding.layoutProfileImage.visibility = View.GONE
+        } else {
+            binding.layoutProfileName.visibility = View.VISIBLE
+            binding.layoutProfilePhone.visibility = View.VISIBLE
+            binding.layoutProfileEmail.visibility = View.VISIBLE
+            binding.layoutProfileAddress.visibility = View.VISIBLE
+            binding.layoutProfileImage.visibility = View.VISIBLE
+        }
     }
 
     override fun onResume() {

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_20"
@@ -10,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
-        android:id="@+id/constraintLayout6"
+        android:id="@+id/layout_profile_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@drawable/background_gradient"
@@ -42,7 +43,7 @@
         android:background="@drawable/background_square"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/layout_profile_image">
 
 
         <TextView
@@ -262,5 +263,17 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_profile_phone">
 
     </androidx.appcompat.widget.AppCompatButton>
+
+    <ImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,8 +51,9 @@ class UpdateProfileActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        profileViewModel.message.observe(this) {
-            Utilities.customDialog(it, this)
+        profileViewModel.message.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { Utilities.customDialog(it, this) }
+
         }
     }
 
