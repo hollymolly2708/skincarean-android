@@ -21,7 +21,9 @@ class OrderViewModel(
     private val _allCancelOrders: MutableLiveData<List<Order>> = MutableLiveData()
     private val _detailOrder: MutableLiveData<DetailOrder> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
+    private val _loading : MutableLiveData<Boolean> = MutableLiveData()
 
+    val loading : LiveData<Boolean> = _loading
     val allOrders: LiveData<List<Order>> = _allOrders
     val detailOrder: LiveData<DetailOrder> = _detailOrder
     val allCancelOrders: LiveData<List<Order>> = _allCancelOrders
@@ -81,16 +83,18 @@ class OrderViewModel(
                     resource.data?.let {
                         _allCompleteOrders.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }
@@ -103,16 +107,18 @@ class OrderViewModel(
                     resource.data?.let {
                         _allPendingOrders.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }
@@ -126,16 +132,18 @@ class OrderViewModel(
                     resource.data?.let {
                         _allCancelOrders.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }

@@ -21,11 +21,13 @@ class ProductViewModel(
     private val _message: MutableLiveData<String> = MutableLiveData()
     private val _product: MutableLiveData<DetailProduct> = MutableLiveData()
     private val _listProduct: MutableLiveData<List<Product>> = MutableLiveData()
+    private val _loading : MutableLiveData<Boolean> = MutableLiveData()
 
 
     val allReviews: LiveData<List<Review>> = _allReviews
     val product: LiveData<DetailProduct> = _product
     val message: LiveData<String> = _message
+    val loading : LiveData<Boolean> = _loading
     val listProduct: LiveData<List<Product>> = _listProduct
 
     fun getAllReviews(productId: String) {
@@ -81,16 +83,18 @@ class ProductViewModel(
                     resource.data?.let {
                         _listProduct.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }

@@ -42,28 +42,46 @@ class ProductFragment : Fragment() {
         setupObservers()
         searchListener()
         bindingView()
+
     }
 
     private fun setupObservers() {
-        productViewModel.listProduct.observe(viewLifecycleOwner) { productResponses ->
-            val adapter = ProductAdapter(productResponses.shuffled())
-            binding.rvProduct.adapter = adapter
-            binding.rvProduct.layoutManager =
-                GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
-            binding.rvProduct.setHasFixedSize(true)
-
-
-
-
-            adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onProductClickCallback(data: Product) {
-                    val intent = Intent(requireActivity(), DetailProductActivity::class.java)
-                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
-                    startActivity(intent)
-                }
-            })
+        productViewModel.listProduct.observe(viewLifecycleOwner) { products ->
+            setupListProduct(products)
+        }
+        productViewModel.loading.observe(viewLifecycleOwner) {
+            setupLoading(it)
         }
 
+    }
+
+    private fun setupLoading(loading: Boolean) {
+        if (loading) {
+            binding.rvProduct.visibility = View.GONE
+            binding.ivLoading.visibility = View.VISIBLE
+        } else {
+            binding.rvProduct.visibility = View.VISIBLE
+            binding.ivLoading.visibility = View.GONE
+        }
+    }
+
+    private fun setupListProduct(products: List<Product>) {
+        val adapter = ProductAdapter(products.shuffled())
+        binding.rvProduct.adapter = adapter
+        binding.rvProduct.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
+        binding.rvProduct.setHasFixedSize(true)
+
+
+
+
+        adapter.setOnItemClickCallback(object : OnItemClickCallback {
+            override fun onProductClickCallback(data: Product) {
+                val intent = Intent(requireActivity(), DetailProductActivity::class.java)
+                intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun bindingView() {

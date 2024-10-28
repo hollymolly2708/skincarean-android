@@ -45,25 +45,41 @@ class OrderPendingFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.allPendingOrders.observe(viewLifecycleOwner) { listOrderResponse ->
+        viewModel.allPendingOrders.observe(viewLifecycleOwner) { orders ->
+            setupPendingOrder(orders)
+        }
+        viewModel.loading.observe(viewLifecycleOwner) {
+            setLoading(it)
+        }
+    }
 
-            val orderAdapter = OrderAdapter(listOrderResponse)
-            listOrderResponse.forEach {
-                OrderProductAdapter(it.orderItems)
+    private fun setupPendingOrder(orders: List<Order>) {
+        val orderAdapter = OrderAdapter(orders)
+        orders.forEach {
+            OrderProductAdapter(it.orderItems)
+        }
+
+        orderAdapter.setOnItemClickCallback(object : OnItemClickCallback {
+            override fun onOrderClickCallback(data: Order) {
+                val intent = Intent(requireContext(), DetailOrderActivity::class.java)
+                intent.putExtra(DetailOrderActivity.EXTRA_ORDER_ID, data.orderId)
+                startActivity(intent)
             }
-
-            orderAdapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onOrderClickCallback(data: Order) {
-                    val intent = Intent(requireContext(), DetailOrderActivity::class.java)
-                    intent.putExtra(DetailOrderActivity.EXTRA_ORDER_ID, data.orderId)
-                    startActivity(intent)
-                }
-            })
+        })
 
 
-            binding.rvOrder.adapter = orderAdapter
-            binding.rvOrder.layoutManager = LinearLayoutManager(requireActivity())
-            binding.rvOrder.setHasFixedSize(true)
+        binding.rvOrder.adapter = orderAdapter
+        binding.rvOrder.layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvOrder.setHasFixedSize(true)
+    }
+
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            binding.rvOrder.visibility = View.GONE
+            binding.ivLoading.visibility = View.VISIBLE
+        } else {
+            binding.rvOrder.visibility = View.VISIBLE
+            binding.ivLoading.visibility = View.GONE
         }
     }
 

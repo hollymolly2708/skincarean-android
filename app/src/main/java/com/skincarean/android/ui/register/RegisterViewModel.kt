@@ -39,32 +39,5 @@ class RegisterViewModel(private val userUseCase: UserUseCase) : ViewModel() {
         }
     }
 
-//    fun registerUser(registerUserRequest: RegisterUserRequest) {
-//        userRepository.registerUser(registerUserRequest) { response ->
-//
-//
-//            // Cek jika response merupakan WebResponse
-//            if (response is WebResponse<*>) {
-//                // Jika ada data, set nilai registerResult
-//                response.data?.let {
-//                    _registerResult.value = Event(it.toString())
-//                }
-//
-//                // Jika ada error, set nilai errorMessage
-//                response.errors?.let {
-//                    _errorMessage.value = Event(it)
-//
-//                }
-//
-//                Log.d("registerViewModel", response.errors.toString())
-//            } else if (response is ErrorResponse) {
-//                // Tangani ErrorResponse
-//                response.error?.let {
-//                    _errorMessage.value = Event(it)
-//                    Log.d("registerViewModel", response.error)
-//                }
-//            }
-//        }
-//
-//    }
+
 }

@@ -40,23 +40,40 @@ class OrderCompletedFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        orderViewModel.allCompleteOrders.observe(viewLifecycleOwner) { listOrderResponse ->
-            listOrderResponse.forEach {
-                OrderProductAdapter(it.orderItems)
-            }
-            val adapter = OrderAdapter(listOrderResponse)
-            adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onOrderClickCallback(data: Order) {
-
-                    val intent = Intent(requireContext(), DetailOrderActivity::class.java)
-                    intent.putExtra(DetailOrderActivity.EXTRA_ORDER_ID, data.orderId)
-                    startActivity(intent)
-                }
-            })
-            binding.rvOrder.adapter = adapter
-            binding.rvOrder.layoutManager = LinearLayoutManager(requireActivity())
-            binding.rvOrder.setHasFixedSize(true)
+        orderViewModel.allCompleteOrders.observe(viewLifecycleOwner) { orders ->
+            setCompleteOrders(orders)
         }
+        orderViewModel.loading.observe(viewLifecycleOwner) {
+            setLoading(it)
+        }
+    }
+
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            binding.rvOrder.visibility = View.GONE
+            binding.ivLoading.visibility = View.VISIBLE
+        } else {
+            binding.rvOrder.visibility = View.VISIBLE
+            binding.ivLoading.visibility = View.GONE
+        }
+    }
+
+    private fun setCompleteOrders(orders: List<Order>) {
+        orders.forEach {
+            OrderProductAdapter(it.orderItems)
+        }
+        val adapter = OrderAdapter(orders)
+        adapter.setOnItemClickCallback(object : OnItemClickCallback {
+            override fun onOrderClickCallback(data: Order) {
+
+                val intent = Intent(requireContext(), DetailOrderActivity::class.java)
+                intent.putExtra(DetailOrderActivity.EXTRA_ORDER_ID, data.orderId)
+                startActivity(intent)
+            }
+        })
+        binding.rvOrder.adapter = adapter
+        binding.rvOrder.layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvOrder.setHasFixedSize(true)
     }
 
     private fun getAllCompleteOrders() {

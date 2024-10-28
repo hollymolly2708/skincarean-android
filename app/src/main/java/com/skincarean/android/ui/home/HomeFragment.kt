@@ -3,16 +3,14 @@ package com.skincarean.android.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.ui.product.detail.DetailProductActivity
-import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
@@ -21,6 +19,7 @@ import com.skincarean.android.core.data.domain.model.user.User
 import com.skincarean.android.databinding.FragmentHomeBinding
 import com.skincarean.android.ui.brand.DetailBrandActivity
 import com.skincarean.android.ui.cart.CartActivity
+import com.skincarean.android.ui.product.detail.DetailProductActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -74,46 +73,64 @@ class HomeFragment : Fragment() {
         homeViewModel.currentUser.observe(viewLifecycleOwner) {
             setupUser(it)
         }
-        homeViewModel.errorMessage.observe(viewLifecycleOwner) {
-            Utilities.customDialog(it, requireActivity())
+        homeViewModel.message.observe(viewLifecycleOwner) { event ->
+            setupMessage(event)
+
         }
 
         homeViewModel.allBrandByTopBrand.observe(viewLifecycleOwner) { data ->
 
-            val adapter = TopBrandAdapter(data)
-            binding.rvTopBrand.layoutManager =
-                GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
-            binding.rvTopBrand.setHasFixedSize(true)
-            binding.rvTopBrand.adapter = adapter
-
-            adapter.setUpOnItemClickCallback(object : OnItemClickCallback {
-                override fun onTopBrandClickCallback(data: Brand) {
-                    val intent = Intent(requireContext(), DetailBrandActivity::class.java)
-                    intent.putExtra(DetailBrandActivity.EXTRA_BRAND_ID, data.id)
-
-                    startActivity(intent)
-                }
-            })
-
+            setupTopBrand(data)
 
         }
 
         homeViewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
-            val adapter = ProductAdapter(data.shuffled())
-            adapter.setOnItemClickCallback(object : OnItemClickCallback {
-                override fun onProductClickCallback(data: Product) {
-                    val intent = Intent(requireActivity(), DetailProductActivity::class.java)
-                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
-
-                    startActivity(intent)
-                }
-
-            })
-            binding.rvPopularProduct.adapter = adapter
-            binding.rvPopularProduct.layoutManager =
-                GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
-            binding.rvPopularProduct.setHasFixedSize(true)
+            setupPopularProduct(data)
         }
+    }
+
+    private fun setupMessage(event: com.skincarean.android.event.Event<String>) {
+        event.getContentIfNotHandled()?.let {
+            Utilities.customDialog(it, requireActivity())
+        }
+    }
+
+    private fun setupPopularProduct(data: List<Product>) {
+        val adapter = ProductAdapter(data.shuffled())
+        adapter.setOnItemClickCallback(object : OnItemClickCallback {
+            override fun onProductClickCallback(data: Product) {
+                val intent = Intent(requireActivity(), DetailProductActivity::class.java)
+                intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
+
+                startActivity(intent)
+            }
+
+        })
+        binding.rvPopularProduct.adapter = adapter
+        binding.rvPopularProduct.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
+        binding.rvPopularProduct.setHasFixedSize(true)
+    }
+
+
+
+    private fun setupTopBrand(data: List<Brand>) {
+
+        val adapter = TopBrandAdapter(data)
+        binding.rvTopBrand.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
+        binding.rvTopBrand.setHasFixedSize(true)
+        binding.rvTopBrand.adapter = adapter
+
+        adapter.setUpOnItemClickCallback(object : OnItemClickCallback {
+            override fun onTopBrandClickCallback(data: Brand) {
+                val intent = Intent(requireContext(), DetailBrandActivity::class.java)
+                intent.putExtra(DetailBrandActivity.EXTRA_BRAND_ID, data.id)
+
+                startActivity(intent)
+            }
+        })
+
     }
 
     private fun setupUser(data: User) {

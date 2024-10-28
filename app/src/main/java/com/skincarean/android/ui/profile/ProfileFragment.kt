@@ -139,12 +139,14 @@ class ProfileFragment : Fragment() {
             binding.layoutProfileEmail.visibility = View.GONE
             binding.layoutProfileAddress.visibility = View.GONE
             binding.layoutProfileImage.visibility = View.GONE
+            binding.ivLoading.visibility = View.VISIBLE
         } else {
             binding.layoutProfileName.visibility = View.VISIBLE
             binding.layoutProfilePhone.visibility = View.VISIBLE
             binding.layoutProfileEmail.visibility = View.VISIBLE
             binding.layoutProfileAddress.visibility = View.VISIBLE
             binding.layoutProfileImage.visibility = View.VISIBLE
+            binding.ivLoading.visibility = View.GONE
         }
     }
 
