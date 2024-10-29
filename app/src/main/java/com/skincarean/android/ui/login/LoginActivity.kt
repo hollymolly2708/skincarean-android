@@ -22,6 +22,7 @@ import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.databinding.ActivityLoginBinding
 import com.skincarean.android.ui.ViewModelFactory
 import com.skincarean.android.ui.main.MainActivity
+import com.skincarean.android.ui.register.RegisterActivity
 import java.util.Objects
 
 class LoginActivity : AppCompatActivity() {
@@ -62,6 +63,10 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLoginViaGmail.setOnClickListener {
             intentToGoogleAccounts()
         }
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
@@ -92,14 +97,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.loginResult.observe(this, Observer { response ->
+        viewModel.loginResult.observe(this) { response ->
             if (response != null) {
                 LoginSharedPref.saveData(this, response)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-        })
+        }
 
         viewModel.errorMessage.observe(this) { errorMessage ->
             if (errorMessage != null) {

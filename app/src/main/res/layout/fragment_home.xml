@@ -37,10 +37,10 @@
 
             <ImageView
                 android:id="@+id/iv_cart"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
-                android:src="@drawable/ic_cart"
+                android:src="@drawable/ic_cart_2"
                 app:layout_constraintBottom_toBottomOf="@+id/searchView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/searchView"
@@ -85,13 +85,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="60dp"
                 android:layout_marginBottom="16dp"
-                app:queryHint="Cari produk disini...d"
-                android:background="@drawable/background_search"
+                android:background="@drawable/background_square_corners"
                 android:backgroundTint="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_user">
+                app:layout_constraintTop_toBottomOf="@+id/iv_user"
+                app:queryHint="Cari produk disini...d">
 
             </androidx.appcompat.widget.SearchView>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -137,6 +137,18 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
+            <ImageView
+                android:id="@+id/iv_loading_brand"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_loading"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -178,7 +190,26 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_popular_product"
-                tools:listitem="@layout/item_product" />
+                tools:listitem="@layout/item_product"
+                tools:visibility="gone" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shimmer_popular_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_popular_product"
+                tools:listitem="@layout/item_product"
+                tools:visibility="gone" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

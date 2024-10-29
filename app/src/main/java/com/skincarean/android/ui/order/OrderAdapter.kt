@@ -4,22 +4,36 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.order.Order
-import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.ItemOrderBinding
-import com.skincarean.android.ui.checkout.PaymentMethodAdapter
 
-class OrderAdapter(private val listOrderResponse: List<Order?>?) :
-    RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
+class OrderAdapter :
+    ListAdapter<Order, OrderAdapter.OrderViewHolder>(ItemDiffCallback()) {
+
+    class ItemDiffCallback : DiffUtil.ItemCallback<Order>() {
+        override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
+            return oldItem.orderId == newItem.orderId
+        }
+
+        override fun areContentsTheSame(oldItem: Order, newItem: Order): Boolean {
+            return oldItem.orderId == newItem.orderId
+        }
+
+    }
+
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+
         this.onItemClickCallback = onItemClickCallback
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,40 +45,38 @@ class OrderAdapter(private val listOrderResponse: List<Order?>?) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: OrderAdapter.OrderViewHolder, position: Int) {
-        if (listOrderResponse != null) {
-            val orderResponse = listOrderResponse[position]
-            if (orderResponse != null) {
-                holder.binding.apply {
-                    tvInputOrderStatus.text = orderResponse.orderStatus
-                    tvInputTotalPrice.text = Utilities.numberFormat(orderResponse.finalPrice)
-                    rvOrderProduct.adapter =
-                        OrderProductAdapter(orderResponse.orderItems)
-                    rvOrderProduct.layoutManager =
-                        LinearLayoutManager(holder.itemView.context)
-
-                    customBindView(holder, orderResponse)
+        val item = getItem(position)
+        if (item != null) {
 
 
+            holder.binding.apply {
+                tvInputOrderStatus.text = item.orderStatus
+                tvInputTotalPrice.text = Utilities.numberFormat(item.finalPrice)
+                val orderItemAdapter = OrderProductAdapter()
+                orderItemAdapter.submitList(item.orderItems)
+                rvOrderProduct.adapter =
+                  orderItemAdapter
+                rvOrderProduct.layoutManager =
+                    LinearLayoutManager(holder.itemView.context)
 
-                    rvOrderProduct.isClickable = false
-                    rvOrderProduct.isNestedScrollingEnabled = false
+                customBindView(holder, item)
 
 
 
-                }
-                holder.binding.layoutItemOrder.setOnClickListener {
-                    onItemClickCallback?.onOrderClickCallback(orderResponse)
-                }
+                rvOrderProduct.isClickable = false
+                rvOrderProduct.isNestedScrollingEnabled = false
+
+
             }
-
+            holder.binding.layoutItemOrder.setOnClickListener {
+                onItemClickCallback?.onOrderClickCallback(item)
+            }
         }
 
 
     }
 
-    override fun getItemCount(): Int {
-        return listOrderResponse!!.size
-    }
+
 
     inner class OrderViewHolder(var binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root)

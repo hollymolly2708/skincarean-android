@@ -47,7 +47,8 @@ class CartCheckoutActivity : AppCompatActivity() {
 
     private fun setupCartItemAdapter(carts: Cart) {
 
-        val cartCheckoutAdapter = CartCheckoutAdapter(carts.cartItems)
+        val cartCheckoutAdapter = CartCheckoutAdapter()
+        cartCheckoutAdapter.submitList(carts.cartItems)
         binding.rvCart.apply {
             adapter = cartCheckoutAdapter
             layoutManager = LinearLayoutManager(this@CartCheckoutActivity)
@@ -60,7 +61,8 @@ class CartCheckoutActivity : AppCompatActivity() {
 
     private fun setupPaymentMethodAdapter(paymentMethods: List<PaymentMethod>) {
 
-        val paymentMethodAdapter = PaymentMethodAdapter(paymentMethods)
+        val paymentMethodAdapter = PaymentMethodAdapter()
+        paymentMethodAdapter.submitList(paymentMethods)
 
         binding.rvPaymentMethod.apply {
             adapter = paymentMethodAdapter

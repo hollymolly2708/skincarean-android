@@ -64,7 +64,8 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
     private fun setupObservers(productId: String?, quantity: Int) {
         checkoutViewModel.listPaymentMethods.observe(this) { paymentMethods ->
             if (paymentMethods != null && paymentMethods.isNotEmpty()) {
-                val adapter = PaymentMethodAdapter(paymentMethods)
+                val adapter = PaymentMethodAdapter()
+                adapter.submitList(paymentMethods)
                 binding.rvPaymentMethod.adapter = adapter
                 binding.rvPaymentMethod.layoutManager = LinearLayoutManager(this)
                 binding.rvPaymentMethod.setHasFixedSize(true)

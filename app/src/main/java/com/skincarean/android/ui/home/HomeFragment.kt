@@ -19,6 +19,7 @@ import com.skincarean.android.core.data.domain.model.user.User
 import com.skincarean.android.databinding.FragmentHomeBinding
 import com.skincarean.android.ui.brand.DetailBrandActivity
 import com.skincarean.android.ui.cart.CartActivity
+import com.skincarean.android.ui.product.ProductShimmerAdapter
 import com.skincarean.android.ui.product.detail.DetailProductActivity
 
 class HomeFragment : Fragment() {
@@ -47,6 +48,7 @@ class HomeFragment : Fragment() {
         setupPopularProduct()
         bindingView()
         setupUserProfile()
+        setupShimmerProduct()
     }
 
     private fun bindingView() {
@@ -75,17 +77,16 @@ class HomeFragment : Fragment() {
         }
         homeViewModel.message.observe(viewLifecycleOwner) { event ->
             setupMessage(event)
-
         }
-
         homeViewModel.allBrandByTopBrand.observe(viewLifecycleOwner) { data ->
 
             setupTopBrand(data)
-
         }
-
         homeViewModel.allPopularProduct.observe(viewLifecycleOwner) { data ->
             setupPopularProduct(data)
+        }
+        homeViewModel.loading.observe(viewLifecycleOwner) {
+            setupLoading(it)
         }
     }
 
@@ -96,7 +97,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPopularProduct(data: List<Product>) {
-        val adapter = ProductAdapter(data.shuffled())
+        val adapter = ProductAdapter()
+        adapter.submitList(data.shuffled())
         adapter.setOnItemClickCallback(object : OnItemClickCallback {
             override fun onProductClickCallback(data: Product) {
                 val intent = Intent(requireActivity(), DetailProductActivity::class.java)
@@ -111,7 +113,6 @@ class HomeFragment : Fragment() {
             GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
         binding.rvPopularProduct.setHasFixedSize(true)
     }
-
 
 
     private fun setupTopBrand(data: List<Brand>) {
@@ -133,6 +134,28 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun setupLoading(loading: Boolean) {
+        if (loading) {
+            binding.rvPopularProduct.visibility = View.GONE
+            binding.rvShimmerPopularProduct.visibility = View.VISIBLE
+            binding.ivLoadingBrand.visibility = View.VISIBLE
+            binding.rvTopBrand.visibility = View.GONE
+        } else {
+            binding.rvPopularProduct.visibility = View.VISIBLE
+            binding.rvShimmerPopularProduct.visibility = View.GONE
+            binding.ivLoadingBrand.visibility = View.GONE
+            binding.rvTopBrand.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupShimmerProduct() {
+        val productShimmerAdapter = ProductShimmerAdapter()
+        binding.rvShimmerPopularProduct.adapter = productShimmerAdapter
+        binding.rvShimmerPopularProduct.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
+        binding.rvShimmerPopularProduct.adapter = productShimmerAdapter
+    }
+
     private fun setupUser(data: User) {
         val ivUser = binding.ivUser
         val uri = Uri.parse(data.profilePicture)
@@ -141,7 +164,17 @@ class HomeFragment : Fragment() {
             .timeout(60000)
             .circleCrop()
             .into(ivUser)
-        binding.tvFullNameUser.text = data.fullName
+        val fullName = data.fullName
+        if (fullName != null) {
+            val names = fullName.split(" ")
+            val firstAndMiddleName = if (names.size >= 2) {
+                "${names[0]} ${names[1]}"
+            } else {
+                fullName
+            }
+            binding.tvFullNameUser.text = firstAndMiddleName
+        }
+
 
     }
 

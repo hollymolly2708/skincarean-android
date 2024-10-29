@@ -1,5 +1,6 @@
 package com.skincarean.android.ui.brand
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentProductByBrandBinding
 import com.skincarean.android.ui.home.ProductAdapter
+import com.skincarean.android.ui.product.detail.DetailProductActivity
 
 class ProductByBrandFragment : Fragment() {
 
@@ -38,7 +41,6 @@ class ProductByBrandFragment : Fragment() {
         Log.e("brandId", brandViewModel.selectedBrandId.toString())
 
 
-
     }
 
     private fun setupObservers() {
@@ -53,7 +55,15 @@ class ProductByBrandFragment : Fragment() {
     }
 
     private fun setupUI(products: List<Product>) {
-        val adapter = ProductAdapter(products)
+        val adapter = ProductAdapter()
+        adapter.submitList(products)
+        adapter.setOnItemClickCallback(object : OnItemClickCallback {
+            override fun onProductClickCallback(data: Product) {
+                val intent = Intent(requireActivity(), DetailProductActivity::class.java)
+                intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)
+                startActivity(intent)
+            }
+        })
         binding.rvProductByBrand.adapter = adapter
         binding.rvProductByBrand.layoutManager =
             GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)

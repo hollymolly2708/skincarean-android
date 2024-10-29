@@ -3,6 +3,8 @@ package com.skincarean.android.ui.checkout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -11,8 +13,19 @@ import com.skincarean.android.R
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.databinding.ItemPaymentMethodBinding
 
-class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethod>) :
-    RecyclerView.Adapter<PaymentMethodAdapter.PaymentMethodViewHolder>() {
+class PaymentMethodAdapter :
+    ListAdapter<PaymentMethod, PaymentMethodAdapter.PaymentMethodViewHolder>(ItemDiffCallback()) {
+    class ItemDiffCallback : DiffUtil.ItemCallback<PaymentMethod>() {
+        override fun areItemsTheSame(oldItem: PaymentMethod, newItem: PaymentMethod): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: PaymentMethod, newItem: PaymentMethod): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+    }
+
     private var selectedPosition = -1
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -33,7 +46,7 @@ class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethod>) :
         holder: PaymentMethodAdapter.PaymentMethodViewHolder,
         position: Int,
     ) {
-        val data = listPaymentMethod[position]
+        val data = getItem(position)
         holder.binding.radioButton.isClickable = false
         holder.binding.tvInputPaymentMethodDescription.text = data.description
         holder.binding.tvInputNamePaymentMethod.text = data.name
@@ -49,14 +62,9 @@ class PaymentMethodAdapter(private val listPaymentMethod: List<PaymentMethod>) :
         Glide.with(holder.binding.root)
             .load(data.image)
             .timeout(60000)
-            .thumbnail(Glide.with(holder.binding.root).load(R.drawable.ic_loading_3))
             .into(holder.binding.ivPaymentMethod)
 
 
-    }
-
-    override fun getItemCount(): Int {
-        return listPaymentMethod.size
     }
 
     inner class PaymentMethodViewHolder(var binding: ItemPaymentMethodBinding) :

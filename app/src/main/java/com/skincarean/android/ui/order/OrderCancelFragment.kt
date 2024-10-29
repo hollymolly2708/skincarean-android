@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.R
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.databinding.FragmentOrderCancelBinding
@@ -41,16 +40,18 @@ class OrderCancelFragment : Fragment() {
         orderViewModel.allCancelOrders.observe(viewLifecycleOwner) { orders ->
             setCancelOrders(orders)
         }
-        orderViewModel.loading.observe(viewLifecycleOwner) {
+        orderViewModel.isLoading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
     }
 
     private fun setCancelOrders(orders: List<Order>) {
         orders.forEach {
-            OrderProductAdapter(it.orderItems)
+            val adapter = OrderProductAdapter()
+            adapter.submitList(it.orderItems)
         }
-        val adapter = OrderAdapter(orders)
+        val adapter = OrderAdapter()
+        adapter.submitList(orders)
         adapter.setOnItemClickCallback(object : OnItemClickCallback {
             override fun onOrderClickCallback(data: Order) {
 

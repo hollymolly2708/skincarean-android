@@ -23,11 +23,12 @@ class ProductFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var productViewModel: ProductViewModel
-
+    private val productAdapter = ProductAdapter()
+    private val productShimmerAdapter = ProductShimmerAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProductBinding.inflate(inflater, container, false)
         return binding.root
@@ -42,6 +43,7 @@ class ProductFragment : Fragment() {
         setupObservers()
         searchListener()
         bindingView()
+        setupShimmerProduct()
 
     }
 
@@ -58,16 +60,24 @@ class ProductFragment : Fragment() {
     private fun setupLoading(loading: Boolean) {
         if (loading) {
             binding.rvProduct.visibility = View.GONE
-            binding.ivLoading.visibility = View.VISIBLE
+            binding.rvShimmerProduct.visibility = View.VISIBLE
         } else {
             binding.rvProduct.visibility = View.VISIBLE
-            binding.ivLoading.visibility = View.GONE
+            binding.rvShimmerProduct.visibility = View.GONE
         }
     }
 
+    private fun setupShimmerProduct() {
+        binding.rvShimmerProduct.adapter = productShimmerAdapter
+        binding.rvShimmerProduct.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
+        binding.rvProduct.setHasFixedSize(true)
+    }
+
     private fun setupListProduct(products: List<Product>) {
-        val adapter = ProductAdapter(products.shuffled())
-        binding.rvProduct.adapter = adapter
+
+        productAdapter.submitList(products)
+        binding.rvProduct.adapter = productAdapter
         binding.rvProduct.layoutManager =
             GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
         binding.rvProduct.setHasFixedSize(true)
@@ -75,7 +85,7 @@ class ProductFragment : Fragment() {
 
 
 
-        adapter.setOnItemClickCallback(object : OnItemClickCallback {
+        productAdapter.setOnItemClickCallback(object : OnItemClickCallback {
             override fun onProductClickCallback(data: Product) {
                 val intent = Intent(requireActivity(), DetailProductActivity::class.java)
                 intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_ID, data.productId)

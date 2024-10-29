@@ -1,8 +1,10 @@
 package com.skincarean.android.ui.cart
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
@@ -26,8 +28,6 @@ class CartActivity : AppCompatActivity() {
         getAllCarts()
         deleteAllCartItem()
         bindingView()
-
-
     }
 
     private fun setupViewModel() {
@@ -51,9 +51,12 @@ class CartActivity : AppCompatActivity() {
 
 
                 val adapter = CartAdapter(cartResponse.cartItems)
+
                 binding.rvCart.adapter = adapter
                 binding.rvCart.layoutManager = LinearLayoutManager(this)
                 binding.rvCart.setHasFixedSize(true)
+
+
                 binding.tvInputTotalAmount.text = Utilities.numberFormat(cartResponse.totalPrice)
 
 
@@ -68,7 +71,16 @@ class CartActivity : AppCompatActivity() {
                     }
 
                     override fun onTrashCartItemClicked(cartId: Long) {
-                        viewModel.deleteCartItem(cartId)
+                        AlertDialog.Builder(this@CartActivity)
+                            .setTitle("Hapus Semua")
+                            .setMessage("Apakah anda yakin ingin menghapus item ini dari keranjang ?")
+                            .setNegativeButton(
+                                "Batal"
+                            ) { p0, p1 -> p0?.dismiss() }
+                            .setPositiveButton(
+                                "OK"
+                            ) { p0, p1 -> viewModel.deleteCartItem(cartId) }.show()
+
                     }
 
                 })
@@ -89,7 +101,15 @@ class CartActivity : AppCompatActivity() {
     private fun deleteAllCartItem() {
 
         binding.ivTrash.setOnClickListener {
-            viewModel.deleteAllCartItem()
+            AlertDialog.Builder(this)
+                .setTitle("Hapus Item")
+                .setMessage("Apakah anda yakin ingin menghapus semua item ?")
+                .setPositiveButton(
+                    "Ok"
+                ) { p0, p1 -> viewModel.deleteAllCartItem() }.setNegativeButton(
+                    "Batal"
+                ) { p0, p1 -> p0.dismiss() }.show()
+
         }
 
     }

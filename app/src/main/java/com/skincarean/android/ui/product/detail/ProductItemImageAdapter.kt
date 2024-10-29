@@ -48,31 +48,6 @@ class ProductItemImageAdapter :
             Glide.with(binding.root)
                 .load(item.imageUrl)
                 .timeout(60000)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>,
-                        isFirstResource: Boolean,
-                    ): Boolean {
-                        binding.tvLoading.text = "Gambar error saat di load"
-                        binding.ivLoading.visibility = View.VISIBLE
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        model: Any,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource,
-                        isFirstResource: Boolean,
-                    ): Boolean {
-                        binding.tvLoading.visibility = View.GONE
-                        binding.ivLoading.visibility = View.GONE
-                        return false
-                    }
-
-                })
                 .into(binding.ivInputImageItem)
         }
 

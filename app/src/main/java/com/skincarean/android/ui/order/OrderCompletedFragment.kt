@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
-import com.skincarean.android.core.data.source.remote.response.OrderResponse
 import com.skincarean.android.databinding.FragmentOrderCompletedBinding
-import com.skincarean.android.ui.product.detail.DetailProductTabLayoutAdapter
 
 
 class OrderCompletedFragment : Fragment() {
@@ -43,7 +41,7 @@ class OrderCompletedFragment : Fragment() {
         orderViewModel.allCompleteOrders.observe(viewLifecycleOwner) { orders ->
             setCompleteOrders(orders)
         }
-        orderViewModel.loading.observe(viewLifecycleOwner) {
+        orderViewModel.isLoading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
     }
@@ -60,9 +58,11 @@ class OrderCompletedFragment : Fragment() {
 
     private fun setCompleteOrders(orders: List<Order>) {
         orders.forEach {
-            OrderProductAdapter(it.orderItems)
+            val adapter = OrderProductAdapter()
+            adapter.submitList(it.orderItems)
         }
-        val adapter = OrderAdapter(orders)
+        val adapter = OrderAdapter()
+        adapter.submitList(orders)
         adapter.setOnItemClickCallback(object : OnItemClickCallback {
             override fun onOrderClickCallback(data: Order) {
 

@@ -7,21 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
-import com.skincarean.android.Resource
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ItemProductBinding
-import java.math.BigDecimal
 
-class ProductAdapter(private val listPopularProduct: List<Product>) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter :
+    ListAdapter<Product, ProductAdapter.ProductViewHolder>(ItemDiffCallback()) {
 
+class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
+    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+        return oldItem.productId == newItem.productId
+    }
 
+    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        return oldItem.productId == newItem.productId
+    }
+
+}
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -39,13 +47,12 @@ class ProductAdapter(private val listPopularProduct: List<Product>) :
         holder: ProductAdapter.ProductViewHolder,
         position: Int,
     ) {
-        val data = listPopularProduct[position]
+        val data = getItem(position)
         holder.binding.textProductName.text = data.productName
         val uri = Uri.parse(data.thumbnailImage)
 
         Glide.with(holder.binding.root)
             .load(uri)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .timeout(60000)
             .into(holder.binding.imageProduct)
         holder.itemView.setOnClickListener {
@@ -56,11 +63,6 @@ class ProductAdapter(private val listPopularProduct: List<Product>) :
 
 
     }
-
-    override fun getItemCount(): Int {
-        return listPopularProduct.size
-    }
-
     inner class ProductViewHolder(var binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 

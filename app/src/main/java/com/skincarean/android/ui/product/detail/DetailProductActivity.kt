@@ -1,14 +1,19 @@
 package com.skincarean.android.ui.product.detail
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
@@ -36,7 +41,7 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailProductBinding
     private lateinit var viewModel: ProductViewModel
     private lateinit var cartViewModel: CartViewModel
-    private lateinit var pageChangeListener: ViewPager2.OnPageChangeCallback
+    private var pageChangeListener: ViewPager2.OnPageChangeCallback? = null
     private var quantity: Int = 0
 
     private val params = LinearLayout.LayoutParams(
@@ -80,10 +85,28 @@ class DetailProductActivity : AppCompatActivity() {
             getProductById(productId)
             sendOrder(productId)
             binding.btnCart.setOnClickListener {
-                val cartRequest = CartRequest(productId, 1)
-                cartViewModel.addProductToCart(cartRequest)
-                val intent = Intent(this, CartActivity::class.java)
-                startActivity(intent)
+                AlertDialog.Builder(this).setTitle("Tambah produk")
+                    .setMessage("Apakah anda ingin menambahkan produk kedalam keranjang ?")
+                    .setPositiveButton("OK", object : DialogInterface.OnClickListener {
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                            val cartRequest = CartRequest(productId, 1)
+                            cartViewModel.addProductToCart(cartRequest)
+                            val intent =
+                                Intent(this@DetailProductActivity, CartActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                    }).setNegativeButton("Batal", object : DialogInterface.OnClickListener {
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                            p0?.dismiss()
+                        }
+
+
+                    })
+
+                    .show()
+
+
             }
         }
 
@@ -108,25 +131,36 @@ class DetailProductActivity : AppCompatActivity() {
         viewModel.product.observe(this) { data ->
             if (data != null) {
 
+                val originalPrice = binding.tvInputOriginalPrice
+                val discount = binding.tvInputDiscount
+                val totalPrice = binding.tvInputTotalPrice
+
+
                 if (data.isPromo == false) {
-                    binding.tvInputDiscount.visibility = View.GONE
-                    binding.tvInputOriginalPrice.visibility = View.GONE
-                    binding.tvInputTotalPrice.setTextColor(
+                    discount.visibility = View.GONE
+                    originalPrice.visibility = View.GONE
+                    totalPrice.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.black
                         )
                     )
                 }
-                binding.tvInputNameProduct.text = data.productName
-                binding.tvInputStok.text = data.stok.toString()
-                binding.tvInputCategory.text = data.categoryName
-                binding.tvInputOriginalPrice.text =
-                    Utilities.numberFormat(data.originalPrice)
-                binding.tvInputCategory.text = data.categoryName
-                binding.tvInputDiscount.text = "${data.discount.toString()}%"
-                binding.tvInputTotalPrice.text = Utilities.numberFormat(data.price)
 
+                originalPrice.paintFlags = originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                originalPrice.setTypeface(originalPrice.typeface, Typeface.BOLD_ITALIC)
+                originalPrice.textSize = 10f
+
+                binding.apply {
+                    tvInputNameProduct.text = data.productName
+                    tvInputStok.text = data.stok.toString()
+                    tvInputCategory.text = data.categoryName
+                    tvInputOriginalPrice.text =
+                        Utilities.numberFormat(data.originalPrice)
+                    tvInputCategory.text = data.categoryName
+                    tvInputDiscount.text = "${data.discount.toString()}%"
+                    tvInputTotalPrice.text = Utilities.numberFormat(data.price)
+                }
 
 
                 if (data.productImage != null) {
@@ -167,7 +201,10 @@ class DetailProductActivity : AppCompatActivity() {
                     }
 
                     // Menambahkan pageChangeListener ke ViewPager
-                    binding.vpProductImage.registerOnPageChangeCallback(pageChangeListener)
+
+                    binding.vpProductImage.registerOnPageChangeCallback(pageChangeListener!!)
+
+
                 }
 
 
@@ -176,7 +213,8 @@ class DetailProductActivity : AppCompatActivity() {
 
 
         viewModel.listProduct.observe(this) { data ->
-            val adapter = ProductAdapter(data.shuffled())
+            val adapter = ProductAdapter()
+            adapter.submitList(data.shuffled())
             adapter.setOnItemClickCallback(object : OnItemClickCallback {
                 override fun onProductClickCallback(data: Product) {
                     val intent =
@@ -251,7 +289,10 @@ class DetailProductActivity : AppCompatActivity() {
         super.onDestroy()
 
         //menghapus listener untuk viewpager productImage
-        binding.vpProductImage.unregisterOnPageChangeCallback(pageChangeListener)
+        if (pageChangeListener != null) {
+            binding.vpProductImage.unregisterOnPageChangeCallback(pageChangeListener!!)
+        }
+
     }
 
 }

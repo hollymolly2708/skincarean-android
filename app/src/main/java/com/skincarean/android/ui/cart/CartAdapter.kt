@@ -40,42 +40,45 @@ class CartAdapter(private val list: List<CartItem?>?) :
             val data = list[position]
             if (data != null) {
                 if (data.product != null) {
-                    holder.binding.tvInputTitleProduct.text = data.product.productName
-                    holder.binding.tvInputBrandName.text = data.product.brandName
-                    holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
-                    holder.binding.tvInputCategory.text = data.product.categoryName
-                    val uri = Uri.parse(data.product.thumbnailImage)
-                    Glide.with(holder.binding.root)
-                        .load(uri)
-                        .timeout(60000)
-                        .circleCrop()
-                        .placeholder(R.drawable.ic_loading)
-                        .into(holder.binding.ivProductCart)
+                    holder.binding.apply {
+                        tvInputTitleProduct.text = data.product.productName
+                        tvInputBrandName.text = data.product.brandName
+                        tvInputPrice.text = Utilities.numberFormat(data.total)
+                        tvInputCategory.text = data.product.categoryName
+                        val uri = Uri.parse(data.product.thumbnailImage)
+                        Glide.with(holder.binding.root)
+                            .load(uri)
+                            .timeout(60000)
+                            .circleCrop()
+                            .placeholder(R.drawable.ic_loading)
+                            .into(holder.binding.ivProductCart)
+                        tvInputQuantity.text = "x${data.quantity.toString()}"
+                    }
+
                 }
-                holder.binding.tvInputQuantity.text = "x${data.quantity.toString()}"
-            }
-
-
-            holder.binding.btnPlus.setOnClickListener {
-
-                if (data != null) {
-                    onItemClickCallback?.onPlusClicked(data.id!!)
-                }
-
 
             }
 
-            holder.binding.btnMinus.setOnClickListener {
-                if (data != null) {
-                    onItemClickCallback?.onMinusClicked(data.id!!)
+            holder.binding.apply {
+                btnPlus.setOnClickListener {
+                    if (data != null) {
+                        onItemClickCallback?.onPlusClicked(data.id!!)
+                    }
+                }
+
+                btnMinus.setOnClickListener {
+                    if (data != null) {
+                        onItemClickCallback?.onMinusClicked(data.id!!)
+                    }
+                }
+
+                ivTrashCartItem.setOnClickListener {
+                    if (data != null) {
+                        onItemClickCallback?.onTrashCartItemClicked(data.id!!)
+                    }
                 }
             }
 
-            holder.binding.ivTrashCartItem.setOnClickListener {
-                if (data != null) {
-                    onItemClickCallback?.onTrashCartItemClicked(data.id!!)
-                }
-            }
         }
 
 

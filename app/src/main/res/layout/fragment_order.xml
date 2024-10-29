@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextColor="@color/black"
+        android:background="@color/white"
         app:tabIndicatorColor="@color/black"
         app:tabRippleColor="@color/black_10"
         app:layout_constraintEnd_toEndOf="parent"

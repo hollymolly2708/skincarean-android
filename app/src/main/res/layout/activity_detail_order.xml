@@ -1,508 +1,554 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white_20"
-    tools:ignore="ScrollViewCount">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout7"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        app:layout_constraintTop_toTopOf="parent"
-
-        tools:context=".ui.order.DetailOrderActivity">
+        android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/tv_input_order_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/mint_green_80"
-            android:padding="10dp"
-            android:text="Menunggu pembayaran"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </TextView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/layout_status"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layout_root_detail_order"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_input_order_status">
-
+            android:layout_height="match_parent"
+            android:background="@color/white_20"
+            android:visibility="gone"
+            tools:ignore="ScrollViewCount">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_detail_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingBottom="12dp">
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <TextView
-                    android:id="@+id/tv_shipping_address"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_input_order_status"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Alamat Pengiriman"
-                    android:textColor="@color/black"
+                    android:background="@color/mint_green_80"
+                    android:padding="10dp"
+                    android:text="Menunggu pembayaran"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                 </TextView>
 
-                <ImageView
-                    android:id="@+id/iv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_maps"
-                    app:layout_constraintStart_toStartOf="@+id/tv_shipping_address"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_shipping_address">
-
-                </ImageView>
-
-                <TextView
-                    android:id="@+id/tv_input_shipping_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/roboto_reguler"
-                    android:text="Taman Ciruas Permai Blok E5 no 6 Kecamatan Ciruas, Kabupaten Serang, Provinsi Banten, 42182"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_address"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_address"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_shipping_address">
-
-                </TextView>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_status"
-            tools:listitem="@layout/item_order_product">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/layout_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_order">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <TextView
-                    android:id="@+id/tv_tax"
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layout_status"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Pajak:"
-                    android:textSize="10sp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_input_order_status">
 
-                </TextView>
 
-                <TextView
-                    android:id="@+id/tv_input_tax"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Rp.10.000"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_tax"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_tax"
-                    app:layout_constraintTop_toTopOf="@+id/tv_tax">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="12dp">
 
-                </TextView>
 
-                <TextView
-                    android:id="@+id/tv_shipping_price"
-                    android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tv_shipping_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Alamat Pengiriman"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </TextView>
+
+                        <ImageView
+                            android:id="@+id/iv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/ic_maps"
+                            app:layout_constraintStart_toStartOf="@+id/tv_shipping_address"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_shipping_address">
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_input_shipping_address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="@font/roboto_reguler"
+                            android:text="Taman Ciruas Permai Blok E5 no 6 Kecamatan Ciruas, Kabupaten Serang, Provinsi Banten, 42182"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_address"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/iv_address"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_shipping_address">
+
+                        </TextView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_order"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Biaya pengiriman:"
-                    android:textSize="10sp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_tax">
+                    app:layout_constraintTop_toBottomOf="@+id/layout_status"
+                    tools:listitem="@layout/item_order_product">
 
-                </TextView>
+                </androidx.recyclerview.widget.RecyclerView>
 
-                <TextView
-                    android:id="@+id/tv_input_shipping_price"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layout_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Rp100.000"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_shipping_price"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_shipping_price"
-                    app:layout_constraintTop_toTopOf="@+id/tv_shipping_price">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_order">
 
-                </TextView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_total_pembayaran"
-                    android:layout_width="wrap_content"
+
+                        <TextView
+                            android:id="@+id/tv_tax"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Pajak:"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_tax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Rp.10.000"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_tax"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_tax"
+                            app:layout_constraintTop_toTopOf="@+id/tv_tax">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_shipping_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Biaya pengiriman:"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_tax">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_shipping_price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Rp100.000"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_shipping_price"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_shipping_price"
+                            app:layout_constraintTop_toTopOf="@+id/tv_shipping_price">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_total_pembayaran"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="Total pesanan: "
+                            android:textSize="10sp"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_shipping_price">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_total_pesanan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Rp104.500"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_total_pembayaran"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_total_pembayaran"
+                            app:layout_constraintTop_toTopOf="@+id/tv_total_pembayaran">
+
+                        </TextView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layout_detail_payment"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Total pesanan: "
-                    android:textSize="10sp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_payment_code">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_order_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="No. Pesanan"
+                            android:textColor="@color/black"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_order_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="3d958c4f-f5f2-4cb1-8d1b-2efb228045f3"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_order_id"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_order_id"
+                            app:layout_constraintTop_toTopOf="@+id/tv_order_id">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_payment_method_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Metode Pembayaran"
+
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_order_id">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_payment_method_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Bank BRI"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_payment_method_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_payment_method_name"
+                            app:layout_constraintTop_toTopOf="@+id/tv_payment_method_name">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_payment_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Status pembayaran:"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_payment_method_name">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_payment_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Belum dibayar"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_payment_status"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_payment_status"
+                            app:layout_constraintTop_toTopOf="@+id/tv_payment_status">
+
+                        </TextView>
+
+
+                        <TextView
+                            android:id="@+id/tv_paid_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Dibayar tanggal:"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_payment_status">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_paid_date"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="2024/10/20"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_paid_date"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_paid_date"
+                            app:layout_constraintTop_toTopOf="@+id/tv_paid_date">
+
+                        </TextView>
+
+
+                        <TextView
+                            android:id="@+id/tv_total_paid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="Total yang dibayar:"
+                            android:textSize="10sp"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_paid_date">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_input_total_paid"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Rp120.000"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_total_paid"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_total_paid"
+                            app:layout_constraintTop_toTopOf="@+id/tv_total_paid">
+
+                        </TextView>
+
+                        <Button
+                            android:id="@+id/btn_cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/background_button_login"
+                            android:text="Batalkan pembayaran"
+                            android:textColor="@color/black"
+                            android:textSize="10sp"
+                            app:backgroundTint="@null"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_total_paid">
+
+                        </Button>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:id="@+id/tv_maybe_u_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Kamu Mungkin Juga Suka"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_detail_payment">
+
+                </TextView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/black_30"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_maybe_u_like"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_maybe_u_like"
+                    app:layout_constraintTop_toTopOf="@+id/tv_maybe_u_like">
+
+                </View>
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/black_30"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_maybe_u_like"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_maybe_u_like"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_maybe_u_like">
+
+                </View>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_maybe_u_like"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@android:color/transparent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_shipping_price">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_total_pesanan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Rp104.500"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_total_pembayaran"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_total_pembayaran"
-                    app:layout_constraintTop_toTopOf="@+id/tv_total_pembayaran">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_maybe_u_like">
 
-                </TextView>
+                </androidx.recyclerview.widget.RecyclerView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/layout_detail_payment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_payment_code">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="8dp">
-
-                <TextView
-                    android:id="@+id/tv_order_id"
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layout_payment_code"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="No. Pesanan"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_order_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="3d958c4f-f5f2-4cb1-8d1b-2efb228045f3"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_order_id"
+                    android:background="@color/white_20"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_order_id"
-                    app:layout_constraintTop_toTopOf="@+id/tv_order_id">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_payment_method_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Metode Pembayaran"
-
-                    android:textSize="10sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id">
+                    app:layout_constraintTop_toBottomOf="@+id/layout_price">
 
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_payment_method_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Bank BRI"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_payment_method_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_payment_method_name"
-                    app:layout_constraintTop_toTopOf="@+id/tv_payment_method_name">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_payment_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Status pembayaran:"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_method_name">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_payment_status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Belum dibayar"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_payment_status"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_payment_status"
-                    app:layout_constraintTop_toTopOf="@+id/tv_payment_status">
-
-                </TextView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
 
-                <TextView
-                    android:id="@+id/tv_paid_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Dibayar tanggal:"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_status">
+                        <TextView
+                            android:id="@+id/tv_payment_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Kode pembayaran:"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                </TextView>
+                        </TextView>
 
-                <TextView
-                    android:id="@+id/tv_input_paid_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="2024/10/20"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_paid_date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_paid_date"
-                    app:layout_constraintTop_toTopOf="@+id/tv_paid_date">
+                        <TextView
+                            android:id="@+id/tv_input_payment_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="238298392"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/dodger_blue"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_payment_code"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_payment_code"
+                            app:layout_constraintTop_toTopOf="@+id/tv_payment_code">
 
-                </TextView>
+                        </TextView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                <TextView
-                    android:id="@+id/tv_total_paid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Total yang dibayar:"
-                    android:textSize="10sp"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_paid_date">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_total_paid"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Rp120.000"
-                    android:textAlignment="textEnd"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_total_paid"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_total_paid"
-                    app:layout_constraintTop_toTopOf="@+id/tv_total_paid">
-
-                </TextView>
+                </androidx.cardview.widget.CardView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
 
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <TextView
-            android:id="@+id/tv_maybe_u_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Kamu Mungkin Juga Suka"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_detail_payment">
+    <ImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        </TextView>
+    </ImageView>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/black_30"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_maybe_u_like"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_maybe_u_like"
-            app:layout_constraintTop_toTopOf="@+id/tv_maybe_u_like">
-
-        </View>
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/black_30"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_maybe_u_like"
-            app:layout_constraintEnd_toStartOf="@+id/tv_maybe_u_like"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_maybe_u_like">
-
-        </View>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_maybe_u_like"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_maybe_u_like">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/layout_payment_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/white_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_price">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/tv_payment_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Kode pembayaran:"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tv_input_payment_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="238298392"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/dodger_blue"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_payment_code"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_payment_code"
-                    app:layout_constraintTop_toTopOf="@+id/tv_payment_code">
-
-                </TextView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</FrameLayout>

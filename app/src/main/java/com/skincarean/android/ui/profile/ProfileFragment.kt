@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.skincarean.android.R
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
@@ -20,6 +23,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -41,6 +45,7 @@ class ProfileFragment : Fragment() {
         wannaUpdate()
         wannaLogout()
     }
+
 
     private fun setUpObservers() {
         profileViewModel.currentUser.observe(viewLifecycleOwner) { currentUser ->
@@ -77,8 +82,18 @@ class ProfileFragment : Fragment() {
 
     private fun wannaLogout() {
         binding.btnLogout.setOnClickListener {
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .requestProfile().build()
+
+            googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+            googleSignInClient.revokeAccess()
+
+
             profileViewModel.logout()
             LoginSharedPref.clear(requireActivity())
+
 
         }
     }
@@ -128,8 +143,6 @@ class ProfileFragment : Fragment() {
     private fun getCurrentUser() {
         profileViewModel.getCurrentUser()
     }
-
-
 
 
     private fun loading(loading: Boolean) {

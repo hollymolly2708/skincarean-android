@@ -9,11 +9,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.R
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
-import com.skincarean.android.core.data.source.remote.response.OrderResponse
-import com.skincarean.android.databinding.FragmentOrderBinding
 import com.skincarean.android.databinding.FragmentOrderPendingBinding
 
 
@@ -48,17 +45,18 @@ class OrderPendingFragment : Fragment() {
         viewModel.allPendingOrders.observe(viewLifecycleOwner) { orders ->
             setupPendingOrder(orders)
         }
-        viewModel.loading.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
     }
 
     private fun setupPendingOrder(orders: List<Order>) {
-        val orderAdapter = OrderAdapter(orders)
+        val orderAdapter = OrderAdapter()
         orders.forEach {
-            OrderProductAdapter(it.orderItems)
-        }
+            OrderProductAdapter()
 
+        }
+        orderAdapter.submitList(orders)
         orderAdapter.setOnItemClickCallback(object : OnItemClickCallback {
             override fun onOrderClickCallback(data: Order) {
                 val intent = Intent(requireContext(), DetailOrderActivity::class.java)

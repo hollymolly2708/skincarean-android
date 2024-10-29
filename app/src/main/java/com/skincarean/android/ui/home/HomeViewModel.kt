@@ -26,6 +26,7 @@ class HomeViewModel(
     private val _message: MutableLiveData<Event<String>> = MutableLiveData()
     private val _allPopularProduct: MutableLiveData<List<Product>> = MutableLiveData()
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()
+
     private val _productByProductId: MutableLiveData<DetailProductResponse> = MutableLiveData()
 
 
