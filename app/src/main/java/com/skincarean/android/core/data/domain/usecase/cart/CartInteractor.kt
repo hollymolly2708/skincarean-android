@@ -10,6 +10,10 @@ class CartInteractor(private val cartRepository: CartRepository) : CartUseCase {
         cartRepository.getAllCarts(callback)
     }
 
+    override fun getAllActiveCarts(callbackCart: (Resource<Cart>) -> Unit) {
+        cartRepository.getAllActiveCarts(callbackCart)
+    }
+
     override fun addProductToCart(
         cartRequest: CartRequest,
         callback: (Resource<String>) -> Unit,
@@ -47,5 +51,13 @@ class CartInteractor(private val cartRepository: CartRepository) : CartUseCase {
         callbackCart: (Resource<Cart>) -> Unit,
     ) {
         cartRepository.deleteAllCartItem(callback, callbackCart)
+    }
+
+    override fun setActiveCart(
+        cartId: Long,
+        callback: (Resource<String>) -> Unit,
+        callbackCart: (Resource<Cart>) -> Unit,
+    ) {
+        cartRepository.setActiveCart(cartId, callback, callbackCart)
     }
 }

@@ -8,18 +8,19 @@
 
     android:padding="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_order_product"
         android:layout_width="80dp"
         android:layout_height="60dp"
-        android:background="@drawable/background_square_corners"
+        app:shapeAppearanceOverlay="@style/CustomImageViewCircle_10"
         android:padding="1dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/skintific"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </ImageView>
+    </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
         android:id="@+id/tv_input_title_order_product"

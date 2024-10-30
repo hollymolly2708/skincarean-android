@@ -36,4 +36,12 @@ interface ICartRepository {
         callbackCart: (Resource<Cart>) -> Unit,
     )
 
+    fun getAllActiveCarts(callbackCart: (Resource<Cart>) -> Unit)
+
+    fun setActiveCart(
+        cartId: Long,
+        callback: (Resource<String>) -> Unit,
+        callbackCart: (Resource<Cart>) -> Unit,
+    )
+
 }

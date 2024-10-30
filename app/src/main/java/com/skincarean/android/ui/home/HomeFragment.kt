@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -158,12 +159,21 @@ class HomeFragment : Fragment() {
 
     private fun setupUser(data: User) {
         val ivUser = binding.ivUser
-        val uri = Uri.parse(data.profilePicture)
-        Glide.with(requireActivity())
-            .load(uri)
-            .timeout(60000)
-            .circleCrop()
-            .into(ivUser)
+
+        if (data.profilePicture != null) {
+            val uri = Uri.parse(data.profilePicture)
+            Glide.with(requireActivity())
+                .load(uri)
+                .timeout(60000)
+                .circleCrop()
+                .into(ivUser)
+        } else {
+            Glide.with(requireActivity())
+                .load(R.drawable.ic_profile)
+                .circleCrop()
+                .into(binding.ivUser)
+        }
+
         val fullName = data.fullName
         if (fullName != null) {
             val names = fullName.split(" ")

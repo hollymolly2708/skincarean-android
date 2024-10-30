@@ -8,11 +8,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
+import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.databinding.ActivityCartBinding
 import com.skincarean.android.ui.checkout.CartCheckoutActivity
 import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity
+import java.math.BigDecimal
 
 class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
@@ -36,10 +38,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun bindingView() {
-        binding.btnCheckout.setOnClickListener {
-            val intent = Intent(this, CartCheckoutActivity::class.java)
-            startActivity(intent)
-        }
+
         binding.ivBack.setOnClickListener {
             finish()
         }
@@ -48,9 +47,23 @@ class CartActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.cart.observe(this) { cartResponse ->
             if (cartResponse != null) {
+                if (cartResponse.totalPrice != null) {
+                    if (cartResponse.totalPrice == BigDecimal.ZERO) {
+                        binding.btnCheckout.isEnabled = false
+                        binding.btnCheckout.alpha = 0.7f
 
+                    } else {
+                        binding.btnCheckout.isEnabled = true
+                        binding.btnCheckout.alpha = 1.0f
+                        binding.btnCheckout.setOnClickListener {
+                            val intent = Intent(this, CartCheckoutActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
 
-                val adapter = CartAdapter(cartResponse.cartItems)
+                val adapter = CartAdapter()
+                adapter.submitList(cartResponse.cartItems)
 
                 binding.rvCart.adapter = adapter
                 binding.rvCart.layoutManager = LinearLayoutManager(this)
@@ -66,13 +79,17 @@ class CartActivity : AppCompatActivity() {
 
                     }
 
+                    override fun onCheckBoxCartItemClicked(cartId: Long) {
+                        viewModel.setActiveCart(cartId)
+                    }
+
                     override fun onMinusClicked(cartId: Long) {
                         viewModel.minusQuantity(cartId)
                     }
 
                     override fun onTrashCartItemClicked(cartId: Long) {
                         AlertDialog.Builder(this@CartActivity)
-                            .setTitle("Hapus Semua")
+                            .setTitle("Hapus Item")
                             .setMessage("Apakah anda yakin ingin menghapus item ini dari keranjang ?")
                             .setNegativeButton(
                                 "Batal"

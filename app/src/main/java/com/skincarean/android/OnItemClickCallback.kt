@@ -36,6 +36,10 @@ interface OnItemClickCallback {
         Log.d("OnItemClickCallback", "Minus clicked for cartId : $cartId ")
     }
 
+    fun onCheckBoxCartItemClicked(cartId: Long){
+        Log.d("OnItemClickCallback", "Checkbox clicked for cartId : $cartId ")
+    }
+
     fun onTrashCartItemClicked(cartId: Long) {
         Log.d("OnItemClickCallback", "Trash item clicked for cartId : $cartId")
     }

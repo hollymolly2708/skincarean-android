@@ -246,4 +246,65 @@ class CartRepository private constructor(private val cartRemoteDataSource: CartR
             }
         })
     }
+
+    override fun getAllActiveCarts(callbackCart: (Resource<Cart>) -> Unit) {
+        cartRemoteDataSource.getAllActiveCarts { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { cartResponse ->
+                        val cart = CartMapper.cartResponseToCart(cartResponse)
+                        callbackCart(Resource.Success(cart))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage.let {
+                        callbackCart(Resource.Error(it))
+                    }
+                }
+                is ApiResponse.Empty -> {
+                    callbackCart(Resource.Error("no data available"))
+                }
+            }
+        }
+    }
+
+    override fun setActiveCart(
+        cartId: Long,
+        callback: (Resource<String>) -> Unit,
+        callbackCart: (Resource<Cart>) -> Unit,
+    ) {
+        cartRemoteDataSource.setActiveCart(cartId, { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> apiResponse.data.data?.let {
+                    callback(Resource.Success(it))
+                }
+
+                is ApiResponse.Error -> apiResponse.errorMessage?.let {
+                    callback(Resource.Error(it))
+                }
+
+                is ApiResponse.Empty -> callback(Resource.Error("No data available"))
+            }
+        }, { cartApiResponse ->
+            when (cartApiResponse) {
+                is ApiResponse.Success -> {
+                    cartApiResponse.data.data?.let { cartResponse ->
+                        val cart = CartMapper.cartResponseToCart(cartResponse)
+                        callbackCart(Resource.Success(cart))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    cartApiResponse.errorMessage.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("No data available"))
+                }
+            }
+        })
+    }
 }

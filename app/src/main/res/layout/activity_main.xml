@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Home"
-                android:textColor="@color/mint_green"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="visible">
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Product"
-                android:textColor="@color/mint_green"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone">
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Order"
-                android:textColor="@color/mint_green"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone">
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Profile"
-                android:textColor="@color/mint_green"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone">

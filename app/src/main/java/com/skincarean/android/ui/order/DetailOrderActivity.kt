@@ -1,7 +1,6 @@
 package com.skincarean.android.ui.order
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +49,22 @@ class DetailOrderActivity : AppCompatActivity() {
         setupObservers()
         isSwipe(orderId)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun setupViewModel() {
@@ -154,6 +168,8 @@ class DetailOrderActivity : AppCompatActivity() {
                         this@DetailOrderActivity, R.color.mint_green_80
                     )
                 )
+                tvInputPaidDate.visibility = View.VISIBLE
+                tvInputTotalPaid.visibility = View.VISIBLE
 
                 btnCancel.visibility = View.GONE
             }

@@ -10,7 +10,7 @@
     android:clipToOutline="true"
     android:background="@drawable/background_top_brand"
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
+    app:cardElevation="5dp"
 
     >
     <ImageView

@@ -42,7 +42,8 @@ object CartMapper {
                 cartItemResponse?.total,
                 product,
                 cartItemResponse?.quantity,
-                cartItemResponse?.id
+                cartItemResponse?.id,
+                cartItemResponse?.isActive
             )
         }?.collect(Collectors.toList())
         return Cart(

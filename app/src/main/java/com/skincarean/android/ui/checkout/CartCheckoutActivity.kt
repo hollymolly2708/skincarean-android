@@ -106,7 +106,9 @@ class CartCheckoutActivity : AppCompatActivity() {
     }
 
     private fun getAllCarts() {
-        cartViewModel.getAllCarts()
+
+        //ganti harusnya pake yang isActive
+        cartViewModel.getAllActiveCarts()
     }
 
     private fun getAllPaymentMethods() {

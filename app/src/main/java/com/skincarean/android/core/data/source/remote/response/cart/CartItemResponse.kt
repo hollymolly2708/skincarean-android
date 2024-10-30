@@ -15,6 +15,9 @@ data class CartItemResponse(
     @field:SerializedName("quantity")
     val quantity: Long? = null,
 
+    @field:SerializedName("isActive")
+    val isActive: Boolean? = null,
+
     @field:SerializedName("id")
-    val id: Long? = null
+    val id: Long? = null,
 )

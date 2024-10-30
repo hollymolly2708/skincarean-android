@@ -8,6 +8,12 @@
 
     <style name="Theme.Skincarean" parent="Base.Theme.Skincarean" />
 
+    <style name="Theme.DetailOrder" parent="Theme.AppCompat.DayNight.DarkActionBar">
+
+        <item name="android:statusBarColor">@color/mint_green_80</item>
+        <item name="colorPrimary">@color/mint_green_80</item>
+    </style>
+
 
 
     <style name="CustomImageViewCorner" parent="">

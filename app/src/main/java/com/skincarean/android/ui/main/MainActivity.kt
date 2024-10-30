@@ -43,6 +43,11 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.fragment_container, HomeFragment(), null).commit()
 
 
+
+                binding.ivOrder.setImageResource(R.drawable.ic_order)
+                binding.ivProfile.setImageResource(R.drawable.ic_profile)
+                binding.ivProduct.setImageResource(R.drawable.ic_skincare)
+
                 binding.tvOrder.visibility = View.GONE
                 binding.tvProfile.visibility = View.GONE
                 binding.tvProduct.visibility = View.GONE

@@ -7,11 +7,13 @@ import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 
 interface CartUseCase {
     fun getAllCarts(callback: (Resource<Cart>) -> Unit)
+    fun getAllActiveCarts(callbackCart: (Resource<Cart>) -> Unit)
     fun addProductToCart(
         cartRequest: CartRequest,
         callback: (Resource<String>) -> Unit,
         callbackCart: (Resource<Cart>) -> Unit,
     )
+
     fun plusQuantity(
         cartId: Long,
         callback: (Resource<String>) -> Unit,
@@ -31,6 +33,12 @@ interface CartUseCase {
     )
 
     fun deleteAllCartItem(
+        callback: (Resource<String>) -> Unit,
+        callbackCart: (Resource<Cart>) -> Unit,
+    )
+
+    fun setActiveCart(
+        cartId: Long,
         callback: (Resource<String>) -> Unit,
         callbackCart: (Resource<Cart>) -> Unit,
     )

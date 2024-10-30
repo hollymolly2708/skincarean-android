@@ -81,6 +81,68 @@ class CartRemoteDataSource private constructor(private val apiService: ApiServic
         })
     }
 
+    fun setActiveCart(
+        cartId: Long,
+        callback: (ApiResponse<WebResponse<String>>) -> Unit,
+        callbackCartResponse: (ApiResponse<WebResponse<CartResponse>>) -> Unit,
+    ) {
+        apiService.setActiveCart(cartId).enqueue(object : Callback<WebResponse<String>> {
+            override fun onResponse(
+                call: Call<WebResponse<String>>,
+                response: Response<WebResponse<String>>,
+            ) {
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback(ApiResponse.Success(body))
+                        getAllCarts { cartResponse ->
+                            callbackCartResponse(
+                                cartResponse
+                            )
+                        }
+                    } else {
+                        callback(ApiResponse.Error("Response body is null"))
+                    }
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+                }
+            }
+
+            override fun onFailure(call: Call<WebResponse<String>>, t: Throwable) {
+                callback(ApiResponse.Error(t.message.toString()))
+            }
+
+        })
+    }
+
+    fun getAllActiveCarts(callback: (ApiResponse<WebResponse<CartResponse>>) -> Unit) {
+        apiService.getAllActiveCarts().enqueue(object : Callback<WebResponse<CartResponse>> {
+            override fun onResponse(
+                call: Call<WebResponse<CartResponse>>,
+                response: Response<WebResponse<CartResponse>>,
+            ) {
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback(ApiResponse.Success(body))
+                    } else {
+                        callback(ApiResponse.Error("Response body is null"))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    callback(ApiResponse.Error(errorBody ?: "Response error body is null"))
+                }
+            }
+
+            override fun onFailure(call: Call<WebResponse<CartResponse>>, t: Throwable) {
+                callback(ApiResponse.Error(t.message.toString()))
+            }
+
+        })
+    }
+
     fun plusQuantity(
         cartId: Long,
         callback: (ApiResponse<WebResponse<String>>) -> Unit,

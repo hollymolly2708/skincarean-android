@@ -8,4 +8,5 @@ data class CartItem(
     val product: Product? = null,
     val quantity: Long? = null,
     val id: Long? = null,
+    val isActive : Boolean? = null
 )

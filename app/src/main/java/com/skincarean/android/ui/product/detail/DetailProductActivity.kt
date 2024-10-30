@@ -91,9 +91,7 @@ class DetailProductActivity : AppCompatActivity() {
                         override fun onClick(p0: DialogInterface?, p1: Int) {
                             val cartRequest = CartRequest(productId, 1)
                             cartViewModel.addProductToCart(cartRequest)
-                            val intent =
-                                Intent(this@DetailProductActivity, CartActivity::class.java)
-                            startActivity(intent)
+
                         }
 
                     }).setNegativeButton("Batal", object : DialogInterface.OnClickListener {
@@ -113,8 +111,19 @@ class DetailProductActivity : AppCompatActivity() {
         setupObservers()
         getAllProducts()
         quantityCount()
+        bindingButtonCartAndBack()
 
 
+    }
+
+    private fun bindingButtonCartAndBack() {
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
+        binding.ivCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getProductById(productId: String) {

@@ -6,6 +6,8 @@ import android.util.Log
 import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
@@ -17,8 +19,18 @@ import com.skincarean.android.core.data.domain.model.cart.CartItem
 import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ItemProductCartBinding
 
-class CartAdapter(private val list: List<CartItem?>?) :
-    RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+class CartAdapter :
+    ListAdapter<CartItem, CartAdapter.CartViewHolder>(ItemDiffCallback()) {
+    class ItemDiffCallback() : DiffUtil.ItemCallback<CartItem>() {
+        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -36,46 +48,43 @@ class CartAdapter(private val list: List<CartItem?>?) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CartAdapter.CartViewHolder, position: Int) {
+        val list = getItem(position)
         if (list != null) {
-            val data = list[position]
-            if (data != null) {
-                if (data.product != null) {
-                    holder.binding.apply {
-                        tvInputTitleProduct.text = data.product.productName
-                        tvInputBrandName.text = data.product.brandName
-                        tvInputPrice.text = Utilities.numberFormat(data.total)
-                        tvInputCategory.text = data.product.categoryName
-                        val uri = Uri.parse(data.product.thumbnailImage)
-                        Glide.with(holder.binding.root)
-                            .load(uri)
-                            .timeout(60000)
-                            .circleCrop()
-                            .placeholder(R.drawable.ic_loading)
-                            .into(holder.binding.ivProductCart)
-                        tvInputQuantity.text = "x${data.quantity.toString()}"
-                    }
 
-                }
+            holder.binding.apply {
+                tvInputTitleProduct.text = list.product?.productName
+                tvInputBrandName.text = list.product?.brandName
+                tvInputPrice.text = Utilities.numberFormat(list.total)
+                tvInputCategory.text = list.product?.categoryName
 
+                val uri = Uri.parse(list.product?.thumbnailImage)
+                Glide.with(holder.binding.root)
+                    .load(uri)
+                    .timeout(60000)
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_loading)
+                    .into(holder.binding.ivProductCart)
+                tvInputQuantity.text = "x${list.quantity.toString()}"
             }
+
+
+            setUIByActiveCartItem(holder, list.isActive)
+
 
             holder.binding.apply {
                 btnPlus.setOnClickListener {
-                    if (data != null) {
-                        onItemClickCallback?.onPlusClicked(data.id!!)
-                    }
+                    onItemClickCallback?.onPlusClicked(list.id!!)
                 }
 
                 btnMinus.setOnClickListener {
-                    if (data != null) {
-                        onItemClickCallback?.onMinusClicked(data.id!!)
-                    }
+                    onItemClickCallback?.onMinusClicked(list.id!!)
                 }
 
                 ivTrashCartItem.setOnClickListener {
-                    if (data != null) {
-                        onItemClickCallback?.onTrashCartItemClicked(data.id!!)
-                    }
+                    onItemClickCallback?.onTrashCartItemClicked(list.id!!)
+                }
+                ivInputIsActive.setOnClickListener {
+                    onItemClickCallback?.onCheckBoxCartItemClicked(list.id!!)
                 }
             }
 
@@ -84,9 +93,14 @@ class CartAdapter(private val list: List<CartItem?>?) :
 
     }
 
-    override fun getItemCount(): Int {
-        return list!!.size
 
+    private fun setUIByActiveCartItem(holder: CartAdapter.CartViewHolder, isActive: Boolean?) {
+
+        if (isActive == null || isActive == false) {
+            holder.binding.ivInputIsActive.setImageResource(R.drawable.ic_uncheck_box)
+        } else {
+            holder.binding.ivInputIsActive.setImageResource(R.drawable.ic_check_box)
+        }
     }
 
     inner class CartViewHolder(var binding: ItemProductCartBinding) : ViewHolder(binding.root)

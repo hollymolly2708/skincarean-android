@@ -64,6 +64,28 @@ class CartViewModel(
         })
     }
 
+    fun getAllActiveCarts() {
+        cartUseCase.getAllActiveCarts { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data.let {
+                        _cart.value = it
+                    }
+                }
+
+                is Resource.Error -> {
+                    resource.message.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        }
+    }
+
     fun getAllCarts() {
         cartUseCase.getAllCarts { resource ->
             when (resource) {
@@ -213,6 +235,46 @@ class CartViewModel(
                 is Resource.Success -> {
                     resource.data?.let {
                         _message.value = it
+                    }
+                }
+
+                is Resource.Error -> {
+                    resource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        }, { cartResource ->
+            when (cartResource) {
+                is Resource.Success -> {
+                    cartResource.data?.let {
+                        _cart.value = it
+                    }
+                }
+
+                is Resource.Error -> {
+                    cartResource.message?.let {
+                        _message.value = it
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        })
+    }
+
+    fun setActiveCart(cartId: Long){
+        cartUseCase.setActiveCart(cartId, { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+
                     }
                 }
 

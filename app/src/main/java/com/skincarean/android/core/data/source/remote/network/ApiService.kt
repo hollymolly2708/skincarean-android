@@ -1,5 +1,6 @@
 package com.skincarean.android.core.data.source.remote.network
 
+import android.telecom.CallEndpoint
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.request.CartRequest
@@ -114,6 +115,12 @@ interface ApiService {
 
     @GET("api/carts")
     fun getAllCart(): Call<WebResponse<CartResponse>>
+
+    @GET("api/carts/active-carts")
+    fun getAllActiveCarts(): Call<WebResponse<CartResponse>>
+
+    @PATCH("api/carts/{cartId}")
+    fun setActiveCart(@Path("cartId") cartId : Long) :Call<WebResponse<String>>
 
     @POST("api/carts/{cartId}/plus-quantity")
     fun plusQuantity(@Path("cartId") cartId: Long): Call<WebResponse<String>>
