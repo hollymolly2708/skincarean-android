@@ -6,6 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
@@ -38,5 +42,17 @@ object Utilities {
             "Rp 0"
         }
     }
+
+
+    fun clearGlideCache(context: Context) {
+        // Hapus cache disk di thread background
+        CoroutineScope(Dispatchers.IO).launch {
+            Glide.get(context).clearDiskCache()
+        }
+
+        // Hapus cache memori di main thread
+        Glide.get(context).clearMemory()
+    }
+
 
 }

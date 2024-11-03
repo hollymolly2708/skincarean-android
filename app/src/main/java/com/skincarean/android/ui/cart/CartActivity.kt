@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
@@ -68,6 +70,12 @@ class CartActivity : AppCompatActivity() {
                 binding.rvCart.adapter = adapter
                 binding.rvCart.layoutManager = LinearLayoutManager(this)
                 binding.rvCart.setHasFixedSize(true)
+
+                binding.rvCart.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                    }
+                })
 
 
                 binding.tvInputTotalAmount.text = Utilities.numberFormat(cartResponse.totalPrice)

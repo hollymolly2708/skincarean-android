@@ -10,7 +10,7 @@ data class CartItemResponse(
     val total: BigDecimal? = null,
 
     @field:SerializedName("product")
-    val product: ProductResponse? = null,
+    val product: CartProductResponse? = null,
 
     @field:SerializedName("quantity")
     val quantity: Long? = null,
@@ -20,4 +20,7 @@ data class CartItemResponse(
 
     @field:SerializedName("id")
     val id: Long? = null,
+
+    @field:SerializedName("productVariant")
+    val productVariant : CartProductVariantResponse? = null
 )

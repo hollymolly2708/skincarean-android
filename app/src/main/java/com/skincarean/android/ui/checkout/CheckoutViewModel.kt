@@ -61,8 +61,8 @@ class CheckoutViewModel(
         }
     }
 
-    fun getDetailProduct(productId: String) {
-        productUseCase.getDetailProductById(productId) { resource ->
+    fun getDetailProductByProductIdAndVariantId(productId: String, variantId: Long) {
+        productUseCase.getDetailProductByProductIdAndVariantId(productId, variantId) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {

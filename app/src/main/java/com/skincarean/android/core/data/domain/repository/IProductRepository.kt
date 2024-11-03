@@ -18,5 +18,7 @@ interface IProductRepository {
     )
 
 
+    fun getDetailProductByProductIdAndVariantId(productId : String, variantId : Long, callback: (Resource<DetailProduct>) -> Unit)
+
     fun getAllReviewsByProductId(productId: String, callback: (Resource<List<Review>>) -> Unit)
 }

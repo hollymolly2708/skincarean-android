@@ -12,15 +12,6 @@ data class DetailProductResponse(
     @field:SerializedName("productId")
     val productId: String? = null,
 
-    @field:SerializedName("originalPrice")
-    val originalPrice: BigDecimal? = null,
-
-    @field:SerializedName("discount")
-    val discount: BigDecimal? = null,
-
-    @field:SerializedName("stok")
-    val stok: Int? = null,
-
     @field:SerializedName("isPromo")
     val isPromo: Boolean? = null,
 
@@ -33,24 +24,27 @@ data class DetailProductResponse(
     @field:SerializedName("bpomCode")
     val bpomCode: String? = null,
 
-    @field:SerializedName("productImage")
-    val productImage: List<ProductImageItemResponse?>? = null,
-
-    @field:SerializedName("size")
-    val size: String? = null,
-
-    @field:SerializedName("price")
-    val price: BigDecimal? = null,
-
     @field:SerializedName("isPopularProduct")
     val isPopularProduct: Boolean? = null,
 
+    @field:SerializedName("totalStok")
+    val totalStok: Long? = null,
+
+    @field:SerializedName("minPrice")
+    val minPrice: BigDecimal? = null,
+
+    @field:SerializedName("maxPrice")
+    val maxPrice: BigDecimal? = null,
+
     @field:SerializedName("thumbnailImage")
     val thumbnailImage: String? = null,
-    
+
     @field:SerializedName("ingredient")
-    val ingredient : String? = null,
+    val ingredient: String? = null,
 
     @field:SerializedName("productDescription")
     val productDescription: String? = null,
+
+    @field:SerializedName("productVariants")
+    val productVariantResponses: List<ProductVariantResponse?>? = null,
 )

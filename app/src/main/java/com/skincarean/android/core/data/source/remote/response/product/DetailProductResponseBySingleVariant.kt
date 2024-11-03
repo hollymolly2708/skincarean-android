@@ -1,10 +1,10 @@
 package com.skincarean.android.core.data.source.remote.response.product
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serial
 import java.math.BigDecimal
 
-data class ProductResponse(
+
+data class DetailProductResponseBySingleVariant(
 
     @field:SerializedName("brandName")
     val brandName: String? = null,
@@ -21,26 +21,24 @@ data class ProductResponse(
     @field:SerializedName("productName")
     val productName: String? = null,
 
+    @field:SerializedName("bpomCode")
+    val bpomCode: String? = null,
+
     @field:SerializedName("isPopularProduct")
     val isPopularProduct: Boolean? = null,
+
+    @field:SerializedName("totalStok")
+    val totalStok: Long? = null,
 
     @field:SerializedName("thumbnailImage")
     val thumbnailImage: String? = null,
 
-    @field:SerializedName("firstOriginalPrice")
-    val firstOriginalPrice: BigDecimal? = null,
+    @field:SerializedName("ingredient")
+    val ingredient: String? = null,
 
-    @field:SerializedName("firstPrice")
-    val firstPrice: BigDecimal? = null,
+    @field:SerializedName("productDescription")
+    val productDescription: String? = null,
 
-    @field:SerializedName("firstDiscount")
-    val firstDiscount: BigDecimal? = null,
-
-    @field:SerializedName("minPrice")
-    val minPrice: BigDecimal? = null,
-
-    @field:SerializedName("maxPrice")
-    val maxPrice: BigDecimal? = null
-
-
-    )
+    @field:SerializedName("productVariant")
+    val productVariant: ProductVariantResponse? = null,
+)

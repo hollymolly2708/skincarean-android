@@ -31,6 +31,14 @@ class ProductInteractor(private val productRepository: ProductRepository) : Prod
         productRepository.searchProducts(nameProduct, page, size, callback)
     }
 
+    override fun getDetailProductByProductIdAndVariantId(
+        productId: String,
+        variantId: Long,
+        callback: (Resource<DetailProduct>) -> Unit,
+    ) {
+        productRepository.getDetailProductByProductIdAndVariantId(productId, variantId, callback)
+    }
+
 
     override fun getAllReviewsByProductId(
         productId: String,

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 
-data class ProductImageItemResponse(
+data class ProductVariantImageResponse(
 
 	@field:SerializedName("imageUrl")
 	val imageUrl: String? = null,

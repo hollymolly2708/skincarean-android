@@ -16,20 +16,22 @@ import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ItemProductBinding
+import java.math.BigDecimal
 
 class ProductAdapter :
     ListAdapter<Product, ProductAdapter.ProductViewHolder>(ItemDiffCallback()) {
 
-class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
-    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem.productId == newItem.productId
+    class ItemDiffCallback : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+            return oldItem.productId == newItem.productId
+        }
+
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+            return oldItem.productId == newItem.productId
+        }
+
     }
 
-    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem.productId == newItem.productId
-    }
-
-}
     private var onItemClickCallback: OnItemClickCallback? = null
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -63,6 +65,7 @@ class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
 
 
     }
+
     inner class ProductViewHolder(var binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -71,14 +74,14 @@ class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
         val originalPrice = holder.binding.tvOriginalPrice
         val discount = holder.binding.tvInputDiscount
 
-        priceAfterDiscount.text = Utilities.numberFormat(data.price)
-        originalPrice.text = Utilities.numberFormat(data.originalPrice)
-        discount.text = "-${data.discount}%"
+        priceAfterDiscount.text = Utilities.numberFormat(data.firstPrice)
+        originalPrice.text = Utilities.numberFormat(data.firstOriginalPrice)
+        discount.text = "-${data.firstDiscount}%"
 
         val layoutParams = originalPrice.layoutParams as ViewGroup.MarginLayoutParams
         val scale = originalPrice.context.resources.displayMetrics.density
 
-        if (data.isPromo == true) {
+        if (data.firstDiscount != null && data.firstDiscount > BigDecimal.valueOf(0)) {
             priceAfterDiscount.visibility = View.VISIBLE
             discount.visibility = View.VISIBLE
 
@@ -113,7 +116,8 @@ class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
             priceAfterDiscount.visibility = View.GONE
             discount.visibility = View.GONE
 
-            originalPrice.paintFlags = originalPrice.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            originalPrice.paintFlags =
+                originalPrice.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             originalPrice.setTypeface(originalPrice.typeface, Typeface.BOLD)
 
             layoutParams.setMargins(0, 0, 0, 0)
@@ -127,7 +131,6 @@ class ItemDiffCallback : DiffUtil.ItemCallback<Product>(){
             )
         }
     }
-
 
 
 }

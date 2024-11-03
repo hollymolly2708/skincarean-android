@@ -5,5 +5,6 @@ data class DirectlyOrderRequest(
     val quantity: Int,
     val paymentMethodId: Int,
     val description: String,
-    val shippingAddress: String
+    val shippingAddress: String,
+    val productVariantId :Long
 )

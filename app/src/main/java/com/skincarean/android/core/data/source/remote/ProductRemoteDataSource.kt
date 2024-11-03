@@ -7,6 +7,7 @@ import com.skincarean.android.core.data.source.remote.response.ErrorResponse
 import com.skincarean.android.core.data.source.remote.response.product.ProductResponse
 import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
 import com.skincarean.android.core.data.source.remote.response.WebResponse
+import com.skincarean.android.core.data.source.remote.response.product.DetailProductResponseBySingleVariant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,6 +91,48 @@ class ProductRemoteDataSource private constructor(private val apiService: ApiSer
 
             })
     }
+
+
+
+    fun getDetailProductByProductIdAndVariantId(
+        productId: String,
+        variantId :Long,
+        callback: (ApiResponse<WebResponse<DetailProductResponseBySingleVariant>>) -> Unit,
+    ) {
+        apiService.getDetailProductByProductIdAndVariantId(productId,variantId)
+            .enqueue(object : Callback<WebResponse<DetailProductResponseBySingleVariant>> {
+                override fun onResponse(
+                    call: Call<WebResponse<DetailProductResponseBySingleVariant>>,
+                    response: Response<WebResponse<DetailProductResponseBySingleVariant>>,
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            callback(ApiResponse.Success(body))
+                        } else {
+                            callback(ApiResponse.Error("Response body is null"))
+                        }
+
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        callback(ApiResponse.Error(errorBody ?: "Unknown error"))
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<WebResponse<DetailProductResponseBySingleVariant>>,
+                    t: Throwable,
+                ) {
+                    t.printStackTrace()
+                    callback(ApiResponse.Error(t.message.toString()))
+                }
+
+            })
+    }
+
+
+
+
 
     fun getallReviewByProductId(
         productId: String,

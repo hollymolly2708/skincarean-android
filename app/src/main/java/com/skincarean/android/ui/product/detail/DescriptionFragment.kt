@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.R
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.databinding.FragmentDescriptionBinding
@@ -19,7 +18,7 @@ class DescriptionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentDescriptionBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,7 +38,7 @@ class DescriptionFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        productViewModel.product.observe(requireActivity()) { detailProduct ->
+        productViewModel.detailProduct.observe(viewLifecycleOwner) { detailProduct ->
             bindingViews(detailProduct)
         }
     }

@@ -20,6 +20,7 @@ import com.skincarean.android.core.data.source.remote.response.review.ReviewResp
 import com.skincarean.android.core.data.source.remote.response.WebResponse
 import com.skincarean.android.core.data.source.remote.response.brand.DetailBrandResponse
 import com.skincarean.android.core.data.source.remote.response.login.UserResponse
+import com.skincarean.android.core.data.source.remote.response.product.DetailProductResponseBySingleVariant
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -69,6 +70,9 @@ interface ApiService {
 
     @GET("api/products/{productId}")
     fun getProductByProductId(@Path("productId") productId: String): Call<WebResponse<DetailProductResponse>>
+
+    @GET("api/products/{productId}/variants/{variantId}")
+    fun getDetailProductByProductIdAndVariantId(@Path("productId") productId : String,@Path("variantId") variantId : Long) : Call<WebResponse<DetailProductResponseBySingleVariant>>
 
     @GET("api/products/{productId}/reviews")
     fun getAllReviewByProductId(@Path("productId") productId: String): Call<WebResponse<List<ReviewResponse>>>

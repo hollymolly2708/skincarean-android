@@ -49,8 +49,8 @@ class OrderProductAdapter :
             holder.binding.tvInputQuantityOrderProduct.text =
                 "${orderItems?.quantity.toString()}"
             holder.binding.tvInputCategoryName.text = orderItems.product?.categoryName
-            holder.binding.tvInputSize.text = orderItems.product?.size
-            val uri = Uri.parse(orderItems.product?.thumbnailImage)
+            holder.binding.tvInputSize.text = orderItems.productVariant?.size
+            val uri = Uri.parse(orderItems.productVariant?.thumbnailImageVariant)
             Glide.with(holder.binding.root)
                 .load(uri)
                 .timeout(60000)

@@ -13,10 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.skincarean.android.R
+import com.skincarean.android.Utilities
 import com.skincarean.android.core.data.LoginSharedPref
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.databinding.FragmentProfileBinding
 import com.skincarean.android.ui.profile.update_profile.UpdateProfileActivity
+import okhttp3.OkHttpClient
 
 
 class ProfileFragment : Fragment() {
@@ -59,6 +61,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     val uri = Uri.parse(currentUser.profilePicture)
                     Glide.with(requireContext())
+
                         .load(uri)
                         .timeout(60000)
                         .circleCrop()
@@ -90,7 +93,7 @@ class ProfileFragment : Fragment() {
             googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
             googleSignInClient.revokeAccess()
 
-
+            Utilities.clearGlideCache(requireActivity())
             profileViewModel.logout()
             LoginSharedPref.clear(requireActivity())
 

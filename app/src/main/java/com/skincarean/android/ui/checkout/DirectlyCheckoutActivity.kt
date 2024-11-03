@@ -3,6 +3,7 @@ package com.skincarean.android.ui.checkout
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +26,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_PRODUCT_ID = "extra_product_id"
         const val EXTRA_QUANTITY = "extra_quantity"
-
+        const val EXTRA_PRODUCT_VARIANT_ID = "extra_product_variant_id"
     }
 
     private lateinit var binding: ActivityDirectlyCheckoutBinding
@@ -39,26 +40,34 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
         LoginSharedPref.checkSession(this)
         val productId = intent.getStringExtra(EXTRA_PRODUCT_ID)
         val quantity: Int = intent.getIntExtra(EXTRA_QUANTITY, 1)
+        val variantId = intent.getLongExtra(EXTRA_PRODUCT_VARIANT_ID, 0)
+
+        Log.e("directlyCheckoutActivity", variantId.toString())
 
         val factory = Injector.provideViewModelFactory()
         checkoutViewModel = ViewModelProvider(this, factory)[CheckoutViewModel::class.java]
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]
 
         if (productId != null) {
-            getAllPaymentMethods(productId)
+            getAllPaymentMethods()
             setupObservers(productId, quantity)
-            sendOrder(productId, quantity)
+            sendOrder(productId, quantity, variantId)
+            getDetailProduct(productId, variantId)
         }
 
 
     }
 
-    private fun getAllPaymentMethods(productId: String?) {
+    private fun getAllPaymentMethods() {
         checkoutViewModel.getAllPaymentMethods()
-        if (productId != null) {
-            checkoutViewModel.getDetailProduct(productId)
-        }
 
+
+    }
+
+    private fun getDetailProduct(productId: String?, variantId: Long) {
+        if (productId != null) {
+            checkoutViewModel.getDetailProductByProductIdAndVariantId(productId, variantId)
+        }
     }
 
     private fun setupObservers(productId: String?, quantity: Int) {
@@ -89,24 +98,27 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
             }
         }
 
-        checkoutViewModel.detailProduct.observe(this) { data ->
-            if (data != null) {
-                val uri = Uri.parse(data.thumbnailImage)
+        checkoutViewModel.detailProduct.observe(this) { detailProduct ->
+
+          val productVariant = detailProduct.productVariant
+            if (detailProduct != null) {
+                val uri = Uri.parse(productVariant?.thumbnailVariantImage)
                 Glide.with(binding.root)
                     .load(uri)
                     .centerCrop()
                     .timeout(60000)
                     .into(binding.ivInputProduct)
-                val totalPrice = data.price!!.toInt().times(quantity).toBigDecimal()
+                val totalPrice = productVariant?.price!!.toInt().times(quantity).toBigDecimal()
 
                 binding.tvInputQuantity.text = quantity.toString()
-                binding.tvInputPrice.text = Utilities.numberFormat(data.price)
+                binding.tvInputPrice.text = Utilities.numberFormat(productVariant.price)
                 binding.tvInputTotalPrice.text =
                     Utilities.numberFormat(totalPrice)
 
                 binding.tvInputTotalPembayaran.text = Utilities.numberFormat(totalPrice)
-                binding.tvTitleInputProduct.text = data.productName
+                binding.tvTitleInputProduct.text = detailProduct.productName
             }
+
 
         }
 
@@ -128,7 +140,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
         checkoutViewModel.directlyOrder(directlyOrderRequest)
     }
 
-    private fun sendOrder(productId: String?, quantity: Int) {
+    private fun sendOrder(productId: String?, quantity: Int, productVariantId: Long) {
         binding.btnCheckout.setOnClickListener {
             val paymentMethodId = checkoutViewModel._selectedPaymentMethodId
             val shippingAddress = binding.edtInputAddress.text
@@ -140,7 +152,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
                             quantity,
                             paymentMethodId,
                             binding.edInputMessage.text.toString(),
-                            shippingAddress.toString()
+                            shippingAddress.toString(), productVariantId
                         )
                         directlyCheckout(directlyOrderRequest)
                     } else {

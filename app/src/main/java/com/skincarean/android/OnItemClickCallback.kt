@@ -4,7 +4,9 @@ import android.util.Log
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
+import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
+import com.skincarean.android.core.data.domain.model.product.ProductVariant
 import com.skincarean.android.core.data.source.remote.response.OrderResponse
 
 interface OnItemClickCallback {
@@ -17,6 +19,10 @@ interface OnItemClickCallback {
     }
 
     fun onTopBrandClickCallback(data : Brand){
+        Log.d("OnItemClickCallback", "this is contain $data")
+    }
+
+    fun onProductVariantClickCallback(data : ProductVariant){
         Log.d("OnItemClickCallback", "this is contain $data")
     }
 

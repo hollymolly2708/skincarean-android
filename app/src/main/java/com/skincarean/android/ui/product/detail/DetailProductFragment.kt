@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.R
 import com.skincarean.android.core.data.di.Injector
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.databinding.FragmentDetailProductBinding
-import com.skincarean.android.databinding.FragmentProductReviewBinding
 
 
 class DetailProductFragment : Fragment() {
@@ -43,13 +41,13 @@ class DetailProductFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        productViewModel.product.observe(requireActivity()) { detailProduct ->
+        productViewModel.detailProduct.observe(viewLifecycleOwner) { detailProduct ->
             bindingViews(detailProduct)
         }
     }
 
     private fun bindingViews(detailProduct: DetailProduct) {
-        binding.tvInputSize.text = detailProduct.size.toString()
+//        binding.tvInputSize.text = detailProduct..toString()
         binding.tvInputIngredients.text = detailProduct.ingredient
         binding.tvInputName.text = detailProduct.productName
     }

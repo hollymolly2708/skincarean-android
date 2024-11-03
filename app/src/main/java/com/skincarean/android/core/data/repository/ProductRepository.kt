@@ -6,6 +6,7 @@ import com.skincarean.android.Resource
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.product.ProductImageItem
+import com.skincarean.android.core.data.domain.model.product.ProductVariant
 import com.skincarean.android.core.data.domain.model.product.Review
 import com.skincarean.android.core.data.domain.repository.IProductRepository
 import com.skincarean.android.core.data.mapper.ProductMapper
@@ -110,6 +111,59 @@ class ProductRepository private constructor(private val productRemoteDataSource:
         }
     }
 
+    override fun getDetailProductByProductIdAndVariantId(
+        productId: String,
+        variantId: Long,
+        callback: (Resource<DetailProduct>) -> Unit,
+    ) {
+        productRemoteDataSource.getDetailProductByProductIdAndVariantId(
+            productId,
+            variantId
+        ) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    apiResponse.data.data?.let { detailProductResponseBySingleVariant ->
+                        val productVariantResponse =
+                            detailProductResponseBySingleVariant.productVariant
+                        val productVariant = ProductVariant(
+                            id = productVariantResponse?.id,
+                            size = productVariantResponse?.size,
+                            stok = productVariantResponse?.stok,
+                            price = productVariantResponse?.price,
+                            originalPrice = productVariantResponse?.originalPrice,
+                            discount = productVariantResponse?.discount,
+                            thumbnailVariantImage = productVariantResponse?.thumbnailVariantImage,
+                        )
+                        val detailProduct = DetailProduct(
+                            brandName = detailProductResponseBySingleVariant.brandName,
+                            productId = detailProductResponseBySingleVariant.productId,
+                            productName = detailProductResponseBySingleVariant.productName,
+                            categoryName = detailProductResponseBySingleVariant.categoryName,
+                            productVariant = productVariant,
+                            isPopularProduct = detailProductResponseBySingleVariant.isPopularProduct,
+                            isPromo = detailProductResponseBySingleVariant.isPromo,
+                            ingredient = detailProductResponseBySingleVariant.ingredient,
+                            thumbnailImage = detailProductResponseBySingleVariant.thumbnailImage,
+                            productDescription = detailProductResponseBySingleVariant.productDescription,
+                            totalStok = detailProductResponseBySingleVariant.totalStok,
+                            bpomCode = detailProductResponseBySingleVariant.bpomCode
+                        )
+                        callback(Resource.Success(detailProduct))
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    apiResponse.errorMessage.let {
+                        callback(Resource.Error(it))
+                    }
+                }
+
+                is ApiResponse.Empty -> {
+                    callback(Resource.Error("no data available"))
+                }
+            }
+        }
+    }
 
 
     override fun getAllReviewsByProductId(

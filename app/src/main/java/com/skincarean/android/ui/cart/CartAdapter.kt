@@ -32,6 +32,8 @@ class CartAdapter :
     }
 
     private var onItemClickCallback: OnItemClickCallback? = null
+
+
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
@@ -57,11 +59,10 @@ class CartAdapter :
                 tvInputPrice.text = Utilities.numberFormat(list.total)
                 tvInputCategory.text = list.product?.categoryName
 
-                val uri = Uri.parse(list.product?.thumbnailImage)
+                val uri = Uri.parse(list.productVariant?.thumbnailVariantImage)
                 Glide.with(holder.binding.root)
                     .load(uri)
                     .timeout(60000)
-                    .circleCrop()
                     .placeholder(R.drawable.ic_loading)
                     .into(holder.binding.ivProductCart)
                 tvInputQuantity.text = "x${list.quantity.toString()}"

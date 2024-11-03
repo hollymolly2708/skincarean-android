@@ -8,10 +8,6 @@ import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.product.Review
 import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
-import com.skincarean.android.core.data.repository.ProductRepository
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.review.ReviewResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
 
 class ProductViewModel(
     private val productUseCase: ProductUseCase,
@@ -19,15 +15,23 @@ class ProductViewModel(
 
     private val _allReviews: MutableLiveData<List<Review>> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
-    private val _product: MutableLiveData<DetailProduct> = MutableLiveData()
+    private val _detailProduct: MutableLiveData<DetailProduct> = MutableLiveData()
     private val _listProduct: MutableLiveData<List<Product>> = MutableLiveData()
-    private val _loading : MutableLiveData<Boolean> = MutableLiveData()
+    private val _loading: MutableLiveData<Boolean> = MutableLiveData()
+    private val _variantId: MutableLiveData<Long> = MutableLiveData()
 
 
+    fun setVariantId(newVariantId: Long?) {
+        _variantId.value = newVariantId
+    }
+
+
+
+    val variantId: LiveData<Long> = _variantId
     val allReviews: LiveData<List<Review>> = _allReviews
-    val product: LiveData<DetailProduct> = _product
+    val detailProduct: LiveData<DetailProduct> = _detailProduct
     val message: LiveData<String> = _message
-    val loading : LiveData<Boolean> = _loading
+    val loading: LiveData<Boolean> = _loading
     val listProduct: LiveData<List<Product>> = _listProduct
 
     fun getAllReviews(productId: String) {
@@ -59,7 +63,8 @@ class ProductViewModel(
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        _product.value = it
+                        _detailProduct.value = it
+
                     }
                 }
 
@@ -82,6 +87,7 @@ class ProductViewModel(
                 is Resource.Success -> {
                     resource.data?.let {
                         _listProduct.value = it
+
                     }
                     _loading.value = false
                 }
