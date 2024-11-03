@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.databinding.FragmentOrderCancelBinding
 
@@ -76,6 +76,11 @@ class OrderCancelFragment : Fragment() {
     }
 
     private fun getAllCancelOrders() {
+        orderViewModel.getAllCancelOrders()
+    }
+
+    override fun onResume() {
+        super.onResume()
         orderViewModel.getAllCancelOrders()
     }
 

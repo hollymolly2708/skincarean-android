@@ -3,12 +3,13 @@ package com.skincarean.android.ui.checkout
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.cart.Cart
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
@@ -18,6 +19,7 @@ import com.skincarean.android.ui.LoadingActivity
 import com.skincarean.android.ui.cart.CartViewModel
 import com.skincarean.android.ui.order.DetailOrderActivity
 import com.skincarean.android.ui.order.OrderViewModel
+import java.math.BigDecimal
 
 class CartCheckoutActivity : AppCompatActivity() {
     private lateinit var cartViewModel: CartViewModel
@@ -35,8 +37,10 @@ class CartCheckoutActivity : AppCompatActivity() {
         getAllPaymentMethods()
         setupObserver()
         checkout()
-
+        binding.layoutScrollCartCheckout.visibility = View.GONE
+        binding.layoutTotalPayment.visibility = View.GONE
     }
+
 
     private fun initializeViewModel() {
         val factory = Injector.provideViewModelFactory()
@@ -55,7 +59,22 @@ class CartCheckoutActivity : AppCompatActivity() {
             setHasFixedSize(true)
 
         }
-        binding.tvInputTotalPembayaranInCart.text = Utilities.numberFormat(carts.totalPrice)
+
+        if (carts.totalPrice != null) {
+            val totalInCarts = carts.totalPrice as BigDecimal
+            val tax = totalInCarts.multiply(BigDecimal(0.05))
+            val shippingCost = BigDecimal.valueOf(20000)
+            val overallTotal = totalInCarts.add(tax).add(shippingCost)
+
+            binding.tvInputTotalPembayaranInCart.text = Utilities.numberFormat(overallTotal)
+
+            binding.tvInputTotal.text =
+                Utilities.numberFormat(overallTotal)
+
+
+            binding.tvInputTax.text = Utilities.numberFormat(tax)
+            binding.tvInputShippingCost.text = Utilities.numberFormat(shippingCost)
+        }
 
     }
 
@@ -95,6 +114,25 @@ class CartCheckoutActivity : AppCompatActivity() {
             navigateToLoadingUi(data["orderId"])
         }
 
+        cartViewModel.loading.observe(this) {
+            loading(it)
+        }
+
+    }
+
+    private fun loading(loading: Boolean) {
+
+
+        if (loading) {
+            binding.layoutScrollCartCheckout.visibility = View.GONE
+            binding.layoutTotalPayment.visibility = View.GONE
+            binding.loading.visibility = View.VISIBLE
+
+        } else {
+            binding.layoutScrollCartCheckout.visibility = View.VISIBLE
+            binding.layoutTotalPayment.visibility = View.VISIBLE
+            binding.loading.visibility = View.GONE
+        }
     }
 
     private fun navigateToLoadingUi(orderId: Any?) {

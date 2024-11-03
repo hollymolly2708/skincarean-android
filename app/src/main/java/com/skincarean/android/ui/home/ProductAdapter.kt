@@ -56,6 +56,7 @@ class ProductAdapter :
         Glide.with(holder.binding.root)
             .load(uri)
             .timeout(60000)
+            .placeholder(R.drawable.ic_loading6)
             .into(holder.binding.imageProduct)
         holder.itemView.setOnClickListener {
             onItemClickCallback?.onProductClickCallback(data)
@@ -81,7 +82,7 @@ class ProductAdapter :
         val layoutParams = originalPrice.layoutParams as ViewGroup.MarginLayoutParams
         val scale = originalPrice.context.resources.displayMetrics.density
 
-        if (data.firstDiscount != null && data.firstDiscount > BigDecimal.valueOf(0)) {
+        if (data.firstDiscount != null && data.firstDiscount!! > BigDecimal.valueOf(0)) {
             priceAfterDiscount.visibility = View.VISIBLE
             discount.visibility = View.VISIBLE
 

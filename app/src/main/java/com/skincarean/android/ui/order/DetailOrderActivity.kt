@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.order.DetailOrder
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ActivityDetailOrderBinding
@@ -125,14 +125,17 @@ class DetailOrderActivity : AppCompatActivity() {
 
         binding.tvInputPaymentCode.text = order.payment?.paymentCode
         binding.tvInputPaymentStatus.text = order.payment?.paymentStatus
-
-        binding.tvInputPaidDate.text = order.payment?.paidDate.toString()
         binding.tvInputShippingAddress.text = order.shippingAddress
         binding.tvInputShippingPrice.text = Utilities.numberFormat(order.shippingCost)
         binding.tvInputTax.text = Utilities.numberFormat(order.tax)
         binding.tvInputPaymentMethodName.text = order.payment?.paymentMethodName
         binding.tvInputTotalPaid.text = Utilities.numberFormat(order.payment?.totalPaid)
         binding.tvInputTotalPesanan.text = Utilities.numberFormat(order.finalPrice)
+
+        if (order.payment?.paidDate != null) {
+            binding.tvInputPaidDate.text =
+                Utilities.convertIso8601ToDate(order.payment?.paidDate.toString())
+        }
 
 
     }
@@ -170,7 +173,8 @@ class DetailOrderActivity : AppCompatActivity() {
                 )
                 tvInputPaidDate.visibility = View.VISIBLE
                 tvInputTotalPaid.visibility = View.VISIBLE
-
+                tvPaidDate.visibility = View.VISIBLE
+                tvTotalPaid.visibility = View.VISIBLE
                 btnCancel.visibility = View.GONE
             }
 

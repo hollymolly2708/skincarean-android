@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.R
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.brand.DetailBrand
 import com.skincarean.android.databinding.FragmentAboutBrandBinding

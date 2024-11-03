@@ -68,7 +68,7 @@ class ReviewAdapter(private val listReviewResponse: List<Review>) :
         }
 
         if (data.rating != null) {
-            holder.binding.ratingBar.rating = data.rating.toFloat()
+            holder.binding.ratingBar.rating = data.rating!!.toFloat()
             holder.binding.ratingText.text = data.rating.toString()
         }
 

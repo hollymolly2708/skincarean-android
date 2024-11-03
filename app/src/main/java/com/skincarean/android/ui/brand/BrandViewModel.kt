@@ -3,11 +3,10 @@ package com.skincarean.android.ui.brand
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skincarean.android.Resource
+import com.skincarean.core.Resource
 import com.skincarean.android.core.data.domain.model.brand.DetailBrand
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.usecase.brand.BrandUseCase
-import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
 
 class BrandViewModel(
     private val brandUseCase: BrandUseCase,

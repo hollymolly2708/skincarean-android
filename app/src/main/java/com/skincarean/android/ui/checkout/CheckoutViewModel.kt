@@ -3,17 +3,14 @@ package com.skincarean.android.ui.checkout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skincarean.android.Resource
+import com.skincarean.core.Resource
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.domain.usecase.order.OrderUseCase
 import com.skincarean.android.core.data.domain.usecase.payment_method.PaymentMethodUseCase
 import com.skincarean.android.core.data.domain.usecase.product.ProductUseCase
-import com.skincarean.android.core.data.repository.OrderRepository
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
 
 class CheckoutViewModel(
     private val productUseCase: ProductUseCase,
@@ -25,12 +22,14 @@ class CheckoutViewModel(
     private val _detailProduct: MutableLiveData<DetailProduct> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
     private val _orderId: MutableLiveData<Map<String, Any>> = MutableLiveData()
+    private val _loading: MutableLiveData<Boolean> = MutableLiveData()
 
 
     var _selectedPaymentMethodId: Int? = null
     var _selectedDescription: String? = null
 
 
+    val loading: LiveData<Boolean> = _loading
     val orderId: LiveData<Map<String, Any>> = _orderId
     val message: LiveData<String> = _message
     val detailProduct: LiveData<DetailProduct> = _detailProduct
@@ -43,9 +42,7 @@ class CheckoutViewModel(
                     resource.data?.let {
                         _listPaymentMethods.value = it
                     }
-                    resource.message?.let {
-                        _message.value = it
-                    }
+
                 }
 
                 is Resource.Loading -> {
@@ -56,6 +53,8 @@ class CheckoutViewModel(
                     resource.message?.let {
                         _message.value = it
                     }
+
+
                 }
             }
         }
@@ -68,16 +67,18 @@ class CheckoutViewModel(
                     resource.data?.let {
                         _detailProduct.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
 
@@ -91,16 +92,19 @@ class CheckoutViewModel(
                     resource.data?.let {
                         _orderId.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }
@@ -113,16 +117,18 @@ class CheckoutViewModel(
                     resource.data?.let {
                         _orderId.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message?.let {
                         _message.value = it
                     }
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }

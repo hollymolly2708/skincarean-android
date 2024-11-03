@@ -3,34 +3,31 @@ package com.skincarean.android.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener
+import com.skincarean.android.LoginSession
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.LoginSharedPref
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.core.LoginSharedPreferences
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.databinding.ActivityLoginBinding
-import com.skincarean.android.ui.ViewModelFactory
 import com.skincarean.android.ui.main.MainActivity
 import com.skincarean.android.ui.register.RegisterActivity
-import java.util.Objects
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
     private lateinit var mGoogleApiClient: GoogleApiClient
-    private lateinit var googleSignInClient: GoogleSignInClient
+
 
     companion object {
         const val RC_SIGN_IN = 123;
@@ -47,16 +44,7 @@ class LoginActivity : AppCompatActivity() {
         setupObservers()
 
         //pengecekan session
-        LoginSharedPref.checkSession(this)
-//        //delete soon
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id)) // client_id dari Firebase
-//            .requestEmail()
-//            .requestProfile()
-//            .build()
-//
-//        googleSignInClient = GoogleSignIn.getClient(this, gso)
-//        googleSignInClient.revokeAccess()
+        LoginSession.checkSession(this)
 
         connectToGoogleSignIn()
 
@@ -67,6 +55,10 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+        binding.layoutLogin.visibility = View.VISIBLE
+        binding.loadingLogin.visibility =View.GONE
+
 
     }
 
@@ -99,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.loginResult.observe(this) { response ->
             if (response != null) {
-                LoginSharedPref.saveData(this, response)
+                LoginSharedPreferences.saveData(this, response)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -111,8 +103,21 @@ class LoginActivity : AppCompatActivity() {
                 Utilities.customDialog(errorMessage, this)
             }
         }
+        viewModel.loading.observe(this){
+            loading(it)
+        }
     }
 
+
+    private fun loading(loading : Boolean){
+        if(loading){
+            binding.layoutLogin.visibility = View.GONE
+            binding.loadingLogin.visibility = View.VISIBLE
+        }else{
+            binding.layoutLogin.visibility = View.VISIBLE
+            binding.loadingLogin.visibility =View.GONE
+        }
+    }
 
     private fun connectToGoogleSignIn() {
 

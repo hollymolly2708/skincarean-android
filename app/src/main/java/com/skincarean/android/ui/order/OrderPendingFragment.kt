@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.databinding.FragmentOrderPendingBinding
 
@@ -82,6 +82,12 @@ class OrderPendingFragment : Fragment() {
     }
 
     private fun getAllPendingOrders() {
+        viewModel.getAllPendingOrders()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
         viewModel.getAllPendingOrders()
     }
 

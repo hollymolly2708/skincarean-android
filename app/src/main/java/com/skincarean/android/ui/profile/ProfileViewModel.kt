@@ -3,10 +3,9 @@ package com.skincarean.android.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skincarean.android.Resource
+import com.skincarean.core.Resource
 import com.skincarean.android.core.data.domain.model.user.User
 import com.skincarean.android.core.data.domain.usecase.user.UserUseCase
-import com.skincarean.android.core.data.repository.UserRepository
 import com.skincarean.android.event.Event
 
 class ProfileViewModel(

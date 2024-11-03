@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.source.remote.request.UpdateUserRequest
 import com.skincarean.android.databinding.ActivityUpdateProfileBinding
 import com.skincarean.android.ui.profile.ProfileViewModel

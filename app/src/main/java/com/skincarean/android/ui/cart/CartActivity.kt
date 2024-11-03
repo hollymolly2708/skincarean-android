@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.databinding.ActivityCartBinding
 import com.skincarean.android.ui.checkout.CartCheckoutActivity
 import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity

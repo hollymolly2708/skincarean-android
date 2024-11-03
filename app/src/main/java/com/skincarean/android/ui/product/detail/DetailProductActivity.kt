@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.product.ProductImageItem
@@ -204,7 +204,7 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun hideVariant(detailProduct: DetailProduct) {
         binding.layoutVariant.visibility =
-            if (detailProduct.productVariants.isNullOrEmpty() || detailProduct.productVariants.size <= 1) {
+            if (detailProduct.productVariants.isNullOrEmpty() || detailProduct.productVariants!!.size <= 1) {
                 View.GONE
             } else {
                 View.VISIBLE

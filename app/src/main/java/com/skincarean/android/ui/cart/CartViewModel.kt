@@ -3,25 +3,23 @@ package com.skincarean.android.ui.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skincarean.android.Resource
+import com.skincarean.core.Resource
 import com.skincarean.android.core.data.domain.model.cart.Cart
 import com.skincarean.android.core.data.domain.usecase.cart.CartUseCase
-import com.skincarean.android.core.data.repository.CartRepository
 import com.skincarean.android.core.data.source.remote.request.CartRequest
-import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
-import com.skincarean.android.core.data.source.remote.response.ErrorResponse
-import com.skincarean.android.core.data.source.remote.response.WebResponse
-import com.skincarean.android.core.data.source.remote.response.cart.CartItemResponse
 
 class CartViewModel(
     private val cartUseCase: CartUseCase,
 ) : ViewModel() {
     private val _cart: MutableLiveData<Cart> = MutableLiveData()
     private val _message: MutableLiveData<String> = MutableLiveData()
+    private val _loading : MutableLiveData<Boolean>  = MutableLiveData()
 
 
     val message: LiveData<String> = _message
     val cart: LiveData<Cart> = _cart
+    val loading : LiveData<Boolean> = _loading
+
 
 
     fun addProductToCart(cartRequest: CartRequest) {
@@ -66,21 +64,26 @@ class CartViewModel(
 
     fun getAllActiveCarts() {
         cartUseCase.getAllActiveCarts { resource ->
+
             when (resource) {
                 is Resource.Success -> {
                     resource.data.let {
                         _cart.value = it
                     }
+
+                    _loading.value = false
                 }
 
                 is Resource.Error -> {
                     resource.message.let {
                         _message.value = it
                     }
+
+                    _loading.value = false
                 }
 
                 is Resource.Loading -> {
-
+                    _loading.value = true
                 }
             }
         }
@@ -112,9 +115,7 @@ class CartViewModel(
         cartUseCase.plusQuantity(cartId, { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    resource.data?.let {
-                        _message.value = it
-                    }
+
                 }
 
                 is Resource.Error -> {
@@ -152,9 +153,7 @@ class CartViewModel(
         cartUseCase.minusQuantity(cartId, { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    resource.data?.let {
-                        _message.value = it
-                    }
+
                 }
 
                 is Resource.Error -> {

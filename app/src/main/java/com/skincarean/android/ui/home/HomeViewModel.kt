@@ -3,7 +3,7 @@ package com.skincarean.android.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skincarean.android.Resource
+import com.skincarean.core.Resource
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.user.User

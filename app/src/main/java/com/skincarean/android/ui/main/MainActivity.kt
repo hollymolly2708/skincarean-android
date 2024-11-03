@@ -5,8 +5,9 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
+import com.skincarean.android.LoginSession
 import com.skincarean.android.R
-import com.skincarean.android.core.data.LoginSharedPref
+
 import com.skincarean.android.databinding.ActivityMainBinding
 import com.skincarean.android.ui.home.HomeFragment
 import com.skincarean.android.ui.order.OrderFragment
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        LoginSharedPref.checkSession(this)
+        LoginSession.checkSession(this)
 
         supportFragmentManager.beginTransaction().setReorderingAllowed(true)
             .replace(R.id.fragment_container, HomeFragment(), null).commit()

@@ -59,13 +59,25 @@ class CartAdapter :
                 tvInputPrice.text = Utilities.numberFormat(list.total)
                 tvInputCategory.text = list.product?.categoryName
 
-                val uri = Uri.parse(list.productVariant?.thumbnailVariantImage)
-                Glide.with(holder.binding.root)
-                    .load(uri)
-                    .timeout(60000)
-                    .placeholder(R.drawable.ic_loading)
-                    .into(holder.binding.ivProductCart)
-                tvInputQuantity.text = "x${list.quantity.toString()}"
+                if (list.productVariant?.thumbnailVariantImage != null) {
+                    val uri = Uri.parse(list.productVariant?.thumbnailVariantImage)
+                    Glide.with(holder.binding.root)
+                        .load(uri)
+                        .timeout(60000)
+                        .placeholder(R.drawable.ic_loading)
+                        .into(holder.binding.ivProductCart)
+                    tvInputQuantity.text = "x${list.quantity.toString()}"
+
+                }else{
+                    val uri = Uri.parse(list.product?.thumbnailImage)
+                    Glide.with(holder.binding.root)
+                        .load(uri)
+                        .timeout(60000)
+                        .placeholder(R.drawable.ic_loading)
+                        .into(holder.binding.ivProductCart)
+                    tvInputQuantity.text = "x${list.quantity.toString()}"
+                }
+
             }
 
 

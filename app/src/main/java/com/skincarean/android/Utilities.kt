@@ -12,6 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.text.NumberFormat
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 object Utilities {
@@ -53,6 +56,19 @@ object Utilities {
         // Hapus cache memori di main thread
         Glide.get(context).clearMemory()
     }
+
+
+    fun convertIso8601ToDate(isoDate: String): String {
+        // Parse the ISO 8601 date string
+        val offsetDateTime = OffsetDateTime.parse(isoDate)
+
+        // Define the desired output format
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+        // Format the OffsetDateTime to a string (convert to Jakarta timezone)
+        return offsetDateTime.withOffsetSameInstant(ZoneOffset.ofHours(7)).format(formatter)
+    }
+
 
 
 }

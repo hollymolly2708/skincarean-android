@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentProductByBrandBinding
 import com.skincarean.android.ui.home.ProductAdapter

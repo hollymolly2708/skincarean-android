@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.source.remote.UserRemoteDataSource
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
 import com.skincarean.android.databinding.ActivityRegisterBinding

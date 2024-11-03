@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.databinding.FragmentOrderCompletedBinding
 
@@ -80,6 +80,11 @@ class OrderCompletedFragment : Fragment() {
         orderViewModel.getAllCompleteOrders()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+        orderViewModel.getAllCompleteOrders()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

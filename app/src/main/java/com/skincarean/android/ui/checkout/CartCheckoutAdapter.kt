@@ -48,10 +48,10 @@ class CartCheckoutAdapter:
         if (data != null) {
 
                 if (data.product != null) {
-                    holder.binding.tvInputCategoryName.text = data.product.categoryName
+                    holder.binding.tvInputCategoryName.text = data.product!!.categoryName
                     holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
                     holder.binding.tvInputSize.text = data.productVariant?.size
-                    holder.binding.tvInputTitleOrderProduct.text = data.product.productName
+                    holder.binding.tvInputTitleOrderProduct.text = data.product!!.productName
                     holder.binding.tvInputQuantityOrderProduct.text = "x${data.quantity.toString()}"
                     val uri = Uri.parse(data.productVariant?.thumbnailVariantImage)
                     Glide.with(holder.binding.root)

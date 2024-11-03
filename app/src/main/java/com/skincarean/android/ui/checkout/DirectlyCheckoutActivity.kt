@@ -4,23 +4,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.skincarean.android.LoginSession
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.LoginSharedPref
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
 import com.skincarean.android.databinding.ActivityDirectlyCheckoutBinding
 import com.skincarean.android.ui.LoadingActivity
 import com.skincarean.android.ui.order.DetailOrderActivity
 import com.skincarean.android.ui.order.OrderViewModel
+import java.math.BigDecimal
+
 
 class DirectlyCheckoutActivity : AppCompatActivity() {
     companion object {
@@ -37,7 +38,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDirectlyCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        LoginSharedPref.checkSession(this)
+        LoginSession.checkSession(this)
         val productId = intent.getStringExtra(EXTRA_PRODUCT_ID)
         val quantity: Int = intent.getIntExtra(EXTRA_QUANTITY, 1)
         val variantId = intent.getLongExtra(EXTRA_PRODUCT_VARIANT_ID, 0)
@@ -54,6 +55,9 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
             sendOrder(productId, quantity, variantId)
             getDetailProduct(productId, variantId)
         }
+
+
+        loading(true)
 
 
     }
@@ -100,7 +104,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
 
         checkoutViewModel.detailProduct.observe(this) { detailProduct ->
 
-          val productVariant = detailProduct.productVariant
+            val productVariant = detailProduct.productVariant
             if (detailProduct != null) {
                 val uri = Uri.parse(productVariant?.thumbnailVariantImage)
                 Glide.with(binding.root)
@@ -109,13 +113,18 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
                     .timeout(60000)
                     .into(binding.ivInputProduct)
                 val totalPrice = productVariant?.price!!.toInt().times(quantity).toBigDecimal()
+                val tax = totalPrice.multiply(BigDecimal.valueOf(0.05))
+                val shippingCost = BigDecimal.valueOf(20000)
+                val overallTotal = totalPrice.add(tax).add(shippingCost)
 
                 binding.tvInputQuantity.text = quantity.toString()
                 binding.tvInputPrice.text = Utilities.numberFormat(productVariant.price)
                 binding.tvInputTotalPrice.text =
-                    Utilities.numberFormat(totalPrice)
+                    Utilities.numberFormat(overallTotal)
+                binding.tvInputTax.text = Utilities.numberFormat(tax)
+                binding.tvInputShippingCost.text = Utilities.numberFormat(shippingCost)
 
-                binding.tvInputTotalPembayaran.text = Utilities.numberFormat(totalPrice)
+                binding.tvInputTotalPembayaran.text = Utilities.numberFormat(overallTotal)
                 binding.tvTitleInputProduct.text = detailProduct.productName
             }
 
@@ -132,8 +141,23 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        checkoutViewModel.loading.observe(this) {
+            loading(it)
+        }
 
 
+    }
+
+    private fun loading(loading: Boolean) {
+        if (loading) {
+            binding.layoutDirectlyCheckout.visibility = View.GONE
+            binding.loadingDirectlyCheckout.visibility = View.VISIBLE
+            binding.layoutTotalPayment.visibility =View.GONE
+        } else {
+            binding.layoutDirectlyCheckout.visibility = View.VISIBLE
+            binding.loadingDirectlyCheckout.visibility = View.GONE
+            binding.layoutTotalPayment.visibility =View.VISIBLE
+        }
     }
 
     private fun directlyCheckout(directlyOrderRequest: DirectlyOrderRequest) {

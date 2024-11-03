@@ -12,13 +12,14 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.skincarean.android.LoginSession
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.LoginSharedPref
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.core.LoginSharedPreferences
+
+import com.skincarean.android.di.Injector
 import com.skincarean.android.databinding.FragmentProfileBinding
 import com.skincarean.android.ui.profile.update_profile.UpdateProfileActivity
-import okhttp3.OkHttpClient
 
 
 class ProfileFragment : Fragment() {
@@ -95,7 +96,8 @@ class ProfileFragment : Fragment() {
 
             Utilities.clearGlideCache(requireActivity())
             profileViewModel.logout()
-            LoginSharedPref.clear(requireActivity())
+            LoginSharedPreferences.clear(requireActivity())
+            LoginSession.logout(requireActivity())
 
 
         }

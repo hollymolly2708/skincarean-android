@@ -48,6 +48,7 @@ class ProductItemImageAdapter :
             Glide.with(binding.root)
                 .load(item.imageUrl)
                 .timeout(60000)
+                .placeholder(R.drawable.ic_loading6)
                 .into(binding.ivInputImageItem)
         }
 

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.core.data.di.Injector
+import com.skincarean.android.di.Injector
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.user.User
@@ -50,6 +50,10 @@ class HomeFragment : Fragment() {
         bindingView()
         setupUserProfile()
         setupShimmerProduct()
+        setupShimmerTopbrand()
+
+        binding.rvPopularProduct.visibility = View.GONE
+        binding.rvShimmerPopularProduct.visibility = View.VISIBLE
     }
 
     private fun bindingView() {
@@ -135,16 +139,28 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun setupShimmerTopbrand(){
+        val adapter = TopBrandShimmerAdapter()
+        binding.rvTopBrand.layoutManager =
+            GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
+        binding.rvTopBrand.setHasFixedSize(true)
+        binding.rvTopBrand.adapter = adapter
+
+    }
+
     private fun setupLoading(loading: Boolean) {
+
+
+
         if (loading) {
             binding.rvPopularProduct.visibility = View.GONE
             binding.rvShimmerPopularProduct.visibility = View.VISIBLE
-            binding.ivLoadingBrand.visibility = View.VISIBLE
+            binding.rvShimmerTopBrand.visibility = View.VISIBLE
             binding.rvTopBrand.visibility = View.GONE
         } else {
             binding.rvPopularProduct.visibility = View.VISIBLE
             binding.rvShimmerPopularProduct.visibility = View.GONE
-            binding.ivLoadingBrand.visibility = View.GONE
+            binding.rvShimmerTopBrand.visibility = View.GONE
             binding.rvTopBrand.visibility = View.VISIBLE
         }
     }

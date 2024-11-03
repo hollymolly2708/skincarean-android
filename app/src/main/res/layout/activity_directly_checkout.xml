@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_directly_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -151,6 +153,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
+
                         android:text="Rp 85000"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -158,17 +161,61 @@
 
                     </TextView>
 
+
+                    <TextView
+                        android:id="@+id/tv_shipping_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Biaya pengiriman:"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Pajak:"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_shipping_cost">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_input_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Rp 20.000"
+                        android:textColor="@color/bata_red"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_tax">
+
+                    </TextView>
+
                     <TextView
                         android:id="@+id/tv_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="Total Pesanan: "
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/tv_input_total_price"
-                        app:layout_constraintTop_toBottomOf="@+id/view">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_tax">
 
                     </TextView>
 
@@ -176,7 +223,6 @@
                         android:id="@+id/tv_input_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="Rp 150.000"
@@ -184,7 +230,7 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view">
+                        app:layout_constraintTop_toTopOf="@+id/tv_total_price">
 
                     </TextView>
 
@@ -201,6 +247,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_input_price">
 
                     </View>
+
+                    <TextView
+                        android:id="@+id/tv_input_shipping_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Rp 20.000"
+
+                        android:textColor="@color/bata_red"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_shipping_cost">
+
+                    </TextView>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -353,5 +414,14 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ProgressBar
+        android:id="@+id/loading_directly_checkout"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+
+    </ProgressBar>
 
 </FrameLayout>
