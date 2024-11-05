@@ -5,7 +5,7 @@ An e-commerce skincare app that i built from scratch this app from scratch. Ther
 ## ABOUT PROJECT
 
 * An ecommerce platform for skincare that has cart feature, checkout, order, product, user.
-* Iam implement modern android development such as modularization, coroutine, depedency injection with koin, lottie, Clean architecture with MVVM, LiveData, Diffutil, Retrofit to communicate with backend, Google sign in api, firebase, and many more which i can mention one by one.
+* Iam implement modern android development such as modularization, coroutine, depedency injection with koin, lottie, clean architecture with MVVM, liveData, diffutil, retrofit to communicate with backend, google sign in api, firebase, and many more which i cant mention one by one.
 * The backend API is built using spring boot and also by me, you guys check on this link : https://github.com/hollymolly2708/skincarean-backend 
 * Nothing special, im just built this for my fullstack portfolio HEHE :), but i really built this with all my heart.
 
