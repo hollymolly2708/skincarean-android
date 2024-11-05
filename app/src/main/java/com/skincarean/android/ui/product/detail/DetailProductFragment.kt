@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.databinding.FragmentDetailProductBinding
 
@@ -35,7 +35,7 @@ class DetailProductFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         productViewModel =
             ViewModelProvider(requireActivity(), factory)[ProductViewModel::class.java]
     }

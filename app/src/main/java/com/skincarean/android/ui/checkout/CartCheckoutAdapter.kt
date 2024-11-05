@@ -17,10 +17,10 @@ import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ItemCartCheckoutBinding
 import com.skincarean.android.ui.cart.CartAdapter
 
-class CartCheckoutAdapter:
+class CartCheckoutAdapter :
     ListAdapter<CartItem, CartCheckoutAdapter.CartCheckoutViewHolder>(ItemDiffCallback()) {
 
-    class ItemDiffCallback : DiffUtil.ItemCallback<CartItem>(){
+    class ItemDiffCallback : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
             return oldItem.id == newItem.id
 
@@ -31,6 +31,7 @@ class CartCheckoutAdapter:
         }
 
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -47,18 +48,31 @@ class CartCheckoutAdapter:
         val data = getItem(position)
         if (data != null) {
 
-                if (data.product != null) {
-                    holder.binding.tvInputCategoryName.text = data.product!!.categoryName
-                    holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
-                    holder.binding.tvInputSize.text = data.productVariant?.size
-                    holder.binding.tvInputTitleOrderProduct.text = data.product!!.productName
-                    holder.binding.tvInputQuantityOrderProduct.text = "x${data.quantity.toString()}"
-                    val uri = Uri.parse(data.productVariant?.thumbnailVariantImage)
+            if (data.product != null) {
+                holder.binding.tvInputCategoryName.text = data.product!!.categoryName
+                holder.binding.tvInputPrice.text = Utilities.numberFormat(data.total)
+                holder.binding.tvInputSize.text = data.productVariant?.size
+                holder.binding.tvInputTitleOrderProduct.text = data.product!!.productName
+                holder.binding.tvInputQuantityOrderProduct.text = "x${data.quantity.toString()}"
+
+                val thumbnailVariantImage = data.productVariant?.thumbnailVariantImage
+
+
+                if (thumbnailVariantImage != null) {
+                    val uri = Uri.parse(thumbnailVariantImage)
                     Glide.with(holder.binding.root)
                         .load(uri)
                         .timeout(60000)
                         .into(holder.binding.ivOrderProduct)
+                } else {
+                    val uriThumbnail = Uri.parse(data.product?.thumbnailImage)
+                    Glide.with(holder.binding.root)
+                        .load(uriThumbnail)
+                        .timeout(60000)
+                        .into(holder.binding.ivOrderProduct)
                 }
+
+            }
 
         }
 

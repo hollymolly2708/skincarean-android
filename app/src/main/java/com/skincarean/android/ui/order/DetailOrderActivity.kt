@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.order.DetailOrder
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.ActivityDetailOrderBinding
@@ -68,7 +68,7 @@ class DetailOrderActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]
         productViewModel = ViewModelProvider(this, factory)[ProductViewModel::class.java]
     }

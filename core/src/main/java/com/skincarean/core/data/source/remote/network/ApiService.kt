@@ -94,7 +94,7 @@ interface ApiService {
     @POST("api/orders/checkout/direct")
     fun directlyOrder(@Body directlyOrderRequest: DirectlyOrderRequest): Call<WebResponse<Map<String, Any>>>
 
-    @POST("api/orders/cart/checkout")
+    @POST("api/orders/checkout/cart")
     fun cartOrder(@Body cartOrderRequest: CartOrderRequest): Call<WebResponse<Map<String, Any>>>
 
     @GET("api/orders")

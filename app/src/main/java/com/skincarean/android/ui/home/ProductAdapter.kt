@@ -56,7 +56,6 @@ class ProductAdapter :
         Glide.with(holder.binding.root)
             .load(uri)
             .timeout(60000)
-            .placeholder(R.drawable.ic_loading6)
             .into(holder.binding.imageProduct)
         holder.itemView.setOnClickListener {
             onItemClickCallback?.onProductClickCallback(data)

@@ -1,6 +1,7 @@
 package com.skincarean.android.ui.order
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -50,11 +51,27 @@ class OrderProductAdapter :
                 "${orderItems?.quantity.toString()}"
             holder.binding.tvInputCategoryName.text = orderItems.product?.categoryName
             holder.binding.tvInputSize.text = orderItems.productVariant?.size
-            val uri = Uri.parse(orderItems.productVariant?.thumbnailImageVariant)
-            Glide.with(holder.binding.root)
-                .load(uri)
-                .timeout(60000)
-                .into(holder.binding.ivOrderProduct)
+            val thumbnailVariantImage = orderItems.productVariant?.thumbnailImageVariant
+
+            if (thumbnailVariantImage != null) {
+                val uri = Uri.parse(thumbnailVariantImage)
+                Glide.with(holder.binding.root)
+                    .load(uri)
+                    .timeout(60000)
+                    .into(holder.binding.ivOrderProduct)
+            } else {
+                val uriThumbnail = orderItems.product?.thumbnailImage
+
+                    Glide.with(holder.binding.root)
+                        .load(Uri.parse(uriThumbnail))
+                        .timeout(60000)
+                        .into(holder.binding.ivOrderProduct)
+
+
+
+
+            }
+
 
             holder.binding.tvInputPrice.text = Utilities.numberFormat(orderItems.price)
         }

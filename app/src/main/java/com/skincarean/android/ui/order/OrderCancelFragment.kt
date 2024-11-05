@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.order.Order
 import com.skincarean.android.databinding.FragmentOrderCancelBinding
 
@@ -30,7 +30,7 @@ class OrderCancelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         orderViewModel = ViewModelProvider(requireActivity(), factory)[OrderViewModel::class.java]
         setUpObservers()
         getAllCancelOrders()

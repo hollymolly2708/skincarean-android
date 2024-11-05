@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -16,7 +15,7 @@ import com.skincarean.android.LoginSession
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.core.LoginSharedPreferences
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.source.remote.request.LoginUserRequest
 import com.skincarean.android.databinding.ActivityLoginBinding
 import com.skincarean.android.ui.main.MainActivity
@@ -38,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         login()
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
 
         setupObservers()

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -20,7 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.product.DetailProduct
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.product.ProductImageItem
@@ -31,7 +30,6 @@ import com.skincarean.android.ui.cart.CartActivity
 import com.skincarean.android.ui.cart.CartViewModel
 import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity
 import com.skincarean.android.ui.home.ProductAdapter
-import okhttp3.OkHttpClient
 import java.math.BigDecimal
 
 class DetailProductActivity : AppCompatActivity() {
@@ -75,7 +73,7 @@ class DetailProductActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[ProductViewModel::class.java]
         cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
     }

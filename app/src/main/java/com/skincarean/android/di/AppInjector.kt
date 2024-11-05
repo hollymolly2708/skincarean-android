@@ -9,7 +9,7 @@ import com.skincarean.core.data.di.Injector.providePaymentMethodInteractor
 import com.skincarean.core.data.di.Injector.provideProductInteractor
 import com.skincarean.core.data.di.Injector.provideUserInteractor
 
-object Injector {
+object AppInjector {
     fun provideViewModelFactory(): ViewModelFactory {
         return ViewModelFactory.getInstance(
             provideUserInteractor(),
