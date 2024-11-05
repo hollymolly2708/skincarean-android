@@ -69,13 +69,13 @@ Credits
 ## SCREENSHOT
 |Splash Screen| |Login Screen| |Home Screen|
 
-<img src="./image/splash-screen.png" alt="Splash Screen" width="33%" height="33%"/> <img src="./image/login.png" alt="Login Screen" wwidth="33%" height="33%"/> <img src="./image/home-fragment.png" alt="Home Screen"  width="33%" height="33%"/> 
+<img src="./image/splash-screen.png" alt="Splash Screen" width="32%" height="32%"/> <img src="./image/login.png" alt="Login Screen"  width="32%" height="32%"/> <img src="./image/home-fragment.png" alt="Home Screen"   width="32%" height="32%"/> 
 
 |List Product| |Detail Product| |Cart Screen|
 
-<img src="./image/product-fragment.png" alt="List Product Screen"  width="33%" height="33%"/> <img src="./image/detail-product.png" alt="Detail Product Screen" width="33%" height="33%"/> <img src="./image/cart.png" alt="Cart Screen"  width="33%" height="33%"/> 
+<img src="./image/product-fragment.png" alt="List Product Screen"   width="32%" height="32%"/> <img src="./image/detail-product.png" alt="Detail Product Screen"  width="32%" height="32%"/> <img src="./image/cart.png" alt="Cart Screen"  width="32%" height="32%"/> 
 
 |Checkout Screen| |Detail Order Belum Dibayar| |Detail Order Lunas|
 
-<img src="./image/detail-checkout-cart.png" alt="Detail Checkout Cart Screen"  width="33%" height="33%"/> <img src="./image/detail-cart-order_belum_dibayar.png" alt="Detail Cart Order Belum Dibayar Screen"  width="33%" height="33%"/> <img src="./image/detail-cart-order_lunas.png" alt="Detail Cart Order Lunas Screen" width="33%" height="33%"/> 
+<img src="./image/detail-checkout-cart.png" alt="Detail Checkout Cart Screen"   width="32%" height="32%"/> <img src="./image/detail-cart-order_belum_dibayar.png" alt="Detail Cart Order Belum Dibayar Screen"   width="32%" height="32%"/> <img src="./image/detail-cart-order_lunas.png" alt="Detail Cart Order Lunas Screen"  width="32%" height="32%"/> 
 
