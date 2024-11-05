@@ -67,16 +67,15 @@ Credits
 * Thanks for the lottie, iconfinder, dribble for the icon, and many more that i cant describe one by one.
 
 ## SCREENSHOT
-|Splash Screen| |Login Screen| |Home Screen| 
+|Splash Screen| |Login Screen| |Home Screen|
 
-<img src="./image/splash-screen.png" alt="Home Screen" width="300"/> <img src="./image/login.png" alt="Home Screen" width="300"/> <img src="./image/home-fragment.png" alt="Home Screen" width="300"/> 
+<img src="./image/splash-screen.png" alt="Splash Screen" width="30%" height="30%"/> <img src="./image/login.png" alt="Login Screen" width="30%" height="30%"/> <img src="./image/home-fragment.png" alt="Home Screen"  width="30%" height="30%"/> 
 
 |List Product| |Detail Product| |Cart Screen|
 
-<img src="./image/product-fragment.png" alt="Home Screen" width="300"/> <img src="./image/detail-product.png" alt="Home Screen" width="300"/> <img src="./image/cart.png" alt="Home Screen" width="300"/> 
+<img src="./image/product-fragment.png" alt="List Product Screen"  width="30%" height="30%"/> <img src="./image/detail-product.png" alt="Detail Product Screen"  width="30%" height="30%"/> <img src="./image/cart.png" alt="Cart Screen"  width="30%" height="30%"/> 
 
 |Checkout Screen| |Detail Order Belum Dibayar| |Detail Order Lunas|
 
-<img src="./image/detail-checkout-cart.png" alt="Home Screen" width="300"/> <img src="./image/detail-cart-order_belum_dibayar.png" alt="Home Screen" width="300"/> <img src="./image/detail-cart-order_lunas.png" alt="Home Screen" width="300"/> 
-
+<img src="./image/detail-checkout-cart.png" alt="Detail Checkout Cart Screen"  width="30%" height="30%"/> <img src="./image/detail-cart-order_belum_dibayar.png" alt="Detail Cart Order Belum Dibayar Screen"  width="30%" height="30%"/> <img src="./image/detail-cart-order_lunas.png" alt="Detail Cart Order Lunas Screen"  width="30%" height="30%"/> 
 
