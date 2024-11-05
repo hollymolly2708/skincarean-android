@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.skincarean.android.LoginSession
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.DirectlyOrderRequest
 import com.skincarean.android.databinding.ActivityDirectlyCheckoutBinding
@@ -45,7 +45,7 @@ class DirectlyCheckoutActivity : AppCompatActivity() {
 
         Log.e("directlyCheckoutActivity", variantId.toString())
 
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         checkoutViewModel = ViewModelProvider(this, factory)[CheckoutViewModel::class.java]
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]
 

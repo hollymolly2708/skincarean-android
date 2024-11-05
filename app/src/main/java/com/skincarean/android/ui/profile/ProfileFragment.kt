@@ -17,7 +17,7 @@ import com.skincarean.android.R
 import com.skincarean.android.Utilities
 import com.skincarean.core.LoginSharedPreferences
 
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.databinding.FragmentProfileBinding
 import com.skincarean.android.ui.profile.update_profile.UpdateProfileActivity
 
@@ -39,7 +39,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         profileViewModel =
             ViewModelProvider(requireActivity(), factory)[ProfileViewModel::class.java]
 

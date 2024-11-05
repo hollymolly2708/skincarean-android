@@ -3,12 +3,9 @@ package com.skincarean.android.ui.profile.update_profile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
-import com.skincarean.android.core.data.source.remote.request.UpdateUserRequest
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.databinding.ActivityUpdateProfileBinding
 import com.skincarean.android.ui.profile.ProfileViewModel
 
@@ -30,7 +27,7 @@ class UpdateProfileActivity : AppCompatActivity() {
         binding = ActivityUpdateProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         profileViewModel = ViewModelProvider(this, factory = factory)[ProfileViewModel::class.java]
 
         val getNumberExtra = intent.getIntExtra(EXTRA_UPDATE_PROFILE_NUMBER, 0)

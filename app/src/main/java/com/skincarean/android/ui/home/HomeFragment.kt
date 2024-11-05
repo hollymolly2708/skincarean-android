@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.brand.Brand
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.core.data.domain.model.user.User
@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         homeViewModel =
             ViewModelProvider(requireActivity(), factory = factory)[HomeViewModel::class.java]
 
@@ -139,7 +139,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setupShimmerTopbrand(){
+    private fun setupShimmerTopbrand() {
         val adapter = TopBrandShimmerAdapter()
         binding.rvTopBrand.layoutManager =
             GridLayoutManager(requireActivity(), 2, GridLayoutManager.HORIZONTAL, false)
@@ -149,7 +149,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupLoading(loading: Boolean) {
-
 
 
         if (loading) {
@@ -194,7 +193,7 @@ class HomeFragment : Fragment() {
         if (fullName != null) {
             val names = fullName.split(" ")
             val firstAndMiddleName = if (names.size >= 2) {
-                "${names[0]} ${names[1]}"
+                "${names[1]}"
             } else {
                 fullName
             }

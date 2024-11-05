@@ -1,6 +1,5 @@
 package com.skincarean.android.ui.cart
 
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,14 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.R
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.databinding.ActivityCartBinding
 import com.skincarean.android.ui.checkout.CartCheckoutActivity
-import com.skincarean.android.ui.checkout.DirectlyCheckoutActivity
 import java.math.BigDecimal
 
 class CartActivity : AppCompatActivity() {
@@ -35,7 +31,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
     }
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.skincarean.android.OnItemClickCallback
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.product.Product
 import com.skincarean.android.databinding.FragmentProductBinding
 import com.skincarean.android.ui.cart.CartActivity
@@ -36,7 +36,7 @@ class ProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         productViewModel =
             ViewModelProvider(requireActivity(), factory)[ProductViewModel::class.java]
         getAllProduct()

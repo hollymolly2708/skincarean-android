@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.skincarean.android.R
-import com.skincarean.android.di.Injector
-import com.skincarean.android.core.data.domain.model.brand.Brand
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.brand.DetailBrand
 import com.skincarean.android.databinding.FragmentAboutBrandBinding
 
@@ -45,7 +43,7 @@ class AboutBrandFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         brandViewModel = ViewModelProvider(requireActivity(), factory)[BrandViewModel::class.java]
     }
 

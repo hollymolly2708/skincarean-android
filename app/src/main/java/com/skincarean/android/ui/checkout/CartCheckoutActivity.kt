@@ -9,11 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skincarean.android.OnItemClickCallback
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.domain.model.cart.Cart
 import com.skincarean.android.core.data.domain.model.payment_method.PaymentMethod
 import com.skincarean.android.core.data.source.remote.request.CartOrderRequest
-import com.skincarean.android.core.data.source.remote.response.cart.CartResponse
 import com.skincarean.android.databinding.ActivityCartCheckoutBinding
 import com.skincarean.android.ui.LoadingActivity
 import com.skincarean.android.ui.cart.CartViewModel
@@ -43,7 +42,7 @@ class CartCheckoutActivity : AppCompatActivity() {
 
 
     private fun initializeViewModel() {
-        val factory = Injector.provideViewModelFactory()
+        val factory = AppInjector.provideViewModelFactory()
         cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
         checkoutViewModel = ViewModelProvider(this, factory)[CheckoutViewModel::class.java]
         orderViewModel = ViewModelProvider(this, factory)[OrderViewModel::class.java]

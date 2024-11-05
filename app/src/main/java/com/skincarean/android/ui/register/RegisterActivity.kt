@@ -2,13 +2,11 @@ package com.skincarean.android.ui.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.skincarean.android.Utilities
-import com.skincarean.android.di.Injector
-import com.skincarean.android.core.data.source.remote.UserRemoteDataSource
+import com.skincarean.android.di.AppInjector
 import com.skincarean.android.core.data.source.remote.request.RegisterUserRequest
 import com.skincarean.android.databinding.ActivityRegisterBinding
 import com.skincarean.android.ui.login.LoginActivity
@@ -20,7 +18,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val viewModelFactory = Injector.provideViewModelFactory()
+        val viewModelFactory = AppInjector.provideViewModelFactory()
         viewModel = ViewModelProvider(this, viewModelFactory).get(RegisterViewModel::class.java)
 
         register()
