@@ -61,7 +61,7 @@ git clone https://github.com/hollymolly2708/skincarean-android
 * Change the local url in core/Injector with your local IP
 * Run the emulator 
 
-Credits 
+## Credits 
 
 * Developer : Me
 * Thanks for the lottie, iconfinder, dribble for the icon, and many more that i cant describe one by one.
